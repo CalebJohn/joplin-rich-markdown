@@ -1,24 +1,17 @@
-# Joplin Plugin
+# Rich Markdown
 
-This is a template to create a new Joplin plugin.
+A plugin that will finally allow you to ditch the markdown viewer, saving space and making your life easier.
 
-The main two files you will want to look at are:
+Rich Markdown comes as a collection of multiple features that can be toggled in settings.
 
-- `/src/index.ts`, which contains the entry point for the plugin source code.
-- `/src/manifest.json`, which is the plugin manifest. It contains information such as the plugin a name, version, etc.
+# Features
 
-## Building the plugin
+## Images in Editor
+Any image that is contained on it's own line of the markdown source will render directly on the line directly below. This works for both internal resources and generic links to images
+![Example of images being rendered in markdown editor](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/inline_image.png)
 
-The plugin is built using Webpack, which creates the compiled code in `/dist`. A JPL archive will also be created at the root, which can use to distribute the plugin.
+## Checkbox
+Checkboxes can be toggled in the markdown source by Ctrl+Clicking between the square brackets.
 
-To build the plugin, simply run `npm run dist`.
-
-The project is setup to use TypeScript, although you can change the configuration to use plain JavaScript.
-
-## Updating the plugin framework
-
-To update the plugin framework, run `npm run update`.
-
-In general this command tries to do the right thing - in particular it's going to merge the changes in package.json and .gitignore instead of overwriting. It will also leave "/src" as well as README.md untouched.
-
-The file that may cause problem is "webpack.config.js" because it's going to be overwritten. For that reason, if you want to change it, consider creating a separate JavaScript file and include it in webpack.config.js. That way, when you update, you only have to restore the line that include your file.
+## Links
+Links to other notes can be followed by Ctrl+Clicking on the resource ID of the link.
