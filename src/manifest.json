@@ -6,7 +6,7 @@
 	"name": "Rich Markdown",
 	"description": "Add inline and other images to the markdown editor.",
 	"author": "Caleb John",
-	"homepage_url": "",
-	"repository_url": "",
-	"keywords": []
+	"homepage_url": "https://github.com/CalebJohn/joplin-rich-markdown/blob/main/README.md",
+	"repository_url": "https://github.com/CalebJohn/joplin-rich-markdown",
+	"keywords": ["editor", "visual"]
 }

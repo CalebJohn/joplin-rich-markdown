@@ -24,8 +24,36 @@ This is enabled by default.
 Links can be followed by Ctrl+Clicking.
 This is enabled by default.
 
+# Feature Requests
+Feature Requests are appreciated and encouraged. Not all feature requests will be technically feasible, so please be patient. Feature requests that align with the projects philosophy (below) are more likely to be implemented. 
 
-## Known Issues
+The aim of this project is to ditch the markdown viewer without trying to turn a markdown document into some kind of unholy WYSIAWYG (what you see is almost what you get). To that end, feature requests that hide markdown or otherwise introduce invisible formatting will not be accepted. The intention of this project is not to build the worlds best (most performant, beautiful, etc.) markdown editor, but rather to build something that can make my (and others!) life a little bit nicer.
+
+Please make feature requests (please prepend the title with Feature Request), or on the [rich markdown forum topic](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053).
+
+# Tips
+I don't like reading/writing notes at a full width, but find the viewer a bit distracting at times. I add the below CSS to my [userchrome.css](https://joplinapp.org/#custom-css) file in order to get a semi-distraction free writing experience when only the editor is toggled.
+```css
+.CodeMirror-sizer {
+	margin-right: auto !important;
+	margin-left: auto !important;
+	max-width: 800px !important;
+}
+```
+
+Adding the following to [userchrome.css](https://joplinapp.org/#custom-css) renders horizontal lines (made with \-\-\- or \*\*\*) as an actual line across the editor.
+```css
+.cm-hr {
+  border-top: 1px solid #777;
+  display: block;
+	line-height: 0px;
+}
+```
+
+
+# Known Issues
 - Resources aren't watched. Don't edit any opened resource an expect it to be saved, toggle visual mode for that. This will be fixed in the future.
 - [Reference Links](https://spec.commonmark.org/0.29/#reference-link) are not supported yet.
-- file:// links only work with markdown link syntax ([]() <>)
+- file:// links only work with markdown link syntax (\[\]\(\) \<\>)
+- When hovering over an image on the bottom line, the image will be cut off
+	- This can be fixed by scrolling the editor down enough to display the image
