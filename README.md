@@ -35,9 +35,9 @@ Please make feature requests (please prepend the title with Feature Request), or
 I don't like reading/writing notes at a full width, but find the viewer a bit distracting at times. I add the below CSS to my [userchrome.css](https://joplinapp.org/#custom-css) file in order to get a semi-distraction free writing experience when only the editor is toggled.
 ```css
 .CodeMirror-sizer {
-	margin-right: auto !important;
-	margin-left: auto !important;
-	max-width: 800px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  max-width: 800px !important;
 }
 ```
 
@@ -46,7 +46,7 @@ Adding the following to [userchrome.css](https://joplinapp.org/#custom-css) rend
 .cm-hr {
   border-top: 1px solid #777;
   display: block;
-	line-height: 0px;
+  line-height: 0px;
 }
 ```
 
