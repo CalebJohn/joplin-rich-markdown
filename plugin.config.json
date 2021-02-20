@@ -1,3 +1,8 @@
 {
-	"extraScripts": ["richMarkdown.ts"]
+	"extraScripts": [
+		"richMarkdown.ts",
+		"images.ts",
+		"clickHandlers.ts",
+		"overlay.ts"
+	]
 }
