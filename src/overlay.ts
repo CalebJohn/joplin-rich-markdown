@@ -10,54 +10,43 @@ function exec(query: RegExp, stream: any) {
 	return query.exec(stream.string);
 }
 
-function advance(match: any, stream: any) {
-	stream.pos += match[0].length || 1;
+function regexOverlay(name: string, regex: RegExp) {
+	return {
+		name: "RichMarkdownOverlay-" + name,
+		token: function(stream: any) {
+			const match = exec(regex, stream);
+			console.log(match);
+	
+			if (match && match.index === stream.pos) {
+				// advance
+				stream.pos += match[0].length || 1;
+				return 'rm-' + name;
+			}
+			else if (match) {
+				// jump to the next match
+				stream.pos = match.index;
+			}
+			else {
+				stream.skipToEnd();
+			}
+	
+			return null;
+		},
+	};
 }
 
-function jump_to_match(c: any, l: any, i: any, stream: any) {
-	let min_index = Infinity;
+const overlays = [
+	regexOverlay('checkbox', checkbox_regex),
+	regexOverlay('link', link_regex),
+	regexOverlay('image', image_regex),
+];
 
-	if (c && c.index < min_index) {
-		min_index = c.index;
-	}
-	else if (l && l.index < min_index) {
-		min_index = l.index;
-	}
-	else if (i && i.index < min_index) {
-		min_index = i.index;
-	}
-
-	if (min_index < Infinity)
-		stream.pos = min_index;
+export function add(cm: any) {
+	for (let overlay of overlays)
+		cm.addOverlay(overlay);
 }
 
-export const overlay = {
-	name: "RichMarkdownOverlay",
-	token: function(stream: any) {
-		const cmatch = exec(checkbox_regex, stream);
-		const lmatch = exec(link_regex, stream);
-		const imatch = exec(image_regex, stream);
-
-		if (cmatch && cmatch.index === stream.pos) {
-			advance(cmatch, stream);
-			return 'rm-checkbox';
-		}
-		else if (lmatch && lmatch.index === stream.pos) {
-			advance(lmatch, stream);
-			return 'rm-link';
-		}
-		else if (imatch && imatch.index === stream.pos) {
-			advance(imatch, stream);
-			return 'rm-image';
-		}
-		else if (cmatch || lmatch || imatch) {
-			jump_to_match(cmatch, lmatch, imatch, stream);
-		}
-		else {
-			stream.skipToEnd();
-		}
-
-		return null;
-	},
-};
-
+export function remove(cm: any) {
+	for (let overlay of overlays)
+		cm.removeOverlay(overlay);
+}

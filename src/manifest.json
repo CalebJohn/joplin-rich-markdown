@@ -2,11 +2,11 @@
 	"manifest_version": 1,
 	"id": "plugin.calebjohn.rich-markdown",
 	"app_min_version": "1.7",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"name": "Rich Markdown",
 	"description": "Add inline and other images to the markdown editor.",
 	"author": "Caleb John",
-	"homepage_url": "https://github.com/CalebJohn/joplin-rich-markdown/blob/main/README.md",
+	"homepage_url": "https://github.com/CalebJohn/joplin-rich-markdown#readme",
 	"repository_url": "https://github.com/CalebJohn/joplin-rich-markdown",
 	"keywords": ["editor", "visual"]
 }

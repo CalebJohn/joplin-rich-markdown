@@ -1,6 +1,6 @@
 import * as ImageHandlers from './images';
 import * as ClickHandlers from './clickHandlers';
-import { overlay } from './overlay.ts';
+import * as Overlay from './overlay.ts';
 import { RichMarkdownSettings } from './settings';
 
 module.exports = {
@@ -89,7 +89,8 @@ module.exports = {
 						cm.off('change', on_change);
 						cm.off('update', on_update);
 						cm.off('mousedown', on_mousedown);
-						cm.removeOverlay(overlay);
+
+						Overlay.remove(cm);
 						cm.state.richMarkdown = null;
 						ImageHandlers.clearAllWidgets(cm);
 					}
@@ -105,8 +106,7 @@ module.exports = {
 						cm.on('update', on_update);
 						cm.on('mousedown', on_mousedown);
 
-						cm.addOverlay(overlay);
-
+						Overlay.add(cm);
 						cm.getWrapperElement().onmousemove = on_mousemove(settings);
 						ImageHandlers.onSourceChanged(cm, cm.firstLine(), cm.lastLine());
 						ImageHandlers.afterSourceChanges(cm);
