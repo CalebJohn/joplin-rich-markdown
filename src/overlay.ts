@@ -15,7 +15,6 @@ function regexOverlay(name: string, regex: RegExp) {
 		name: "RichMarkdownOverlay-" + name,
 		token: function(stream: any) {
 			const match = exec(regex, stream);
-			console.log(match);
 	
 			if (match && match.index === stream.pos) {
 				// advance

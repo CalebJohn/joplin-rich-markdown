@@ -99,7 +99,13 @@ function update_hover_widgets(cm: any) {
 	for (let image of images) {
 		// cm-rm-image matches all parts of an image, we just want the url
 		if (image.innerText.startsWith('(')) {
-			const url = image.innerText.replace(/[\(\)]/g, '');
+			let url = image.innerText.replace(/[\(\)]/g, '');
+			// Special case for when the "url" is a cm-rm-link
+			// This might not be a long term patch
+			if (!url && image.nextElementSibling) {
+				url = image.nextElementSibling.innerText.replace(/[\(\)]/g, '');
+			}
+
 			const altElement = image.previousElementSibling;
 			const alt = altElement.innerText.replace(/[\[\]]/g, '');
 			const markElement = altElement.previousElementSibling;
@@ -110,10 +116,16 @@ function update_hover_widgets(cm: any) {
 			altElement.onmouseleave = close_widget(cm);
 			markElement.onmouseenter = open_widget(cm, url, alt);
 			markElement.onmouseleave = close_widget(cm);
+			if (image.nextElementSibling) {
+				image.nextElementSibling.onmouseenter = open_widget(cm, url, alt);
+				image.nextElementSibling.onmouseleave = close_widget(cm);
+			}
 			if (!cm.state.richMarkdown.settings.imageHoverCtrl) {
 				image.onmousemove = open_widget(cm, url, alt);
 				altElement.onmousemove = open_widget(cm, url, alt);
 				markElement.onmousemove = open_widget(cm, url, alt);
+				if (image.nextElementSibling)
+					image.nextElementSibling.onmousemove = open_widget(cm, url, alt);
 			}
 		}
 	}
