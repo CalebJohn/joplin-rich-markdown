@@ -48,7 +48,7 @@ module.exports = {
 
 					const settings = cm.state.richMarkdown.settings;
 
-					const ctrl = (event.ctrlKey || event.metaKey);
+					const ctrl = (event.ctrlKey || event.altKey);
 					const linksEnabled = settings.links && (ctrl || !settings.linksCtrl);
 					const checkboxEnabled = settings.checkbox && (ctrl || !settings.checkboxCtrl);
 
@@ -67,7 +67,7 @@ module.exports = {
 					return function(event: MouseEvent) {
 						if (!event.target) return;
 
-						const ctrl = (event.ctrlKey || event.metaKey);
+						const ctrl = (event.ctrlKey || event.altKey);
 						let cursor = '';
 
 						if (settings.links && ClickHandlers.isLink(event)) {
@@ -114,6 +114,17 @@ module.exports = {
 				});
 			},
 			codeMirrorOptions: { 'enable-rich-mode': true },
+			assets: function() {
+				return [
+					{ mime: 'text/css',
+						inline: true,
+						text: `.cm-rm-monospace {
+											font-family: monospace !important;
+										}
+							`
+					}
+				];
+			},
 		}
 	},
 }

@@ -2,7 +2,7 @@
 	"manifest_version": 1,
 	"id": "plugin.calebjohn.rich-markdown",
 	"app_min_version": "1.7",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"name": "Rich Markdown",
 	"description": "Add inline and other images to the markdown editor.",
 	"author": "Caleb John",

@@ -89,6 +89,8 @@ export function toggleCheckbox(cm: any, event: MouseEvent) {
 	const replace = match[3][1] === ' ' ? '[x]' : '[ ]';
 
 	cm.replaceRange(replace, { ch: from, line }, { ch: to, line }, '+input');
+	// TODO: I don't remember why I set the cursor here, and it doesn't seem
+	// to do anything
 	cm.setCursor(cursor, null, { scroll: false });
 
 	event.preventDefault();

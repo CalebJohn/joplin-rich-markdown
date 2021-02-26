@@ -5,6 +5,9 @@ export interface RichMarkdownSettings {
 	inlineImages: boolean;
 	imageHover: boolean;
 	imageHoverCtrl: boolean;
+	markHighlight: boolean;
+	headerHighlight: boolean;
+	enforceMono: boolean;
 	checkbox: boolean;
 	links: boolean;
 	checkboxCtrl: boolean;
@@ -16,6 +19,9 @@ export async function getAllSettings() {
 		inlineImages: await joplin.settings.value('inlineImages'),
 		imageHover: await joplin.settings.value('imageHover'),
 		imageHoverCtrl: await joplin.settings.value('imageHoverCtrl'),
+		markHighlight: await joplin.settings.value('markHighlight'),
+		headerHighlight: await joplin.settings.value('headerHighlight'),
+		enforceMono: await joplin.settings.value('enforceMono'),
 		checkbox: await joplin.settings.value('checkbox'),
 		links: await joplin.settings.value('links'),
 		checkboxCtrl: await joplin.settings.value('checkboxCtrl'),
@@ -55,6 +61,32 @@ export async function registerAllSettings() {
 		label: 'Enable image popup even when Ctrl is not pressed'
   });
 
+	await joplin.settings.registerSetting('markHighlight', {
+		value: true,
+		type: SettingItemType.Bool,
+		section: 'settings.calebjohn.richmarkdown',
+		public: true,
+		label: 'Enable highlighting syntax in the editor (==mark==)'
+  });
+
+	await joplin.settings.registerSetting('enforceMono', {
+		value: false,
+		type: SettingItemType.Bool,
+		section: 'settings.calebjohn.richmarkdown',
+		public: true,
+		label: 'Enable all editor fonts',
+		description: 'Allows the user to set any available font in Appearance -> Editor Font Family',
+  });
+
+	await joplin.settings.registerSetting('headerHighlight', {
+		value: false,
+		type: SettingItemType.Bool,
+		section: 'settings.calebjohn.richmarkdown',
+		public: true,
+		label: 'Add css class to header tokens (#) ',
+		description: 'Can customize using the .cm-header.cm-rm-header-token class in userchrome.css',
+  });
+
 	await joplin.settings.registerSetting('checkbox', {
 		value: true,
 		type: SettingItemType.Bool,
@@ -70,7 +102,6 @@ export async function registerAllSettings() {
 		public: true,
 		label: 'Follow note links with Ctrl+Click'
   });
-
 
 	await joplin.settings.registerSetting('checkboxCtrl', {
 		value: true,

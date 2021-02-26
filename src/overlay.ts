@@ -4,22 +4,28 @@ const checkbox_regex = /^(\s*)([*+-] )\[[Xx ]\]\s.*$/g;
 // Last part of regex taken from https://stackoverflow.com/a/17773849/12245502
 const link_regex = /(?<!!)\[[^\]]*\]\([^\(]+\)|<[^>]+>|(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/g;
 const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
+const highlight_regex = /(?<!\\)==[^=\s]*[^=\s\\]==/g;
+const header_regex = /^#+\s/g;
+
+const checkbox_mono_regex = /^(\s*)([*+-] )\[[Xx ]\]\s/g;
+const table_regex = /^\|[^\n]+\|/g;
 
 function exec(query: RegExp, stream: any) {
 	query.lastIndex = stream.pos;
 	return query.exec(stream.string);
 }
 
-function regexOverlay(name: string, regex: RegExp) {
+function regexOverlay(name: string, regex: RegExp, settingName: string) {
 	return {
 		name: "RichMarkdownOverlay-" + name,
+		settingName: settingName,
 		token: function(stream: any) {
 			const match = exec(regex, stream);
 	
 			if (match && match.index === stream.pos) {
 				// advance
 				stream.pos += match[0].length || 1;
-				return 'rm-' + name;
+				return name;
 			}
 			else if (match) {
 				// jump to the next match
@@ -35,14 +41,19 @@ function regexOverlay(name: string, regex: RegExp) {
 }
 
 const overlays = [
-	regexOverlay('checkbox', checkbox_regex),
-	regexOverlay('link', link_regex),
-	regexOverlay('image', image_regex),
+	regexOverlay('rm-checkbox', checkbox_regex, null),
+	regexOverlay('rm-link', link_regex, null),
+	regexOverlay('rm-image', image_regex, null),
+	regexOverlay('rm-header-token', header_regex, 'headerHighlight'),
+	regexOverlay('search-marker', highlight_regex, 'markHighlight'),
+	regexOverlay('rm-monospace', checkbox_mono_regex, 'enforceMono'),
+	regexOverlay('rm-monospace', table_regex, 'enforceMono'),
 ];
 
 export function add(cm: any) {
 	for (let overlay of overlays)
-		cm.addOverlay(overlay);
+		if (!overlay.settingName || cm.state.richMarkdown.settings[overlay.settingName])
+			cm.addOverlay(overlay);
 }
 
 export function remove(cm: any) {
