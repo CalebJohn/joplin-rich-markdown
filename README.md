@@ -7,22 +7,47 @@ Rich Markdown comes as a collection of multiple features that can be toggled in 
 # Features
 
 ## Images on Hover
-When hovering over a markdown image tag with Ctrl pressed, a preview of the image will pop up below the mouse cursor.
+When hovering over a markdown image tag with Ctrl (or Opt) pressed, a preview of the image will pop up below the mouse cursor.
+
 This is enabled by default.
 ![Example of an image on hover](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/hover_image.png)
 
 ## Images in Editor
 Any image that is contained on it's own line of the markdown source will render directly on the line directly below. This works for both internal resources and generic links to images
+
 This is not enabled by default, but can be quick toggled in the View menu.
 ![Example of images being rendered in markdown editor](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/inline_image.png)
 
 ## Checkbox
-Checkboxes can be toggled in the markdown source by Ctrl+Clicking between the square brackets.
+Checkboxes can be toggled in the markdown source by Ctrl (or Opt) + Clicking between the square brackets.
+
 This is enabled by default.
 
 ## Links
-Links can be followed by Ctrl+Clicking.
+Links can be followed by Ctrl (or Opt) + Clicking.
+
 This is enabled by default.
+
+## Highlighting
+Text surrounded by == (e.g. ==mark==) will now be highlighted in the editor.
+
+This is enabled by default.
+
+## Proportional Fonts
+The Joplin markdown editor already allowed the use of proportional fonts, but some markdown constructs (e.g. tables) are hard to work with if the font isn't monospace. This plugin adds an option to enforce a monospace font for certain markdown elements (tables and checkboxes). 
+
+If you'd like to use a proportional font, simply set the font of your choice under Appearance -> Editor font family.
+
+This is disabled by default.
+
+## Extra CSS
+Some additional CSS classes have been added to further enable customization through [userchrome.css](https://joplinapp.org/#custom-css). Available classes are detailed below.
+
+`.cm-header.cm-rm-header-token`: The grouping of hashtags (#) at the start of a header
+
+If you have a suggestion for something you'd like to be able to customize. Just let me know and I'll see whats possible.
+
+This is disabled by default.
 
 # Feature Requests
 Feature Requests are appreciated and encouraged. Not all feature requests will be technically feasible, so please be patient. Feature requests that align with the projects philosophy (below) are more likely to be implemented. 
@@ -41,14 +66,7 @@ I don't like reading/writing notes at a full width, but find the viewer a bit di
 }
 ```
 
-Adding the following to [userchrome.css](https://joplinapp.org/#custom-css) renders horizontal lines (made with \-\-\- or \*\*\*) as an actual line across the editor.
-```css
-.cm-hr {
-  border-top: 1px solid #777;
-  display: block;
-  line-height: 0px;
-}
-```
+See more in [Tips](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/TIPS.md).
 
 
 # Known Issues

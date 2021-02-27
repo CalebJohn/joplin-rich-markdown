@@ -44,7 +44,7 @@ const overlays = [
 	regexOverlay('rm-checkbox', checkbox_regex, null),
 	regexOverlay('rm-link', link_regex, null),
 	regexOverlay('rm-image', image_regex, null),
-	regexOverlay('rm-header-token', header_regex, 'headerHighlight'),
+	regexOverlay('rm-header-token', header_regex, 'extraCSS'),
 	regexOverlay('search-marker', highlight_regex, 'markHighlight'),
 	regexOverlay('rm-monospace', checkbox_mono_regex, 'enforceMono'),
 	regexOverlay('rm-monospace', table_regex, 'enforceMono'),

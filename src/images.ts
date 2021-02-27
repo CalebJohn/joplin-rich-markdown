@@ -26,7 +26,7 @@ function open_widget(cm: any, path: string, alt: string) {
 		// This shortcut is only enabled for the ctrl case because in the default case I would
 		// prefer to accidentally display 2 images rather than not dislpay anything
 		if (!cm.state.richMarkdown.settings.imageHoverCtrl &&
-				(!event.ctrlKey || cm.state.richMarkdown.isMouseHovering)) return;
+				(!(event.ctrlKey || event.altKey) || cm.state.richMarkdown.isMouseHovering)) return;
 
 		cm.state.richMarkdown.isMouseHovering = true;
 

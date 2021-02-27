@@ -29,7 +29,6 @@
     "yargs": "^16.2.0"
   },
   "dependencies": {
-    "open": "^7.4.2",
-    "prettier": "^2.2.1"
+    "opener": "^1.5.2"
   }
 }

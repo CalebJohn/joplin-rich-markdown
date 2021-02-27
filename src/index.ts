@@ -7,7 +7,7 @@ import { getAllSettings, registerAllSettings } from './settings';
 // import prettier = require('prettier/standalone');
 // import markdown = require('prettier/parser-markdown');
 import path = require('path');
-import open = require('open');
+import opener = require('opener');
 
 const contentScriptId = 'richMarkdownEditor';
 
@@ -37,7 +37,7 @@ joplin.plugins.register({
 						await joplin.commands.execute('openNote', message.url.slice(2));
 					} catch (e) {
 						const resource = await getResourcePath(resourceDir, message.url.slice(2));
-						await open(resource);
+						opener(resource);
 					}
 				}
 				else {
@@ -45,7 +45,7 @@ joplin.plugins.register({
 
 					if (!url.match(/^(http|https|file)/))
 						url = 'https://' + url;
-					await open(url);
+					opener(url);
 				}
 			}
 

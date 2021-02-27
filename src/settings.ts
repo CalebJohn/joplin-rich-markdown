@@ -6,7 +6,7 @@ export interface RichMarkdownSettings {
 	imageHover: boolean;
 	imageHoverCtrl: boolean;
 	markHighlight: boolean;
-	headerHighlight: boolean;
+	extraCSS: boolean;
 	enforceMono: boolean;
 	checkbox: boolean;
 	links: boolean;
@@ -20,7 +20,7 @@ export async function getAllSettings() {
 		imageHover: await joplin.settings.value('imageHover'),
 		imageHoverCtrl: await joplin.settings.value('imageHoverCtrl'),
 		markHighlight: await joplin.settings.value('markHighlight'),
-		headerHighlight: await joplin.settings.value('headerHighlight'),
+		extraCSS: await joplin.settings.value('extraCSS'),
 		enforceMono: await joplin.settings.value('enforceMono'),
 		checkbox: await joplin.settings.value('checkbox'),
 		links: await joplin.settings.value('links'),
@@ -51,14 +51,14 @@ export async function registerAllSettings() {
 		type: SettingItemType.Bool,
 		section: 'settings.calebjohn.richmarkdown',
 		public: true,
-		label: 'Show an image popup when hovering over the image source with Ctrl pressed'
+		label: 'Show an image popup when hovering over the image source with Ctrl (or Opt) pressed'
   });
 	await joplin.settings.registerSetting('imageHoverCtrl', {
 		value: false,
 		type: SettingItemType.Bool,
 		section: 'settings.calebjohn.richmarkdown',
 		public: true,
-		label: 'Enable image popup even when Ctrl is not pressed'
+		label: 'Enable image popup even when Ctrl (or Opt) is not pressed'
   });
 
 	await joplin.settings.registerSetting('markHighlight', {
@@ -78,13 +78,13 @@ export async function registerAllSettings() {
 		description: 'Allows the user to set any available font in Appearance -> Editor Font Family',
   });
 
-	await joplin.settings.registerSetting('headerHighlight', {
+	await joplin.settings.registerSetting('extraCSS', {
 		value: false,
 		type: SettingItemType.Bool,
 		section: 'settings.calebjohn.richmarkdown',
 		public: true,
-		label: 'Add css class to header tokens (#) ',
-		description: 'Can customize using the .cm-header.cm-rm-header-token class in userchrome.css',
+		label: 'Add additional CSS classes for enhanced customization',
+		description: 'See https://github.com/CalebJohn/joplin-rich-markdown#extra-css for options',
   });
 
 	await joplin.settings.registerSetting('checkbox', {
@@ -92,7 +92,7 @@ export async function registerAllSettings() {
 		type: SettingItemType.Bool,
 		section: 'settings.calebjohn.richmarkdown',
 		public: true,
-		label: 'Toggle checkboxes with Ctrl+Click'
+		label: 'Toggle checkboxes with Ctrl (or Opt)+Click'
   });
 
 	await joplin.settings.registerSetting('links', {
@@ -100,7 +100,7 @@ export async function registerAllSettings() {
 		type: SettingItemType.Bool,
 		section: 'settings.calebjohn.richmarkdown',
 		public: true,
-		label: 'Follow note links with Ctrl+Click'
+		label: 'Follow note links with Ctrl (or Opt)+Click'
   });
 
 	await joplin.settings.registerSetting('checkboxCtrl', {
@@ -109,7 +109,7 @@ export async function registerAllSettings() {
 		advanced: true,
 		section: 'settings.calebjohn.richmarkdown',
 		public: true,
-		label: 'Require Ctrl when togging checkboxes, it\'s recommended not to change this'
+		label: 'Require Ctrl (or Opt) when togging checkboxes, it\'s recommended not to change this'
   });
 	await joplin.settings.registerSetting('linksCtrl', {
 		value: true,
@@ -117,7 +117,7 @@ export async function registerAllSettings() {
 		advanced: true,
 		section: 'settings.calebjohn.richmarkdown',
 		public: true,
-		label: 'Require Ctrl when clicking links, it\'s recommended not to change this',
+		label: 'Require Ctrl (or Opt) when clicking links, it\'s recommended not to change this',
   });
 }
 
