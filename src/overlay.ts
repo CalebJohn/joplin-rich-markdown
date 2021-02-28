@@ -6,6 +6,8 @@ const link_regex = /(?<!!)\[[^\]]*\]\([^\(]+\)|<[^>]+>|(https?:\/\/(?:www\.|(?!w
 const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
 const highlight_regex = /(?<!\\)==[^=\s]*[^=\s\\]==/g;
 const header_regex = /^#+\s/g;
+// Taken from codemirror/addon/edit/continuelist.js
+export const list_token_regex = /^(\s*)([*+-] \[[x ]\]\s|[*+-]\s|(\d+)([.)]\s))(\s*)/g;
 
 const checkbox_mono_regex = /^(\s*)([*+-] )\[[Xx ]\]\s/g;
 const table_regex = /^\|[^\n]+\|/g;
@@ -44,6 +46,7 @@ const overlays = [
 	regexOverlay('rm-checkbox', checkbox_regex, null),
 	regexOverlay('rm-link', link_regex, null),
 	regexOverlay('rm-image', image_regex, null),
+	regexOverlay('rm-list-token', list_token_regex, null),
 	regexOverlay('rm-header-token', header_regex, 'extraCSS'),
 	regexOverlay('search-marker', highlight_regex, 'markHighlight'),
 	regexOverlay('rm-monospace', checkbox_mono_regex, 'enforceMono'),

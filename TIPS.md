@@ -5,7 +5,7 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
 ## Max Width
 
 ```css
-// Limit the max width of editor, and center
+/* Limit the max width of editor, and center */
 .CodeMirror-sizer {
   margin-right: auto !important;
   margin-left: auto !important;
@@ -16,7 +16,7 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
 ## Horizontal Rule 
 
 ```css
-// Render horizontal lines (made with \-\-\- or \*\*\*) as an actual line across the editor.
+/* Render horizontal lines (made with \-\-\- or \*\*\*) as an actual line across the editor. */
 .cm-hr {
   border-top: 1px solid #777;
   display: block;
@@ -27,8 +27,8 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
 ## Subtle Headers
 
 ```css
-// Reduce the size and visibility of the header hash tags.
-// The additional CSS option must be enabled
+/* Reduce the size and visibility of the header hash tags. */
+/* The additional CSS option must be enabled */
 .cm-header.cm-rm-header-token {
 	font-size: 0.9em;
 	color: grey;
@@ -38,8 +38,8 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
 ## Monospace font
 
 ```css
-// Change the monospace font used for tabes/checkboxes
-// All fonts option must be enabled
+/* Change the monospace font used for tabes/checkboxes */
+/* All fonts option must be enabled */
 .cm-overlay.cm-rm-monospace {
 	font-family: monospace !important;
 }

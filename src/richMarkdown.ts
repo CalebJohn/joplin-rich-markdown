@@ -1,6 +1,7 @@
 import * as ImageHandlers from './images';
 import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay.ts';
+import * as IndentHandlers from './indent';
 import { RichMarkdownSettings } from './settings';
 
 module.exports = {
@@ -22,6 +23,10 @@ module.exports = {
 					ImageHandlers.afterSourceChanges(this);
 					this.getWrapperElement().onmousemove = on_mousemove(newSettings);
 				})
+
+				function on_renderLine(cm: any, line: any, element: HTMLElement) {
+					IndentHandlers.onRenderLine(cm, line, element, CodeMirror);
+				}
 
 				function get_change_lines(change: any) {
 					// change.from and change.to reflect the change location *before* the edit took place
@@ -89,6 +94,7 @@ module.exports = {
 						cm.off('change', on_change);
 						cm.off('update', on_update);
 						cm.off('mousedown', on_mousedown);
+						cm.off('renderLine', on_renderLine);
 
 						Overlay.remove(cm);
 						cm.state.richMarkdown = null;
@@ -105,11 +111,13 @@ module.exports = {
 						cm.on('change', on_change);
 						cm.on('update', on_update);
 						cm.on('mousedown', on_mousedown);
+						cm.on('renderLine', on_renderLine);
 
 						Overlay.add(cm);
 						cm.getWrapperElement().onmousemove = on_mousemove(settings);
 						ImageHandlers.onSourceChanged(cm, cm.firstLine(), cm.lastLine());
 						ImageHandlers.afterSourceChanges(cm);
+						IndentHandlers.calculateSpaceWidth(cm);
 					}
 				});
 			},
@@ -121,6 +129,8 @@ module.exports = {
 						text: `.cm-rm-monospace {
 											font-family: monospace !important;
 										}
+										/* Needed for the renderLine indent hack to work */
+										.CodeMirror pre > * { text-indent: 0px; }
 							`
 					}
 				];

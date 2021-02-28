@@ -40,6 +40,11 @@ If you'd like to use a proportional font, simply set the font of your choice und
 
 This is disabled by default.
 
+## Align Lists
+Lists that get wrapped will have the wrap match the indentation of the list element.
+
+This is enabled by default.
+
 ## Extra CSS
 Some additional CSS classes have been added to further enable customization through [userchrome.css](https://joplinapp.org/#custom-css). Available classes are detailed below.
 

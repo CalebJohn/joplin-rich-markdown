@@ -8,6 +8,7 @@ export interface RichMarkdownSettings {
 	markHighlight: boolean;
 	extraCSS: boolean;
 	enforceMono: boolean;
+	alignIndent: boolean;
 	checkbox: boolean;
 	links: boolean;
 	checkboxCtrl: boolean;
@@ -22,6 +23,7 @@ export async function getAllSettings() {
 		markHighlight: await joplin.settings.value('markHighlight'),
 		extraCSS: await joplin.settings.value('extraCSS'),
 		enforceMono: await joplin.settings.value('enforceMono'),
+		alignIndent: await joplin.settings.value('alignIndent'),
 		checkbox: await joplin.settings.value('checkbox'),
 		links: await joplin.settings.value('links'),
 		checkboxCtrl: await joplin.settings.value('checkboxCtrl'),
@@ -76,6 +78,14 @@ export async function registerAllSettings() {
 		public: true,
 		label: 'Enable all editor fonts',
 		description: 'Allows the user to set any available font in Appearance -> Editor Font Family',
+  });
+
+	await joplin.settings.registerSetting('alignIndent', {
+		value: true,
+		type: SettingItemType.Bool,
+		section: 'settings.calebjohn.richmarkdown',
+		public: true,
+		label: 'Align wrapped list items to the indent level',
   });
 
 	await joplin.settings.registerSetting('extraCSS', {

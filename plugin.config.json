@@ -2,6 +2,7 @@
 	"extraScripts": [
 		"richMarkdown.ts",
 		"images.ts",
+		"indent.ts",
 		"clickHandlers.ts",
 		"overlay.ts"
 	]
