@@ -45,6 +45,41 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
 }
 ```
 
+## Coloured List Tokens
+
+```css
+/* Disable list colours for the default (Light) theme */
+.cm-s-default span.cm-variable-2, .cm-s-default span.cm-variable-3, .cm-s-default  span.cm-keyword {
+	color: #32373F;
+}
+
+/* Add list colours back in for just the token component of the list */
+.cm-overlay.cm-rm-list-token.cm-variable-2 {
+	color: blue;
+}
+.cm-overlay.cm-rm-list-token.cm-variable-3 {
+	color: orange;
+}
+.cm-overlay.cm-rm-list-token.cm-keyword {
+	color: green;
+}
+```
+
+## Colour Schemes
+
+Each Joplin theme uses a different CodeMirror colour scheme, it's useful to know what these colour schemes are because they can be used to support customizations that differ across Joplin themes (see [Coloured List Tokens](#coloured-list-tokens) for an example).
+
+```
+Light: .cm-s-default
+Dark: .cm-s-material-darker
+Solarized Light: .cm-s-solarized
+Solarized Dark: .cm-s-solarized and .cm-s-solarized.cm-s-dark
+Dracula: .cm-s-dracula
+Nord: .cm-s-nord
+Aritim Dark: .cm-s-monokai
+OLED Dark: .cm-s-material-darker
+```
+
 ## General
 
 The Joplin forum has [a collection](https://discourse.joplinapp.org/t/joplin-customization/11195) of useful CSS snippets for customizations that aren't specific to this plugin.
