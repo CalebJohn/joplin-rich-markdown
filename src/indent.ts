@@ -3,12 +3,23 @@
 
 import { list_token_regex } from './overlay';
 
-let spaceWidth = 0
+// These variables are cached when the plugin is loaded
+// This stores the width of a space in the current font
+let spaceWidth = 0;
+// This stores the width of a monospace character using the current monospace font
+let monoSpaceWidth = 0;
 
 // Must be called when the editor is mounted
-// Adapted from codemirror/lib/codemirror.js
 export function calculateSpaceWidth(cm: any) {
+	spaceWidth = charWidth(cm, '');
+	monoSpaceWidth = charWidth(cm, 'cm-rm-monospace');
+}
+
+// Adapted from codemirror/lib/codemirror.js
+function charWidth(cm: any, cls: string) {
 	let e = document.createElement('span');
+	if (cls)
+		e.classList.add(cls);
 	e.style.whiteSpace = "pre-wrap";
 	e.appendChild(document.createTextNode('          '))
 
@@ -21,7 +32,8 @@ export function calculateSpaceWidth(cm: any) {
   const rect = e.getBoundingClientRect()
 	const width = (rect.right - rect.left) / 10;
 
-  spaceWidth = width || cm.defaultCharWidth();
+  return width || cm.defaultCharWidth();
+
 }
 
 // Adapted from
@@ -33,7 +45,14 @@ export function onRenderLine(cm: any, line: any, element: HTMLElement, CodeMirro
 		const matches = line.text.match(list_token_regex);
 		if (!matches) return;
 
-		const off = CodeMirror.countColumn(line.text, matches[0].length, cm.getOption("tabSize")) * spaceWidth;
+		let off = CodeMirror.countColumn(line.text, matches[0].length, cm.getOption("tabSize")) * spaceWidth;
+
+		// Special case handling for checkboxes with monospace enabled
+		if (cm.state.richMarkdown.settings.enforceMono && matches[0].indexOf('[') > 0) {
+			// "- [ ] " is 6 characters
+			off += monoSpaceWidth * 6 - spaceWidth * 6;
+		}
+
 		element.style.textIndent = "-" + off + "px";
     element.style.paddingLeft = off + "px";
 	}

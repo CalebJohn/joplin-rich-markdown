@@ -7,7 +7,7 @@ const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
 const highlight_regex = /(?<!\\)==[^=\s]*[^=\s\\]==/g;
 const header_regex = /^#+\s/g;
 // Taken from codemirror/addon/edit/continuelist.js
-export const list_token_regex = /^(\s*)([*+-] \[[x ]\]\s|[*+-]\s|(\d+)([.)]\s))(\s*)/g;
+export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+-]\s|(\d+)([.)]\s))(\s*)/g;
 
 const checkbox_mono_regex = /^(\s*)([*+-] )\[[Xx ]\]\s/g;
 const table_regex = /^\|[^\n]+\|/g;
