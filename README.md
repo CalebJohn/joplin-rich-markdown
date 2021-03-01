@@ -59,7 +59,7 @@ Feature Requests are appreciated and encouraged. Not all feature requests will b
 
 The aim of this project is to ditch the markdown viewer without trying to turn a markdown document into some kind of unholy WYSIAWYG (what you see is almost what you get). To that end, feature requests that hide markdown or otherwise introduce invisible formatting will not be accepted. The intention of this project is not to build the worlds best (most performant, beautiful, etc.) markdown editor, but rather to build something that can make my (and others!) life a little bit nicer.
 
-Please make feature requests (please prepend the title with Feature Request), or on the [rich markdown forum topic](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053).
+Please make feature requests (please prepend the title with Feature Request) [on the github page](https://github.com/CalebJohn/joplin-rich-markdown/issues), or on the [rich markdown forum topic](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053).
 
 # Tips
 I don't like reading/writing notes at a full width, but find the viewer a bit distracting at times. I add the below CSS to my [userchrome.css](https://joplinapp.org/#custom-css) file in order to get a semi-distraction free writing experience when only the editor is toggled.
