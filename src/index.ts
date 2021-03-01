@@ -32,9 +32,9 @@ joplin.plugins.register({
 				return await getAllSettings();
 			}
 			else if (message.name === 'followLink') {
-				if (message.url.startsWith(':/') && message.url.length == 34) {
+				if (message.url.startsWith(':/')) {
 					try {
-						await joplin.commands.execute('openNote', message.url.slice(2));
+						await joplin.commands.execute('openNote', message.url.slice(2, 34));
 					} catch (e) {
 						const resource = await getResourcePath(resourceDir, message.url.slice(2));
 						opener(resource);
