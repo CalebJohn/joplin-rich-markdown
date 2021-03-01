@@ -4,7 +4,7 @@ const checkbox_regex = /^(\s*)([*+-] )\[[Xx ]\]\s.*$/g;
 // Last part of regex taken from https://stackoverflow.com/a/17773849/12245502
 const link_regex = /(?<!!)\[[^\]]*\]\([^\(]+\)|<[^>]+>|(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/g;
 const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
-const highlight_regex = /(?<!\\)==[^=\s]*[^=\s\\]==/g;
+const highlight_regex = /(?<!\\)==(?=[^\s])[^=]*[^=\s\\]==/g;
 const header_regex = /^#+\s/g;
 // Taken from codemirror/addon/edit/continuelist.js
 export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+-]\s|(\d+)([.)]\s))(\s*)/g;
