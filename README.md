@@ -36,6 +36,8 @@ This is enabled by default.
 ## Proportional Fonts
 The Joplin markdown editor already allowed the use of proportional fonts, but some markdown constructs (e.g. tables) are hard to work with if the font isn't monospace. This plugin adds an option to enforce a monospace font for certain markdown elements (tables and checkboxes). 
 
+**Note: this only works for properly formatted tables, i.e. each line must begin and end with |**
+
 If you'd like to use a proportional font, simply set the font of your choice under Appearance -> Editor font family.
 
 This is disabled by default.
@@ -49,6 +51,10 @@ This is enabled by default.
 Some additional CSS classes have been added to further enable customization through [userchrome.css](https://joplinapp.org/#custom-css). Available classes are detailed below.
 
 `.cm-header.cm-rm-header-token`: The grouping of hashtags (#) at the start of a header
+`.cm-em.cm-rm-em-token`: The \* or \_ used to begin italics
+`.cm-strong.cm-rm-strong-token`: The \*\* or \_\_ used to begin bold
+`.cm-search-marker.cm-rm-highlight-token`: The == used to begin highlighting
+`.cm-strikethrough.cm-rm-strike-token`: The \~\~ used to begin a strike through
 
 If you have a suggestion for something you'd like to be able to customize. Just let me know and I'll see whats possible.
 
@@ -80,3 +86,4 @@ See more in [Tips](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/T
 - file:// links only work with markdown link syntax (\[\]\(\) \<\>)
 - When hovering over an image on the bottom line, the image will be cut off
 	- This can be fixed by scrolling the editor down enough to display the image
+- Links opened on Windows systems will be opened in the background (i.e. the browser won't jump to the front)

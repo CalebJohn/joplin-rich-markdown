@@ -8,20 +8,23 @@ import { list_token_regex } from './overlay';
 let spaceWidth = 0;
 // This stores the width of a monospace character using the current monospace font
 let monoSpaceWidth = 0;
+// This stores the width of the > character in the current font
+let blockCharWidth = 0;
 
 // Must be called when the editor is mounted
 export function calculateSpaceWidth(cm: any) {
-	spaceWidth = charWidth(cm, '');
-	monoSpaceWidth = charWidth(cm, 'cm-rm-monospace');
+	spaceWidth = charWidth(cm, ' ', '');
+	monoSpaceWidth = charWidth(cm, ' ', 'cm-rm-monospace');
+	blockCharWidth = charWidth(cm, '>', '');
 }
 
 // Adapted from codemirror/lib/codemirror.js
-function charWidth(cm: any, cls: string) {
+function charWidth(cm: any, chr: string, cls: string) {
 	let e = document.createElement('span');
 	if (cls)
 		e.classList.add(cls);
 	e.style.whiteSpace = "pre-wrap";
-	e.appendChild(document.createTextNode('          '))
+	e.appendChild(document.createTextNode(chr.repeat(10)))
 
 	const measure = cm.getWrapperElement().getElementsByClassName('CodeMirror-measure')[0];
 	if (measure.firstChild)
@@ -51,6 +54,9 @@ export function onRenderLine(cm: any, line: any, element: HTMLElement, CodeMirro
 		if (cm.state.richMarkdown.settings.enforceMono && matches[0].indexOf('[') > 0) {
 			// "- [ ] " is 6 characters
 			off += monoSpaceWidth * 6 - spaceWidth * 6;
+		}
+		else if (cm.state.richMarkdown.settings.enforceMono && matches[0].indexOf('>') >= 0) {
+			off += blockCharWidth - spaceWidth;
 		}
 
 		element.style.textIndent = "-" + off + "px";

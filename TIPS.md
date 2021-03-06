@@ -35,14 +35,51 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
 }
 ```
 
+## Subtle Tokens
+
+```css
+/* Reduces the intensity of the italics (emph) and bold (strong) markdown tokens */
+.cm-em.cm-rm-em-token,
+.cm-strong.cm-rm-strong-token {
+	opacity: 0.5;
+}
+
+/* This is also available for highlight and strikethrough, but it doesn't look very good */
+/*
+.cm-search-marker.cm-rm-highlight-token,
+.cm-strikethrough.cm-rm-strike-token,
+*/
+
+```
+
 ## Monospace font
 
 ```css
-/* Change the monospace font used for tabes/checkboxes */
+/* Changes the monospace font used for tabes/checkboxes */
 /* All fonts option must be enabled */
 .cm-overlay.cm-rm-monospace {
 	font-family: monospace !important;
 }
+```
+
+## Strike out Checkboxes
+```css
+/* strikeout and dim the text of a checked checkbox */
+span.cm-rm-checkbox.cm-property + span.cm-rm-checkbox + span.cm-rm-checkbox {
+	text-decoration: line-through;
+	opacity: 0.7;
+}
+/* Uncomment the below sections to include the checkbox itself  */
+/*
+span.cm-rm-checkbox.cm-property + span.cm-rm-checkbox {
+	text-decoration: line-through;
+	opacity: 0.7;
+}
+span.cm-rm-checkbox.cm-property {
+	text-decoration: line-through;
+	opacity: 0.7;
+}
+*/
 ```
 
 ## Coloured List Tokens

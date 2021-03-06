@@ -14,6 +14,22 @@ module.exports = {
 				async function get_settings() {
 					return await context.postMessage({name:'getSettings'});
 				}
+				CodeMirror.defineExtension('richMarkdown.init', function(settings: RichMarkdownSettings) {
+					this.state.richMarkdown = {
+						settings,
+						path_from_id,
+					};
+
+					this.on('change', on_change);
+					this.on('update', on_update);
+					this.on('mousedown', on_mousedown);
+					this.on('renderLine', on_renderLine);
+
+					Overlay.add(this);
+					IndentHandlers.calculateSpaceWidth(this);
+					this['richMarkdown.updateSettings'](settings);
+				});
+
 				CodeMirror.defineExtension('richMarkdown.updateSettings', function(newSettings: RichMarkdownSettings) {
 					if (!this.state.richMarkdown) return;
 
@@ -22,7 +38,7 @@ module.exports = {
 					ImageHandlers.onSourceChanged(this, this.firstLine(), this.lastLine());
 					ImageHandlers.afterSourceChanges(this);
 					this.getWrapperElement().onmousemove = on_mousemove(newSettings);
-				})
+				});
 
 				function on_renderLine(cm: any, line: any, element: HTMLElement) {
 					IndentHandlers.onRenderLine(cm, line, element, CodeMirror);
@@ -102,22 +118,8 @@ module.exports = {
 					}
 					// setup
 					if (val) {
-						const settings = await get_settings();
-						cm.state.richMarkdown = {
-							path_from_id,
-							settings,
-						};
-
-						cm.on('change', on_change);
-						cm.on('update', on_update);
-						cm.on('mousedown', on_mousedown);
-						cm.on('renderLine', on_renderLine);
-
-						Overlay.add(cm);
-						cm.getWrapperElement().onmousemove = on_mousemove(settings);
-						ImageHandlers.onSourceChanged(cm, cm.firstLine(), cm.lastLine());
-						ImageHandlers.afterSourceChanges(cm);
-						IndentHandlers.calculateSpaceWidth(cm);
+						// The setup could be performed here, but since we depend on settings being
+						// ready, it will be done in the updateSettings function
 					}
 				});
 			},

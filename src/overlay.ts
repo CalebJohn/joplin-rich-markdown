@@ -5,9 +5,15 @@ const checkbox_regex = /^(\s*)([*+-] )\[[Xx ]\]\s.*$/g;
 const link_regex = /(?<!!)\[[^\]]*\]\([^\(]+\)|<[^>]+>|(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/g;
 const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
 const highlight_regex = /(?<!\\)==(?=[^\s])[^=]*[^=\s\\]==/g;
-const header_regex = /^#+\s/g;
+const emph_star_regex = /(?<![\\\*])\*(?!\*)/g;
+const emph_underline_regex = /(?<![\\\_])\_(?!\_)/g;
+const strong_star_regex = /(?<![\\\*])\*\*(?!\*)/g;
+const strong_underline_regex = /(?<![\\\_])\_\_(?!\_)/g;
+const highlight_token_regex = /(?<![\\=])==(?!=)/g;
+const strike_token_regex = /(?<![\\~])~~(?!~~)/g;
+const header_regex = /^\s*#+\s/g;
 // Taken from codemirror/addon/edit/continuelist.js
-export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+-]\s|(\d+)([.)]\s))(\s*)/g;
+export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+->]\s|(\d+)([.)]\s))(\s*)/g;
 
 const checkbox_mono_regex = /^(\s*)([*+-] )\[[Xx ]\]\s/g;
 const table_regex = /^\|[^\n]+\|/g;
@@ -47,8 +53,14 @@ const overlays = [
 	regexOverlay('rm-link', link_regex, null),
 	regexOverlay('rm-image', image_regex, null),
 	regexOverlay('rm-list-token', list_token_regex, null),
-	regexOverlay('rm-header-token', header_regex, 'extraCSS'),
 	regexOverlay('search-marker', highlight_regex, 'markHighlight'),
+	regexOverlay('rm-header-token', header_regex, 'extraCSS'),
+	regexOverlay('rm-em-token', emph_star_regex, 'extraCSS'),
+	regexOverlay('rm-em-token', emph_underline_regex, 'extraCSS'),
+	regexOverlay('rm-strong-token', strong_star_regex, 'extraCSS'),
+	regexOverlay('rm-strong-token', strong_underline_regex, 'extraCSS'),
+	regexOverlay('rm-highlight-token', highlight_token_regex, 'extraCSS'),
+	regexOverlay('rm-strike-token', strike_token_regex, 'extraCSS'),
 	regexOverlay('rm-monospace', checkbox_mono_regex, 'enforceMono'),
 	regexOverlay('rm-monospace', table_regex, 'enforceMono'),
 ];

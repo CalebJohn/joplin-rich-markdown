@@ -24,6 +24,12 @@ joplin.plugins.register({
 		const resourceDir = await joplin.settings.globalValue('resourceDir');
 		await registerAllSettings();
 
+		await joplin.contentScripts.register(
+			ContentScriptType.CodeMirrorPlugin,
+			contentScriptId,
+			'./richMarkdown.js'
+		);
+
 		await joplin.contentScripts.onMessage(contentScriptId, async (message:any) => {
 			if (message.name === 'getResourcePath') {
 				return await getResourcePath(resourceDir, message.id);
@@ -52,6 +58,11 @@ joplin.plugins.register({
 			return "Error: " + message + " is not a valid message";
 		});
 
+		await joplin.commands.execute('editor.execCommand', {
+			name: 'richMarkdown.init',
+			args: [await getAllSettings()]
+		});
+
 		// TODO: Waiting for https://github.com/laurent22/joplin/pull/4509
 		// await joplin.commands.register({
 		//     name: 'editor.richMarkdown.prettifySelection',
@@ -67,13 +78,5 @@ joplin.plugins.register({
 		// await joplin.views.menuItems.create('prettifySelectionContext', 'editor.richMarkdown.prettifySelection', MenuItemLocation.EditorContextMenu);
 		// await joplin.views.menuItems.create('prettifySelectionEdit', 'editor.richMarkdown.prettifySelection', MenuItemLocation.Edit);
 		// await joplin.views.toolbarButtons.create('prettifySelectionToolbar', 'editor.richMarkdown.prettifySelection', ToolbarButtonLocation.EditorToolbar);
-
-		// Registering the content script should be the last thing we do
-		// Content scripts may depend on the existance of onMessage, and commands
-		await joplin.contentScripts.register(
-			ContentScriptType.CodeMirrorPlugin,
-			contentScriptId,
-			'./richMarkdown.js'
-		);
 	},
 });
