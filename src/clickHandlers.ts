@@ -1,7 +1,4 @@
-
-const checkbox_regex = /^(\s*)([*+-] )(\[[Xx ]\])\s.*$/g;
-const linkRegex = /\([^\(]+\)|<[^>]+>|(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
-const link_regex = /(?<!!)\[[^\]]*\]\(([^\(]+)\)|<([^>]+)>/g;
+import * as Overlay from './overlay.ts';
 
 function normalizeCoord(coord: any) {
 	if (coord.sticky && coord.sticky === "before")
@@ -28,16 +25,17 @@ export function isCheckbox(event: MouseEvent) {
 	return target.classList.contains('cm-rm-checkbox');
 }
 
-function getMatchAt(line: string, regex: RegExp, ch: number) {
+// Joplin uses es2015 so we don't have matchAll
+function getMatchAt(lineText: string, regex: RegExp, ch: number) {
 	let match = null;
 	regex.lastIndex = 0;
 
 	do {
-		match = regex.exec(line);
+		match = regex.exec(lineText);
 
 		if (!match) break;
 
-		const start = line.indexOf(match[0]);
+		const start = match.index;
 		const end = start + match[0].length;
 
 		if (start <= ch && ch <= end)
@@ -48,40 +46,62 @@ function getMatchAt(line: string, regex: RegExp, ch: number) {
 	return null;
 }
 
-// This function doesn't use coordsChar because it doesn't need to write back to the line
-// i.e. this function only needs to read a link, not modify it, so DOM methods are good enough
-export function getLinkUrl(event: MouseEvent) {
-	const target = event.target as HTMLElement;
+export function getClickCoord(cm: any, event: MouseEvent) {
+	return normalizeCoord(cm.coordsChar({left: event.clientX, top: event.clientY}));
+}
 
-	let text = target.innerText;
+export function clickAt(cm: any, coord: any) {
+	if (!cm.state.richMarkdown) return;
 
-	if (target.nextElementSibling) {
-		const sibling = target.nextElementSibling as HTMLElement;
+	const settings = cm.state.richMarkdown.settings;
 
-		if (sibling.innerText.match(linkRegex))
-			text = sibling.innerText;
+	if (settings.links) {
+		const url = getLinkAt(cm, coord);
+		if (url)
+			return {name: 'followLink', url };
 	}
 
-	if (!text.match(linkRegex)) return;
+	if (settings.checkbox) {
+		if (toggleCheckbox(cm, coord))
+			return null;
+	}
 
-	const url = text.replace(/[\(\<\>\)]|\".*\"|\'.*\'/g, '').trim();
+	return null;
+}
 
-	// Don't move the cursor or place extra cursors
-	event.preventDefault();
-	// Move the cursor, but don't place extras
-	// event.codemirrorIgnore = true;
+function getLinkAt(cm: any, coord: any) {
+	let { line, ch } = coord;
+
+	const lineText = cm.getLine(line);
+
+	const match = getMatchAt(lineText, Overlay.link_regex, ch);
+
+	if (!match) return;
+
+	let url = '';
+	for (let i = 1; i <= 4; i++) {
+		url = url || match[i];
+	}
+
+	// Special case, if this matches a link inside of an image, we will need to strip
+	// the trailing )
+	if (url && url[url.length - 1] === ')') {
+		if (getMatchAt(lineText, Overlay.image_regex, ch))
+			url = url.slice(0, url.length - 1);
+	}
 
 	return url;
 }
 
-export function toggleCheckbox(cm: any, event: MouseEvent) {
+function toggleCheckbox(cm: any, coord: any) {
 	const cursor = cm.getCursor();
-	const { line, ch } = normalizeCoord(cm.coordsChar({left: event.clientX, top: event.clientY}));
+
+	const { line, ch } = coord;
 	const lineText = cm.getLine(line);
 
-	const match = getMatchAt(lineText, checkbox_regex, ch);
+	const match = getMatchAt(lineText, Overlay.checkbox_regex, ch);
 
-	if (!match || !match[3]) return;
+	if (!match || !match[3]) return false;
 
 	let from = lineText.indexOf(match[3])
 	let to = from + match[3].length;
@@ -89,10 +109,10 @@ export function toggleCheckbox(cm: any, event: MouseEvent) {
 	const replace = match[3][1] === ' ' ? '[x]' : '[ ]';
 
 	cm.replaceRange(replace, { ch: from, line }, { ch: to, line }, '+input');
-	// TODO: I don't remember why I set the cursor here, and it doesn't seem
-	// to do anything
+	// This isn't exactly needed, but the replaceRange does move the cursor
+	// to the end of the range if the cursor is withing the section that changes
 	cm.setCursor(cursor, null, { scroll: false });
 
-	event.preventDefault();
+	return true;
 }
 

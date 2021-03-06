@@ -11,9 +11,6 @@ module.exports = {
 				async function path_from_id(id: string) {
 					return await context.postMessage({name:'getResourcePath', id: id});
 				}
-				async function get_settings() {
-					return await context.postMessage({name:'getSettings'});
-				}
 				CodeMirror.defineExtension('richMarkdown.init', function(settings: RichMarkdownSettings) {
 					this.state.richMarkdown = {
 						settings,
@@ -28,6 +25,13 @@ module.exports = {
 					Overlay.add(this);
 					IndentHandlers.calculateSpaceWidth(this);
 					this['richMarkdown.updateSettings'](settings);
+
+					// If the editor is ever unmounted and then remounted, this will
+					// take care of the setup
+					CodeMirror.defineInitHook(async function(cm: any) {
+						const settings = await context.postMessage({name:'getSettings'});
+						cm['richMarkdown.init'](settings);
+					});
 				});
 
 				CodeMirror.defineExtension('richMarkdown.updateSettings', function(newSettings: RichMarkdownSettings) {
@@ -38,6 +42,12 @@ module.exports = {
 					ImageHandlers.onSourceChanged(this, this.firstLine(), this.lastLine());
 					ImageHandlers.afterSourceChanges(this);
 					this.getWrapperElement().onmousemove = on_mousemove(newSettings);
+				});
+				CodeMirror.defineExtension('clickUnderCursor', function() {
+					const coord = this.getCursor('head');
+					const mes = ClickHandlers.clickAt(this, coord);
+					if (mes)
+						context.postMessage(mes);
 				});
 
 				function on_renderLine(cm: any, line: any, element: HTMLElement) {
@@ -70,17 +80,17 @@ module.exports = {
 					const settings = cm.state.richMarkdown.settings;
 
 					const ctrl = (event.ctrlKey || event.altKey);
-					const linksEnabled = settings.links && (ctrl || !settings.linksCtrl);
-					const checkboxEnabled = settings.checkbox && (ctrl || !settings.checkboxCtrl);
+					const clickAllowed = ctrl || !settings.clickCtrl;
 
-					if (linksEnabled && ClickHandlers.isLink(event)) {
-						const url = ClickHandlers.getLinkUrl(event);
+					if (clickAllowed &&
+						 (ClickHandlers.isLink(event) ||
+							ClickHandlers.isCheckbox(event))) {
+						const coord = ClickHandlers.getClickCoord(cm, event);
+						const mes = ClickHandlers.clickAt(cm, coord);
+						if (mes)
+							context.postMessage(mes);
 
-						if (url)
-							await context.postMessage({name: 'followLink', url });
-					}
-					else if (checkboxEnabled && ClickHandlers.isCheckbox(event)) {
-						ClickHandlers.toggleCheckbox(cm, event);
+						event.preventDefault();
 					}
 				}
 
@@ -91,16 +101,13 @@ module.exports = {
 						const ctrl = (event.ctrlKey || event.altKey);
 						let cursor = '';
 
-						if (settings.links && ClickHandlers.isLink(event)) {
-							cursor = ctrl || !settings.checkboxCtrl ? 'pointer' : cursor;
-						}
-
-						if (settings.checkbox && ClickHandlers.isCheckbox(event)) {
-							cursor = ctrl || !settings.linksCtrl ? 'pointer' : cursor;
+						if ((settings.links && ClickHandlers.isLink(event)) ||
+							  (settings.checkbox && ClickHandlers.isCheckbox(event))) {
+							cursor = ctrl || !settings.clickCtrl ? 'pointer' : cursor;
 						}
 
 						const target = event.target as HTMLElement;
-						target.style.cursor =  cursor;
+						target.style.cursor = cursor;
 					}
 				}
 

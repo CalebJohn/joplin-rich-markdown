@@ -11,8 +11,7 @@ export interface RichMarkdownSettings {
 	alignIndent: boolean;
 	checkbox: boolean;
 	links: boolean;
-	checkboxCtrl: boolean;
-	linksCtrl: boolean;
+	clickCtrl: boolean;
 }
 
 export async function getAllSettings() {
@@ -26,8 +25,7 @@ export async function getAllSettings() {
 		alignIndent: await joplin.settings.value('alignIndent'),
 		checkbox: await joplin.settings.value('checkbox'),
 		links: await joplin.settings.value('links'),
-		checkboxCtrl: await joplin.settings.value('checkboxCtrl'),
-		linksCtrl: await joplin.settings.value('linksCtrl'),
+		clickCtrl: await joplin.settings.value('clickCtrl'),
 	}
 }
 
@@ -113,21 +111,14 @@ export async function registerAllSettings() {
 		label: 'Follow note links with Ctrl (or Opt)+Click'
   });
 
-	await joplin.settings.registerSetting('checkboxCtrl', {
+	await joplin.settings.registerSetting('clickCtrl', {
 		value: true,
 		type: SettingItemType.Bool,
 		advanced: true,
 		section: 'settings.calebjohn.richmarkdown',
 		public: true,
-		label: 'Require Ctrl (or Opt) when togging checkboxes, it\'s recommended not to change this'
-  });
-	await joplin.settings.registerSetting('linksCtrl', {
-		value: true,
-		type: SettingItemType.Bool,
-		advanced: true,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Require Ctrl (or Opt) when clicking links, it\'s recommended not to change this',
+		label: 'Require Ctrl (or Opt) when clicking on elements (links and checkboxes)',
+		description: 'It\'s recommended not to change this',
   });
 }
 
