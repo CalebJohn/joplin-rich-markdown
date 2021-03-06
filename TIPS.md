@@ -65,7 +65,7 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
 ## Strike out Checkboxes
 ```css
 /* strikeout and dim the text of a checked checkbox */
-span.cm-rm-checkbox.cm-property + span.cm-rm-checkbox + span.cm-rm-checkbox {
+span.cm-rm-checkbox.cm-property + span.cm-rm-checkbox ~ span.cm-rm-checkbox {
 	text-decoration: line-through;
 	opacity: 0.7;
 }
