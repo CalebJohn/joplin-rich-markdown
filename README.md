@@ -21,10 +21,14 @@ This is not enabled by default, but can be quick toggled in the View menu.
 ## Checkbox
 Checkboxes can be toggled in the markdown source by Ctrl (or Opt) + Clicking or with the  Perform action command in the context menu.
 
+(Perform action will be added in Joplin version 1.8.0)
+
 This is enabled by default.
 
 ## Links
 Links can be followed by Ctrl (or Opt) + Clicking or with the Perform action command in the context menu.
+
+(Perform action will be added in Joplin version 1.8.0)
 
 This is enabled by default.
 
