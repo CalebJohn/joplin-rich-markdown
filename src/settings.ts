@@ -133,7 +133,7 @@ async function registerToggle(name: string, label: string, icon: string) {
 					const settings = await getAllSettings();
 
 					await joplin.commands.execute('editor.execCommand', {
-						name: 'richMarkdown.updateSettings',
+						name: 'updateRichMarkdownSettings',
 						args: [settings]
 					});
 		    },

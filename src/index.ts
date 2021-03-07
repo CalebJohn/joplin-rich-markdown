@@ -58,23 +58,18 @@ joplin.plugins.register({
 			return "Error: " + message + " is not a valid message";
 		});
 
-		await joplin.commands.execute('editor.execCommand', {
-			name: 'richMarkdown.init',
-			args: [await getAllSettings()]
-		});
-
-
-		await joplin.commands.register({
-			name: 'editor.richMarkdown.clickAtCursor',
-			label: 'Perform action',
-			iconName: 'fas fa-link',
-			execute: async () => {
-				await joplin.commands.execute('editor.execCommand', {
-					name: 'clickUnderCursor',
-				});
-		  },
-		});
-		await joplin.views.menuItems.create('clickAtCursorContext', 'editor.richMarkdown.clickAtCursor', MenuItemLocation.EditorContextMenu, { accelerator: 'Ctrl+Enter' });
+		// TODO: Waiting for release version 1.8.0
+		// await joplin.commands.register({
+		// 	name: 'editor.richMarkdown.clickAtCursor',
+		// 	label: 'Perform action',
+		// 	iconName: 'fas fa-link',
+		// 	execute: async () => {
+		// 		await joplin.commands.execute('editor.execCommand', {
+		// 			name: 'clickUnderCursor',
+		// 		});
+		//   },
+		// });
+		// await joplin.views.menuItems.create('clickAtCursorContext', 'editor.richMarkdown.clickAtCursor', MenuItemLocation.EditorContextMenu, { accelerator: 'Ctrl+Enter' });
 
 		// TODO: Waiting for https://github.com/laurent22/joplin/pull/4509
 		// await joplin.commands.register({

@@ -11,7 +11,11 @@ module.exports = {
 				async function path_from_id(id: string) {
 					return await context.postMessage({name:'getResourcePath', id: id});
 				}
-				CodeMirror.defineExtension('richMarkdown.init', function(settings: RichMarkdownSettings) {
+				async function get_settings() {
+					return await context.postMessage({name: 'getSettings'});
+				}
+
+				CodeMirror.defineExtension('initializeRichMarkdown', function(settings: RichMarkdownSettings) {
 					this.state.richMarkdown = {
 						settings,
 						path_from_id,
@@ -24,17 +28,10 @@ module.exports = {
 
 					Overlay.add(this);
 					IndentHandlers.calculateSpaceWidth(this);
-					this['richMarkdown.updateSettings'](settings);
-
-					// If the editor is ever unmounted and then remounted, this will
-					// take care of the setup
-					CodeMirror.defineInitHook(async function(cm: any) {
-						const settings = await context.postMessage({name:'getSettings'});
-						cm['richMarkdown.init'](settings);
-					});
+					this.updateRichMarkdownSettings(settings);
 				});
 
-				CodeMirror.defineExtension('richMarkdown.updateSettings', function(newSettings: RichMarkdownSettings) {
+				CodeMirror.defineExtension('updateRichMarkdownSettings', function(newSettings: RichMarkdownSettings) {
 					if (!this.state.richMarkdown) return;
 
 					this.state.richMarkdown.settings = newSettings;
@@ -43,6 +40,7 @@ module.exports = {
 					ImageHandlers.afterSourceChanges(this);
 					this.getWrapperElement().onmousemove = on_mousemove(newSettings);
 				});
+
 				CodeMirror.defineExtension('clickUnderCursor', function() {
 					const coord = this.getCursor('head');
 					const mes = ClickHandlers.clickAt(this, coord);
@@ -125,8 +123,23 @@ module.exports = {
 					}
 					// setup
 					if (val) {
-						// The setup could be performed here, but since we depend on settings being
-						// ready, it will be done in the updateSettings function
+						// There is a race condition in the Joplin initialization code
+						// Sometimes the settings aren't ready yet and will return `undefined`
+						// This code will perform an exponential backoff and poll settings
+						// until something is returned
+						async function backoff(timeout: number) {
+							const settings = await get_settings();
+
+							if (!settings) {
+								setTimeout(backoff, timeout * 2, timeout * 2);
+							}
+							else {
+								cm.initializeRichMarkdown(settings);
+							}
+						};
+						// Set the first timeout to 50 because settings are usually ready immediately
+						// Set the first backoff to (100*2) to give a little extra time
+						setTimeout(backoff, 50, 100);
 					}
 				});
 			},
