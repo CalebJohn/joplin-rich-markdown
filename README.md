@@ -19,12 +19,12 @@ This is not enabled by default, but can be quick toggled in the View menu.
 ![Example of images being rendered in markdown editor](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/inline_image.png)
 
 ## Checkbox
-Checkboxes can be toggled in the markdown source by Ctrl (or Opt) + Clicking between the square brackets.
+Checkboxes can be toggled in the markdown source by Ctrl (or Opt) + Clicking or with the  Perform action command in the context menu.
 
 This is enabled by default.
 
 ## Links
-Links can be followed by Ctrl (or Opt) + Clicking.
+Links can be followed by Ctrl (or Opt) + Clicking or with the Perform action command in the context menu.
 
 This is enabled by default.
 
@@ -44,6 +44,7 @@ This is disabled by default.
 
 ## Align Lists
 Lists that get wrapped will have the wrap match the indentation of the list element.
+This includes checkboxes and block quotes.
 
 This is enabled by default.
 

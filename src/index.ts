@@ -66,7 +66,7 @@ joplin.plugins.register({
 
 		await joplin.commands.register({
 			name: 'editor.richMarkdown.clickAtCursor',
-			label: 'Emulate click at cursor',
+			label: 'Perform action',
 			iconName: 'fas fa-link',
 			execute: async () => {
 				await joplin.commands.execute('editor.execCommand', {
@@ -74,7 +74,7 @@ joplin.plugins.register({
 				});
 		  },
 		});
-		await joplin.views.menuItems.create('clickAtCursorContext', 'editor.richMarkdown.clickAtCursor', MenuItemLocation.EditorContextMenu);
+		await joplin.views.menuItems.create('clickAtCursorContext', 'editor.richMarkdown.clickAtCursor', MenuItemLocation.EditorContextMenu, { accelerator: 'Ctrl+Enter' });
 
 		// TODO: Waiting for https://github.com/laurent22/joplin/pull/4509
 		// await joplin.commands.register({
