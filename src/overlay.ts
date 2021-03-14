@@ -2,7 +2,9 @@
 // Taken from codemirror/addon/edit/continuelist.js
 export const checkbox_regex = /^(\s*)([*+-] )(\[[Xx ]\])\s.*$/g;
 // Last part of regex taken from https://stackoverflow.com/a/17773849/12245502
-export const link_regex = /(?<![!\\])\[[^\]]*\]\(([^\(]+)\)|<([^>]+)>|(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}[^\)])/g;
+// This regex will match html tags tht somehow include a . in them
+// I've decided that this is an acceptable level of functionality
+export const link_regex = /(?<![!\\])\[[^\]]*\]\(([^\(]+)\)|<([^>]+\.[^>]+)>|(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}[^\)])/g;
 export const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
 const highlight_regex = /(?<!\\)==(?=[^\s])[^=]*[^=\s\\]==/g;
 const emph_star_regex = /(?<![\\\*])\*(?!\*)/g;

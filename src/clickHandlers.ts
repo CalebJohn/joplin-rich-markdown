@@ -13,9 +13,6 @@ export function isLink(event: MouseEvent) {
 	const target = event.target as HTMLElement;
 
 	return target.classList.contains('cm-rm-link');
-	// return (target.classList.contains('cm-rm-link') &&
-	// 				target.innerText.match(/\(:\/.+\)/g));
-					// && !target.innerText.match(/\[.*\]/));
 }
 
 export function isCheckbox(event: MouseEvent) {
