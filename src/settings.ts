@@ -6,6 +6,9 @@ export interface RichMarkdownSettings {
 	imageHover: boolean;
 	imageHoverCtrl: boolean;
 	markHighlight: boolean;
+	insertHighlight: boolean;
+	subHighlight: boolean;
+	supHighlight: boolean;
 	extraCSS: boolean;
 	enforceMono: boolean;
 	alignIndent: boolean;
@@ -19,7 +22,10 @@ export async function getAllSettings() {
 		inlineImages: await joplin.settings.value('inlineImages'),
 		imageHover: await joplin.settings.value('imageHover'),
 		imageHoverCtrl: await joplin.settings.value('imageHoverCtrl'),
-		markHighlight: await joplin.settings.value('markHighlight'),
+		markHighlight: await joplin.settings.globalValue('markdown.plugin.mark'),
+		insertHighlight: await joplin.settings.globalValue('markdown.plugin.insert'),
+		subHighlight: await joplin.settings.globalValue('markdown.plugin.sub'),
+		supHighlight: await joplin.settings.globalValue('markdown.plugin.sup'),
 		extraCSS: await joplin.settings.value('extraCSS'),
 		enforceMono: await joplin.settings.value('enforceMono'),
 		alignIndent: await joplin.settings.value('alignIndent'),
@@ -59,14 +65,6 @@ export async function registerAllSettings() {
 		section: 'settings.calebjohn.richmarkdown',
 		public: true,
 		label: 'Enable image popup even when Ctrl (or Opt) is not pressed'
-  });
-
-	await joplin.settings.registerSetting('markHighlight', {
-		value: true,
-		type: SettingItemType.Bool,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Enable highlighting syntax in the editor (==mark==)'
   });
 
 	await joplin.settings.registerSetting('enforceMono', {

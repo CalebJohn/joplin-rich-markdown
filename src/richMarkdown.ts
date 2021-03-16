@@ -151,6 +151,17 @@ module.exports = {
 						text: `.cm-rm-monospace {
 											font-family: monospace !important;
 										}
+										.cm-rm-ins {
+											text-decoration: underline;
+										}
+										.cm-rm-sub {
+											vertical-align: sub;
+											font-size: smaller;
+										}
+										.cm-rm-sup {
+											vertical-align: super;
+											font-size: smaller;
+										}
 										/* Needed for the renderLine indent hack to work */
 										.CodeMirror pre > * { text-indent: 0px; }
 							`
