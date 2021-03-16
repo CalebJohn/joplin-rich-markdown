@@ -22,6 +22,12 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
   display: block;
   line-height: 0px;
 }
+
+/* If using the Enforce CSS option, then use the below CSS */
+pre.cm-rm-hr.CodeMirror-line  {
+  border-top: 1px solid #777;
+	line-height: 0px;
+}
 ```
 
 ## Subtle Headers

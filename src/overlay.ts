@@ -22,6 +22,8 @@ const strike_token_regex = /(?<![\\~])~~(?!~~)/g;
 const header_regex = /^\s*#+\s/g;
 // Taken from codemirror/addon/edit/continuelist.js
 export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+->]\s|(\d+)([.)]\s))(\s*)/g;
+// Taken from codemirror/mode/markdown/markdown.js
+const hr_regex = /^([*\-_])(?:\s*\1){2,}\s*$/;
 
 const checkbox_mono_regex = /^(\s*)([*+-] )\[[Xx ]\]\s/g;
 const table_regex = /^\|[^\n]+\|/g;
@@ -71,10 +73,11 @@ const overlays = [
 	regexOverlay('rm-strong-token', strong_star_regex, ['extraCSS']),
 	regexOverlay('rm-strong-token', strong_underline_regex, ['extraCSS']),
 	regexOverlay('rm-highlight-token', highlight_token_regex, ['extraCSS', 'markHighlight']),
-	regexOverlay('rm-insert-token', insert_token_regex, ['extraCSS', 'insertHighlight']),
+	regexOverlay('rm-ins-token', insert_token_regex, ['extraCSS', 'insertHighlight']),
 	regexOverlay('rm-sub-token', sub_token_regex, ['extraCSS', 'subHighlight']),
 	regexOverlay('rm-sup-token', sup_token_regex, ['extraCSS', 'supHighlight']),
 	regexOverlay('rm-strike-token', strike_token_regex, ['extraCSS']),
+	regexOverlay('rm-hr line-cm-rm-hr', hr_regex, ['extraCSS']),
 	regexOverlay('rm-monospace', checkbox_mono_regex, ['enforceMono']),
 	regexOverlay('rm-monospace', table_regex, ['enforceMono']),
 ];

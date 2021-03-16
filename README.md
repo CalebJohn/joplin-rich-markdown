@@ -34,8 +34,9 @@ This is enabled by default.
 
 ## Highlighting
 Text surrounded by == (e.g. ==mark==) will now be highlighted in the editor.
+Insert syntax (++insert++), sub (~sub~), and sup (^sup^) syntaxes are also available and enabled in the same way.
 
-This is enabled by default.
+This can be enabled under `Tools -> Options -> Markdown -> Enable ==mark== syntax`.
 
 ## Proportional Fonts
 The Joplin markdown editor already allowed the use of proportional fonts, but some markdown constructs (e.g. tables) are hard to work with if the font isn't monospace. This plugin adds an option to enforce a monospace font for certain markdown elements (tables and checkboxes). 
@@ -64,6 +65,14 @@ Some additional CSS classes have been added to further enable customization thro
 `.cm-search-marker.cm-rm-highlight-token`: The == used to begin highlighting
 
 `.cm-strikethrough.cm-rm-strike-token`: The \~\~ used to begin a strike through
+
+`.cm-rm-ins.cm-rm-ins-token`: The ++ used to begin the insert syntax
+
+`.cm-rm-sub.cm-rm-sub-token`: The ~ used to begin the sub syntax
+
+`.cm-rm-sup.cm-rm-sup-token`: The ^ used to begin the sup syntax
+
+`pre.cm-rm-hr.CodeMirror-line`: Used to support drawing a horizontal rule [see here](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/TIPS.md#horizontal-rule)
 
 If you have a suggestion for something you'd like to be able to customize. Just let me know and I'll see whats possible.
 
