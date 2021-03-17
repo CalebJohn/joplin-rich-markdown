@@ -50,22 +50,16 @@ function open_widget(cm: any, path: string, alt: string) {
 				return;
 			}
 
+			let im = this as HTMLElement;
 			const par = target.offsetParent as HTMLElement;
-			// This comes just before the top of a line, adding 80% of the height will give the 
-			// correct line when the element is on a single line, and will give the lower line
-			// when the element is spread
-			const y = par.offsetTop + target.offsetTop + target.offsetHeight*0.8;
-			let coords = cm.coordsChar({left: 0, top: y}, 'local');
-
 			const { right, width } = par.getBoundingClientRect();
 
-			let im = this as HTMLElement;
-
+			let x = 0;
 			if (im.clientWidth < width) {
-				let x = Math.min(event.clientX, right - im.clientWidth);
-				coords = cm.coordsChar({left: x, top: event.clientY}, 'page');
+				x = Math.min(event.clientX, right - im.clientWidth);
 			}
 
+			const coords = cm.coordsChar({left: x, top: event.clientY}, 'page');
 			im.style.visibility = 'visible';
 			cm.addWidget(coords, img, false);
 		}
