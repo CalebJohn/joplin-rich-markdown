@@ -86,6 +86,12 @@ function getLinkAt(cm: any, coord: any) {
 		if (getMatchAt(lineText, Overlay.image_regex, ch))
 			url = url.slice(0, url.length - 1);
 	}
+	// URLs inside html elements have a trailing quote character
+	else if (url && (url[url.length -1] === '"' || url[url.length - 1] === "'")) {
+		// Quotes are not allowed in URLs as per RFC 1738
+		// https://www.ietf.org/rfc/rfc1738.txt
+		url = url.slice(0, url.length - 1);
+	}
 
 	return url;
 }

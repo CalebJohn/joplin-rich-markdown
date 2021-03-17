@@ -34,6 +34,7 @@ This is enabled by default.
 
 ## Highlighting
 Text surrounded by == (e.g. ==mark==) will now be highlighted in the editor.
+
 Insert syntax (++insert++), sub (~sub~), and sup (^sup^) syntaxes are also available and enabled in the same way.
 
 This can be enabled under `Tools -> Options -> Markdown -> Enable ==mark== syntax`.
