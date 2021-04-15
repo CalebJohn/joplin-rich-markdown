@@ -82,7 +82,7 @@ This is disabled by default.
 # Feature Requests
 Feature Requests are appreciated and encouraged. Not all feature requests will be technically feasible, so please be patient. Feature requests that align with the projects philosophy (below) are more likely to be implemented. 
 
-The aim of this project is to ditch the markdown viewer without trying to turn a markdown document into some kind of unholy WYSIAWYG (what you see is almost what you get). To that end, feature requests that hide markdown or otherwise introduce invisible formatting will not be accepted. The intention of this project is not to build the worlds best (most performant, beautiful, etc.) markdown editor, but rather to build something that can make my (and others!) life a little bit nicer.
+The aim of this project is to ditch the markdown viewer without trying to turn a markdown document into some kind of unholy WYSIAWYG (what you see is almost what you get). To that end, feature requests that hide markdown or otherwise introduce invisible formatting will be treated skeptically. The intention of this project is not to build the worlds best (most performant, beautiful, etc.) markdown editor, but rather to build something that can make my (and others!) life a little bit nicer.
 
 Please make feature requests (please prepend the title with Feature Request) [on the github page](https://github.com/CalebJohn/joplin-rich-markdown/issues), or on the [rich markdown forum topic](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053).
 

@@ -88,6 +88,13 @@ span.cm-rm-checkbox.cm-property {
 */
 ```
 
+## Highlight the Active Line
+```css
+.CodeMirror-activeline-background {
+  background: grey !important;
+}
+```
+
 ## Coloured List Tokens
 
 ```css
@@ -126,3 +133,20 @@ OLED Dark: .cm-s-material-darker
 ## General
 
 The Joplin forum has [a collection](https://discourse.joplinapp.org/t/joplin-customization/11195) of useful CSS snippets for customizations that aren't specific to this plugin.
+
+---
+
+## Warning
+The below configurations are not recommended and are provided for advanced users only.
+
+#### Hide Tokens on Other Lines
+```css
+/* Requires the extraCss option to be enabled */
+.cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, .cm-search-marker.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token {
+	display: none;
+}
+
+.CodeMirror-activeline .cm-header.cm-rm-header-token, .CodeMirror-activeline .cm-em.cm-rm-em-token, .CodeMirror-activeline .cm-strong.cm-rm-strong-token, .CodeMirror-activeline .cm-search-marker.cm-rm-highlight-token, .CodeMirror-activeline .cm-strikethrough.cm-rm-strike-token, .CodeMirror-activeline .cm-rm-ins.cm-rm-ins-token, .CodeMirror-activeline .cm-rm-sub.cm-rm-sub-token, .CodeMirror-activeline .cm-rm-sup.cm-rm-sup-token {
+	display: inherit;
+}
+```

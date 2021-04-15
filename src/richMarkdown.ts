@@ -143,7 +143,8 @@ module.exports = {
 					}
 				});
 			},
-			codeMirrorOptions: { 'enable-rich-mode': true },
+			codeMirrorResources: ['addon/selection/active-line'],
+			codeMirrorOptions: { 'enable-rich-mode': true, 'styleActiveLine': { nonEmpty: true } },
 			assets: function() {
 				return [
 					{ mime: 'text/css',
@@ -164,6 +165,10 @@ module.exports = {
 										}
 										/* Needed for the renderLine indent hack to work */
 										.CodeMirror pre > * { text-indent: 0px; }
+										/* Remove the active line background */
+										.CodeMirror-activeline-background {
+										  background: inherit;
+										}
 							`
 					}
 				];
