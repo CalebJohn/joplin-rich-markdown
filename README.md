@@ -106,3 +106,4 @@ See more in [Tips](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/T
 - When hovering over an image on the bottom line, the image will be cut off
 	- This can be fixed by scrolling the editor down enough to display the image
 - Links opened on Windows systems will be opened in the background (i.e. the browser won't jump to the front)
+- Html `\<img>` tags with `zoom` styling can break image hovering

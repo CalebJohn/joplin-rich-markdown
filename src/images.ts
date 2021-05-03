@@ -171,15 +171,19 @@ async function check_lines(cm: any, from: number, to: number) {
 }
 
 async function createImageFromImg(imgTag: string, path_from_id: any) {
-	const par = new DOMParser().parseFromString(imgTag, "text/xml");
-	const attrs = par.documentElement.attributes;
-	const img = await createImage(attrs['src'].value,
-													attrs['alt'].value,
-													path_from_id);
-	img.width = attrs['width'].value;
-	// We currently ignore the height value to align with how Joplin renders images
-	// img.height = attrs['height'].value;
-	// img.style.height = ''; // style is set to auto in createImage; clear it
+	const par = new DOMParser().parseFromString(imgTag, "text/html");
+	const img = par.body.firstChild as HTMLImageElement;
+	img.style.height = img.style.height || 'auto';
+	img.style.maxWidth = img.style.maxWidth || '100%';
+
+	// Joplin resource paths get added on to the end of the local path for some reason
+	if (img.src.length >= 34) {
+		const id = img.src.substring(img.src.length - 34);
+		if (id.startsWith(':/')) {
+			img.src = await path_from_id(id.substring(2));
+		}
+	}
+
 	return img;
 }
 
