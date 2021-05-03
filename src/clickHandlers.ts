@@ -23,7 +23,7 @@ export function isCheckbox(event: MouseEvent) {
 }
 
 // Joplin uses es2015 so we don't have matchAll
-function getMatchAt(lineText: string, regex: RegExp, ch: number) {
+export function getMatchAt(lineText: string, regex: RegExp, ch: number) {
 	let match = null;
 	regex.lastIndex = 0;
 

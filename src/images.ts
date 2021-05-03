@@ -1,3 +1,5 @@
+import * as ClickHandlers from './clickHandlers.ts';
+import * as Overlay from './overlay.ts';
 
 const image_line_regex = /^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$/;
 const image_inline_regex = /!\[([^\]]*)\]\(([^)]+)\)/;
@@ -18,7 +20,29 @@ export function afterSourceChanges(cm: any) {
 		update_hover_widgets(cm);
 }
 
-function open_widget(cm: any, path: string, alt: string) {
+async function getImageData(cm: any, coord: any) {
+	let { line, ch } = coord;
+
+	const lineText = cm.getLine(line);
+
+	const match = ClickHandlers.getMatchAt(lineText, image_inline_regex, ch);
+	let img = null;
+
+	if (match) {
+		img = await createImage(match[2], match[1], cm.state.richMarkdown.path_from_id);
+	}
+	else {
+		const imgMatch = ClickHandlers.getMatchAt(lineText, Overlay.html_image_regex, ch);
+
+		if (imgMatch) {
+			img = await createImageFromImg(imgMatch[0], cm.state.richMarkdown.path_from_id);
+		}
+	}
+
+	return img;
+}
+
+function open_widget(cm: any) {
 	return async function(event: MouseEvent) {
 		if (!event.target) return;
 		if (!cm.state.richMarkdown) return;
@@ -37,7 +61,9 @@ function open_widget(cm: any, path: string, alt: string) {
 		if (cm.state.richMarkdown.settings.inlineImages && target.parentNode.childNodes.length <= 3)
 			return;
 
-		const img = await createImage(path, alt, cm.state.richMarkdown.path_from_id);
+		const img = await getImageData(cm, ClickHandlers.getClickCoord(cm, event));
+		if (!img) return;
+
 		img.style.visibility = 'hidden';
 		target.offsetParent.appendChild(img);
 		img.style.position = 'absolute';
@@ -91,37 +117,11 @@ function update_hover_widgets(cm: any) {
 	const images = cm.getWrapperElement().getElementsByClassName("cm-rm-image");
 
 	for (let image of images) {
-		// cm-rm-image matches all parts of an image, we just want the url
-		if (image.innerText.startsWith('(')) {
-			let url = image.innerText.replace(/[\(\)]/g, '');
-			// Special case for when the "url" is a cm-rm-link
-			// This might not be a long term patch
-			if (!url && image.nextElementSibling) {
-				url = image.nextElementSibling.innerText.replace(/[\(\)]/g, '');
-			}
-
-			const altElement = image.previousElementSibling;
-			const alt = altElement.innerText.replace(/[\[\]]/g, '');
-			const markElement = altElement.previousElementSibling;
-
-			image.onmouseenter = open_widget(cm, url, alt);
+			image.onmouseenter = open_widget(cm);
 			image.onmouseleave = close_widget(cm);
-			altElement.onmouseenter = open_widget(cm, url, alt);
-			altElement.onmouseleave = close_widget(cm);
-			markElement.onmouseenter = open_widget(cm, url, alt);
-			markElement.onmouseleave = close_widget(cm);
-			if (image.nextElementSibling) {
-				image.nextElementSibling.onmouseenter = open_widget(cm, url, alt);
-				image.nextElementSibling.onmouseleave = close_widget(cm);
-			}
 			if (!cm.state.richMarkdown.settings.imageHoverCtrl) {
-				image.onmousemove = open_widget(cm, url, alt);
-				altElement.onmousemove = open_widget(cm, url, alt);
-				markElement.onmousemove = open_widget(cm, url, alt);
-				if (image.nextElementSibling)
-					image.nextElementSibling.onmousemove = open_widget(cm, url, alt);
+				image.onmousemove = open_widget(cm);
 			}
-		}
 	}
 }
 
@@ -146,9 +146,20 @@ async function check_lines(cm: any, from: number, to: number) {
 		if (!line) continue;
 
 		const match = line.text.match(image_line_regex);
+		let img = null;
 
 		if (match) {
-			const img = await createImage(match[2], match[1], path_from_id);
+			img = await createImage(match[2], match[1], path_from_id);
+		}
+		else {
+			const imgMatch = line.text.match(Overlay.html_image_regex);
+
+			if (imgMatch) {
+				img = await createImageFromImg(imgMatch[0], path_from_id)
+			}
+		}
+
+		if (img) {
 			// Joplin doesn't like it when new images are added, particularly when there's
 			// already a large number present, the scroll seems to jump to a random position
 			// We manually restore the scroll position here, it doesn't prevent jumping
@@ -157,6 +168,19 @@ async function check_lines(cm: any, from: number, to: number) {
 			const wid = cm.addLineWidget(i, img, { className: 'rich-markdown-resource' });
 		}
 	}
+}
+
+async function createImageFromImg(imgTag: string, path_from_id: any) {
+	const par = new DOMParser().parseFromString(imgTag, "text/xml");
+	const attrs = par.documentElement.attributes;
+	const img = await createImage(attrs['src'].value,
+													attrs['alt'].value,
+													path_from_id);
+	img.width = attrs['width'].value;
+	// We currently ignore the height value to align with how Joplin renders images
+	// img.height = attrs['height'].value;
+	// img.style.height = ''; // style is set to auto in createImage; clear it
+	return img;
 }
 
 async function createImage(path: string, alt: string, path_from_id: any) {

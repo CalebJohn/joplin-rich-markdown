@@ -64,7 +64,7 @@ const overlays = [
 	regexOverlay('rm-checkbox', checkbox_regex, []),
 	regexOverlay('rm-link', link_regex, []),
 	regexOverlay('rm-image', image_regex, []),
-	// regexOverlay('rm-image', html_image_regex, []),
+	regexOverlay('rm-image', html_image_regex, []),
 	regexOverlay('rm-list-token', list_token_regex, []),
 	regexOverlay('search-marker', highlight_regex, ['markHighlight']),
 	regexOverlay('rm-ins', insert_regex, ['insertHighlight']),
