@@ -2,8 +2,7 @@ import * as ClickHandlers from './clickHandlers.ts';
 import * as Overlay from './overlay.ts';
 
 const image_line_regex = /^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$/;
-const image_inline_regex = /!\[([^\]]*)\]\(([^)]+)\)/;
-const image_url_regex = /\(([^)]+)\)/;
+const image_inline_regex = /!\[([^\]]*)\]\(([^)]+)\)/g;
 
 
 export function onSourceChanged(cm: any, from: number, to: number) {

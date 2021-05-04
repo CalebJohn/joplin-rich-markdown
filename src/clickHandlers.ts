@@ -27,6 +27,11 @@ export function getMatchAt(lineText: string, regex: RegExp, ch: number) {
 	let match = null;
 	regex.lastIndex = 0;
 
+	if (!regex.global) {
+		console.error("getMatchAt requires a global regex; Consider adding a `g` after ${regex}");
+		return null;
+	}
+
 	do {
 		match = regex.exec(lineText);
 
