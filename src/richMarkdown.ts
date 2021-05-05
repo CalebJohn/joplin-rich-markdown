@@ -166,7 +166,7 @@ module.exports = {
 										/* Needed for the renderLine indent hack to work */
 										.CodeMirror pre > * { text-indent: 0px; }
 										/* Remove the active line background */
-										.CodeMirror-activeline-background {
+										.CodeMirror-activeline-background.CodeMirror-linebackground {
 										  background: inherit;
 										}
 							`

@@ -63,6 +63,20 @@ function open_widget(cm: any) {
 		const img = await getImageData(cm, ClickHandlers.getClickCoord(cm, event));
 		if (!img) return;
 
+		// manual zoom
+		if (img.style.zoom) {
+			let zoom = parseFloat(img.style.zoom);
+			if (img.style.zoom.endsWith('%')){
+				zoom /= 100
+			}
+			if (zoom) {
+				img.width *= zoom
+				img.height *= zoom
+				img.style.zoom = '100%';
+			}
+		}
+
+
 		img.style.visibility = 'hidden';
 		target.offsetParent.appendChild(img);
 		img.style.position = 'absolute';
@@ -85,6 +99,7 @@ function open_widget(cm: any) {
 			}
 
 			const coords = cm.coordsChar({left: x, top: event.clientY}, 'page');
+
 			im.style.visibility = 'visible';
 			cm.addWidget(coords, img, false);
 		}
