@@ -3,6 +3,7 @@ import * as Overlay from './overlay.ts';
 
 const image_line_regex = /^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$/;
 const image_inline_regex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
 
 export function onSourceChanged(cm: any, from: number, to: number) {
@@ -75,7 +76,6 @@ function open_widget(cm: any) {
 				img.style.zoom = '100%';
 			}
 		}
-
 
 		img.style.visibility = 'hidden';
 		target.offsetParent.appendChild(img);
@@ -166,7 +166,7 @@ async function check_lines(cm: any, from: number, to: number) {
 			img = await createImage(match[2], match[1], path_from_id);
 		}
 		else {
-			const imgMatch = line.text.match(Overlay.html_image_regex);
+			const imgMatch = line.text.match(html_image_line_regex);
 
 			if (imgMatch) {
 				img = await createImageFromImg(imgMatch[0], path_from_id)
@@ -189,6 +189,16 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 	const img = par.body.firstChild as HTMLImageElement;
 	img.style.height = img.style.height || 'auto';
 	img.style.maxWidth = img.style.maxWidth || '100%';
+
+	// Tags taken from
+	// https://github.com/laurent22/joplin/blob/80b16dd17e227e3f538aa221d7b6cc2d81688e72/packages/renderer/htmlUtils.ts
+	const disallowedTags = ['script', 'iframe', 'frameset', 'frame', 'object', 'base', 'embed', 'link', 'meta'];
+	for (let i = 0; i < img.attributes.length; i++) {
+		const name = img.attributes[i].name;
+		if (disallowedTags.includes(name) || name.startsWith('on')) {
+			img.attributes[i].value = ''
+		}
+	}
 
 	// Joplin resource paths get added on to the end of the local path for some reason
 	if (img.src.length >= 34) {
