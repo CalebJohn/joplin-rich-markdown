@@ -192,7 +192,7 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 
 	// Tags taken from
 	// https://github.com/laurent22/joplin/blob/80b16dd17e227e3f538aa221d7b6cc2d81688e72/packages/renderer/htmlUtils.ts
-	const disallowedTags = ['script', 'iframe', 'frameset', 'frame', 'object', 'base', 'embed', 'link', 'meta'];
+	const disallowedTags = ['script', 'noscript', 'iframe', 'frameset', 'frame', 'object', 'base', 'embed', 'link', 'meta'];
 	for (let i = 0; i < img.attributes.length; i++) {
 		const name = img.attributes[i].name;
 		if (disallowedTags.includes(name) || name.startsWith('on')) {

@@ -143,8 +143,10 @@ module.exports = {
 					}
 				});
 			},
-			codeMirrorResources: ['addon/selection/active-line'],
-			codeMirrorOptions: { 'enable-rich-mode': true, 'styleActiveLine': { nonEmpty: true } },
+			codeMirrorResources: ['addon/selection/active-line', 'addon/selection/mark-selection'],
+			codeMirrorOptions: { 'enable-rich-mode': true,
+													 'styleActiveLine': { nonEmpty: true },
+													 'styleSelectedText': true },
 			assets: function() {
 				return [
 					{ mime: 'text/css',
@@ -162,6 +164,9 @@ module.exports = {
 										.cm-rm-sup {
 											vertical-align: super;
 											font-size: smaller;
+										}
+										.CodeMirror-selectedtext.cm-search-marker {
+											background-color: inherit;
 										}
 										/* Needed for the renderLine indent hack to work */
 										.CodeMirror pre > * { text-indent: 0px; }
