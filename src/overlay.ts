@@ -11,7 +11,7 @@ export const html_image_regex = /<img([^>]+?)\/?>/g;
 const highlight_regex = /(?<!\\)==(?=[^\s])[^=]*[^=\s\\]==/g;
 const insert_regex = /(?<!\\)\+\+(?=[^\s])[^\+]*[^\+\s\\]\+\+/g;
 const sub_regex = /(?<![\\~])~(?=[^\s])[^~]*[^~\s\\]~/g;
-const sup_regex = /(?<!\\)\^(?=[^\s])[^\^]*[^\^\s\\]\^/g;
+const sup_regex = /(?<![\\[])\^(?=[^\s])[^\^]*[^\^\s\\[]\^/g;
 const emph_star_regex = /(?<![\\\*])\*(?!\*)/g;
 const emph_underline_regex = /(?<![\\\_])\_(?!\_)/g;
 const strong_star_regex = /(?<![\\\*])\*\*(?!\*)/g;
