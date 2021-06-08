@@ -1,8 +1,8 @@
 import * as ClickHandlers from './clickHandlers.ts';
 import * as Overlay from './overlay.ts';
 
-const image_line_regex = /^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$/;
-const image_inline_regex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+const image_line_regex = /^\s*!\[([^\]]*)\]\(([^)\s]+)[^)]*\)\s*$/;
+const image_inline_regex = /!\[([^\]]*)\]\(([^)\s]+)[^)]*\)/g;
 const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
 
