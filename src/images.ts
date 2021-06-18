@@ -1,8 +1,8 @@
 import * as ClickHandlers from './clickHandlers.ts';
 import * as Overlay from './overlay.ts';
 
-const image_line_regex = /^\s*!\[([^\]]*)\]\(([^)\s]+)[^)]*\)\s*$/;
-const image_inline_regex = /!\[([^\]]*)\]\(([^)\s]+)[^)]*\)/g;
+const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)\s*$/;
+const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)/g;
 const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
 
@@ -214,6 +214,9 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 async function createImage(path: string, alt: string, path_from_id: any) {
 	if (path.startsWith(':/') && path.length == 34) {
 		path = await path_from_id(path.substring(2));
+	}
+	if (path.startsWith('<') && path.endsWith('>')) {
+		path = path.substring(1, path.length - 1);
 	}
 
 	const img = document.createElement('img');

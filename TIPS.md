@@ -139,14 +139,26 @@ The Joplin forum has [a collection](https://discourse.joplinapp.org/t/joplin-cus
 ## Warning
 The below configurations are not recommended and are provided for advanced users only.
 
-#### Hide Tokens on Other Lines
+#### Hide Tokens and URLs on Other Lines
 ```css
 /* Requires the extraCss option to be enabled */
-.cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, .cm-search-marker.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token {
+.cm-string.cm-url, .cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, .cm-search-marker.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token {
 	display: none;
 }
 
-.CodeMirror-activeline .cm-header.cm-rm-header-token, .CodeMirror-activeline .cm-em.cm-rm-em-token, .CodeMirror-activeline .cm-strong.cm-rm-strong-token, .CodeMirror-activeline .cm-search-marker.cm-rm-highlight-token, .CodeMirror-activeline .cm-strikethrough.cm-rm-strike-token, .CodeMirror-activeline .cm-rm-ins.cm-rm-ins-token, .CodeMirror-activeline .cm-rm-sub.cm-rm-sub-token, .CodeMirror-activeline .cm-rm-sup.cm-rm-sup-token {
+.CodeMirror-activeline .cm-string.cm-url, .CodeMirror-activeline .cm-header.cm-rm-header-token, .CodeMirror-activeline .cm-em.cm-rm-em-token, .CodeMirror-activeline .cm-strong.cm-rm-strong-token, .CodeMirror-activeline .cm-search-marker.cm-rm-highlight-token, .CodeMirror-activeline .cm-strikethrough.cm-rm-strike-token, .CodeMirror-activeline .cm-rm-ins.cm-rm-ins-token, .CodeMirror-activeline .cm-rm-sub.cm-rm-sub-token, .CodeMirror-activeline .cm-rm-sup.cm-rm-sup-token {
 	display: inherit;
+}
+```
+
+#### Check mark Checkboxes
+Much thanks to [ambrt](https://discourse.joplinapp.org/u/ambrt/) for the initial implementation.
+```css
+/* Requires the extraCss option to be enabled */
+.cm-property.cm-rm-checkbox.cm-rm-checkbox-check {
+  display: none;
+}
+.cm-property.cm-rm-checkbox.cm-rm-checkbox-check + .cm-property:before {
+    content: "✓";
 }
 ```

@@ -79,6 +79,16 @@ If you have a suggestion for something you'd like to be able to customize. Just 
 
 This is disabled by default.
 
+# Install
+The typical way to install plugins is through the built-in Joplin plugin manager.
+
+The plugin manager can be access under Tools -> Options -> Plugins (Joplin -> Preferences -> Plugins).
+
+Once there use the search bar at the top to search for "Rich Markdown". The plugin should appear with a large "Install" button.
+
+<br>
+If you know what you're doing and want access to the bleeding edge, a .jpl file is provided in this plugin for manual installation.
+
 # Feature Requests
 Feature Requests are appreciated and encouraged. Not all feature requests will be technically feasible, so please be patient. Feature requests that align with the projects philosophy (below) are more likely to be implemented. 
 
