@@ -87,16 +87,24 @@ function getLinkAt(cm: any, coord: any) {
 
 	// Special case, if this matches a link inside of an image, we will need to strip
 	// the trailing )
-	if (url && url[url.length - 1] === ')') {
+	if (url && url.endsWith(')')) {
+		// this is not safe based on RFC 1738 (the ) character is allowd in URLS)
+		// so we'll need to do an additional check
 		if (getMatchAt(lineText, Overlay.image_regex, ch))
 			url = url.slice(0, url.length - 1);
 	}
 	// URLs inside html elements have a trailing quote character
-	else if (url && (url[url.length -1] === '"' || url[url.length - 1] === "'")) {
+	else if (url && (url.endsWith('"') || url.endsWith("'"))) {
 		// Quotes are not allowed in URLs as per RFC 1738
 		// https://www.ietf.org/rfc/rfc1738.txt
+		// Page 2 includes a list of unsafe characters
 		url = url.slice(0, url.length - 1);
 	}
+
+	// Take the first element in case a title has been provided
+	// [](https://link.ca "title")
+	// spaces are not allowed in urls (RFC 1738) so this is safe
+	url = url.split(' ')[0];
 
 	return url;
 }

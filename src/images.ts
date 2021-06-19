@@ -216,6 +216,9 @@ async function createImage(path: string, alt: string, path_from_id: any) {
 		path = await path_from_id(path.substring(2));
 	}
 	if (path.startsWith('<') && path.endsWith('>')) {
+		// <> quotes are not allowed in URLs as per RFC 1738
+		// https://www.ietf.org/rfc/rfc1738.txt
+		// Page 2 includes a list of unsafe characters
 		path = path.substring(1, path.length - 1);
 	}
 
