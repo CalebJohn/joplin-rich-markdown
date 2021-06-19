@@ -151,6 +151,18 @@ The below configurations are not recommended and are provided for advanced users
 }
 ```
 
+#### Focus Mode
+Dims everything outside of the current line.
+```css
+.CodeMirror-line {
+  opacity: 0.4;
+}
+
+.CodeMirror-activeline .CodeMirror-line{
+  opacity: 1.0;
+}
+```
+
 #### Check mark Checkboxes
 Much thanks to [ambrt](https://discourse.joplinapp.org/u/ambrt/) for the initial implementation.
 ```css
