@@ -50,7 +50,7 @@ joplin.plugins.register({
 					let url = message.url;
 
 					if (!url.match(/^(http|https|file)/))
-						url = 'https://' + url;
+						url = 'http://' + url;
 					opener(url);
 				}
 			}
