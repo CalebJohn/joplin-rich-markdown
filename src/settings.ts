@@ -41,100 +41,102 @@ export async function registerAllSettings() {
 		iconName: 'fas fa-rocket'
 	});
 
-	await joplin.settings.registerSetting('inlineImages', {
-		value: false,
-		type: SettingItemType.Bool,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Render images below their markdown source (only for images on their own line)'
-  });
+	await joplin.settings.registerSettings({
+		'inlineImages': {
+			value: false,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Render images below their markdown source (only for images on their own line)'
+		},
+
+		'imageHover': {
+			value: true,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Show an image popup when hovering over the image source with Ctrl (or Opt) pressed'
+		},
+		'imageHoverCtrl': {
+			value: false,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Enable image popup even when Ctrl (or Opt) is not pressed'
+		},
+
+		'enforceMono': {
+			value: false,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Enable all editor fonts',
+			description: 'Allows the user to set any available font in Appearance -> Editor Font Family',
+		},
+
+		'alignIndent': {
+			value: true,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Align wrapped list items to the indent level',
+		},
+
+		'extraCSS': {
+			value: false,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Add additional CSS classes for enhanced customization',
+			description: 'See https://github.com/CalebJohn/joplin-rich-markdown#extra-css for options',
+		},
+
+		'checkbox': {
+			value: true,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Toggle checkboxes with Ctrl (or Opt)+Click'
+		},
+
+		'links': {
+			value: true,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Follow note links with Ctrl (or Opt)+Click'
+		},
+
+		'clickCtrl': {
+			value: true,
+			type: SettingItemType.Bool,
+			advanced: true,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Require Ctrl (or Opt) when clicking on elements (links and checkboxes)',
+			description: 'It\'s recommended not to change this',
+		}
+	});
 	registerToggle('inlineImages',
 		'Toggle images in the markdown editor',
 		'fas fa-image');
-
-	await joplin.settings.registerSetting('imageHover', {
-		value: true,
-		type: SettingItemType.Bool,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Show an image popup when hovering over the image source with Ctrl (or Opt) pressed'
-  });
-	await joplin.settings.registerSetting('imageHoverCtrl', {
-		value: false,
-		type: SettingItemType.Bool,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Enable image popup even when Ctrl (or Opt) is not pressed'
-  });
-
-	await joplin.settings.registerSetting('enforceMono', {
-		value: false,
-		type: SettingItemType.Bool,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Enable all editor fonts',
-		description: 'Allows the user to set any available font in Appearance -> Editor Font Family',
-  });
-
-	await joplin.settings.registerSetting('alignIndent', {
-		value: true,
-		type: SettingItemType.Bool,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Align wrapped list items to the indent level',
-  });
-
-	await joplin.settings.registerSetting('extraCSS', {
-		value: false,
-		type: SettingItemType.Bool,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Add additional CSS classes for enhanced customization',
-		description: 'See https://github.com/CalebJohn/joplin-rich-markdown#extra-css for options',
-  });
-
-	await joplin.settings.registerSetting('checkbox', {
-		value: true,
-		type: SettingItemType.Bool,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Toggle checkboxes with Ctrl (or Opt)+Click'
-  });
-
-	await joplin.settings.registerSetting('links', {
-		value: true,
-		type: SettingItemType.Bool,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Follow note links with Ctrl (or Opt)+Click'
-  });
-
-	await joplin.settings.registerSetting('clickCtrl', {
-		value: true,
-		type: SettingItemType.Bool,
-		advanced: true,
-		section: 'settings.calebjohn.richmarkdown',
-		public: true,
-		label: 'Require Ctrl (or Opt) when clicking on elements (links and checkboxes)',
-		description: 'It\'s recommended not to change this',
-  });
 }
 
 async function registerToggle(name: string, label: string, icon: string) {
-		await joplin.commands.register({
-		    name: `richMarkdown.${name}`,
-		    label: label,
-		    iconName: icon,
-		    execute: async () => {
-					const enabled = await joplin.settings.value(name);
-					joplin.settings.setValue(name, !enabled);
-					const settings = await getAllSettings();
+	await joplin.commands.register({
+		name: `richMarkdown.${name}`,
+		label: label,
+		iconName: icon,
+		execute: async () => {
+			const enabled = await joplin.settings.value(name);
+			joplin.settings.setValue(name, !enabled);
+			const settings = await getAllSettings();
 
-					await joplin.commands.execute('editor.execCommand', {
-						name: 'updateRichMarkdownSettings',
-						args: [settings]
-					});
-		    },
-		});
-		await joplin.views.menuItems.create(`richMarkdown${name}`, `richMarkdown.${name}`, MenuItemLocation.View);
+			await joplin.commands.execute('editor.execCommand', {
+				name: 'updateRichMarkdownSettings',
+				args: [settings]
+			});
+		},
+	});
+	await joplin.views.menuItems.create(`richMarkdown${name}`, `richMarkdown.${name}`, MenuItemLocation.View);
 }
