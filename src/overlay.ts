@@ -5,7 +5,7 @@ const checkbox_inner_regex = /(?<=\[)[Xx ](?=\])/g;
 // Last part of regex taken from https://stackoverflow.com/a/17773849/12245502
 // This regex will match html tags tht somehow include a . in them
 // I've decided that this is an acceptable level of functionality
-export const link_regex = /(?<![!\\])\[[^\]]*\]\(([^\(]+)\)|<([^>\s]+\.[^>\s]+)>|(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}[^\)])/g;
+export const link_regex = /(?<![\\])\[[^\]]*\]\(([^\(]+)\)|<([^>\s]+\.[^>\s]+)>|(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}[^\)])/g;
 export const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
 // Modified from https://stackoverflow.com/a/18665138/12245502
 export const html_image_regex = /<img([^>]+?)\/?>/g;
