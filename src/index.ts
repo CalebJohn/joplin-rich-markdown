@@ -21,6 +21,22 @@ async function getResourcePath(resourceDir: string, id: string) {
 
 joplin.plugins.register({
 	onStart: async function() {
+		// There is a bug (race condition?) where the perform action command
+		// doesn't always work when first opening the app. Opening the keyboard
+		// shortcuts will properly bind it and make it work.
+		// Placing the command before registering settings also seems to fix it
+		await joplin.commands.register({
+			name: 'editor.richMarkdown.clickAtCursor',
+			label: 'Perform action',
+			iconName: 'fas fa-link',
+			execute: async () => {
+				await joplin.commands.execute('editor.execCommand', {
+					name: 'clickUnderCursor',
+				});
+		  },
+		});
+		await joplin.views.menuItems.create('clickAtCursorContext', 'editor.richMarkdown.clickAtCursor', MenuItemLocation.EditorContextMenu, { accelerator: 'Ctrl+Enter' });
+
 		const resourceDir = await joplin.settings.globalValue('resourceDir');
 		await registerAllSettings();
 
@@ -57,18 +73,6 @@ joplin.plugins.register({
 
 			return "Error: " + message + " is not a valid message";
 		});
-
-		await joplin.commands.register({
-			name: 'editor.richMarkdown.clickAtCursor',
-			label: 'Perform action',
-			iconName: 'fas fa-link',
-			execute: async () => {
-				await joplin.commands.execute('editor.execCommand', {
-					name: 'clickUnderCursor',
-				});
-		  },
-		});
-		await joplin.views.menuItems.create('clickAtCursorContext', 'editor.richMarkdown.clickAtCursor', MenuItemLocation.EditorContextMenu, { accelerator: 'Ctrl+Enter' });
 
 		// TODO: Waiting for https://github.com/laurent22/joplin/pull/4509
 		// await joplin.commands.register({
