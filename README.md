@@ -4,31 +4,31 @@ A plugin that will finally allow you to ditch the markdown viewer, saving space 
 
 Rich Markdown comes as a collection of multiple features that can be toggled in settings.
 
+![Welcome Notebook Screenshot](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/welcome.png)
+
+(Thanks to [@uxamanda](https://discourse.joplinapp.org/u/uxamanda) for the awesome theme!)
+
 # Features
 
 ## Images on Hover
 When hovering over a markdown image tag with Ctrl (or Opt) pressed, a preview of the image will pop up below the mouse cursor.
 
 This is enabled by default.
-![Example of an image on hover](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/hover_image.png)
+[Example of an image on hover](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/hover_image.png)
 
 ## Images in Editor
 Any image that is contained on it's own line of the markdown source will render directly on the line directly below. This works for both internal resources and generic links to images
 
 This is not enabled by default, but can be quick toggled in the View menu.
-![Example of images being rendered in markdown editor](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/inline_image.png)
+[Example of images being rendered in markdown editor](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/inline_image.png)
 
 ## Checkbox
 Checkboxes can be toggled in the markdown source by Ctrl (or Opt) + Clicking or with the  Perform action command in the context menu.
-
-(Perform action will be added in Joplin version 1.8.0)
 
 This is enabled by default.
 
 ## Links
 Links can be followed by Ctrl (or Opt) + Clicking or with the Perform action command in the context menu.
-
-(Perform action will be added in Joplin version 1.8.0)
 
 This is enabled by default.
 
