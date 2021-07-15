@@ -1,6 +1,6 @@
 import * as ImageHandlers from './images';
 import * as ClickHandlers from './clickHandlers';
-import * as Overlay from './overlay.ts';
+import * as Overlay from './overlay';
 import * as IndentHandlers from './indent';
 import { RichMarkdownSettings } from './settings';
 

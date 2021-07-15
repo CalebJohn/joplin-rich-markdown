@@ -1,4 +1,4 @@
-import * as Overlay from './overlay.ts';
+import * as Overlay from './overlay';
 
 function normalizeCoord(coord: any) {
 	if (coord.sticky && coord.sticky === "before")

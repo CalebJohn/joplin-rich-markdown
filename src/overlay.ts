@@ -1,7 +1,7 @@
 
 // Taken from codemirror/addon/edit/continuelist.js
 export const checkbox_regex = /^(\s*)([*+-] )(\[[Xx ]\])\s.*$/g;
-const checkbox_inner_regex = /(?<=\[)[Xx ](?=\])/g;
+export const checkbox_inner_regex = /(?<=\[)[Xx ](?=\])/g;
 // Last part of regex taken from https://stackoverflow.com/a/17773849/12245502
 // This regex will match html tags tht somehow include a . in them
 // I've decided that this is an acceptable level of functionality
@@ -9,27 +9,27 @@ export const link_regex = /(?<![\\])\[[^\]]*\]\(([^\(]+)\)|<([^>\s]+\.[^>\s]+)>|
 export const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
 // Modified from https://stackoverflow.com/a/18665138/12245502
 export const html_image_regex = /<img([^>]+?)\/?>/g;
-const highlight_regex = /(?<!\\)==(?=[^\s])[^=]*[^=\s\\]==/g;
-const insert_regex = /(?<!\\)\+\+(?=[^\s])[^\+]*[^\+\s\\]\+\+/g;
-const sub_regex = /(?<![\\~])~(?=[^\s])[^~]*[^~\s\\]~/g;
-const sup_regex = /(?<![\\[])\^(?=[^\s])[^\^]*[^\^\s\\[]\^/g;
-const emph_star_regex = /(?<![\\\*])\*(?!\*)/g;
-const emph_underline_regex = /(?<![\\\_])\_(?!\_)/g;
-const strong_star_regex = /(?<![\\\*])\*\*(?!\*)/g;
-const strong_underline_regex = /(?<![\\\_])\_\_(?!\_)/g;
-const highlight_token_regex = /(?<![\\=])==(?!=)/g;
-const insert_token_regex = /(?<![\\\+])\+\+(?!\+)/g;
-const sub_token_regex = /(?<![\\~])~(?!~)/g;
-const sup_token_regex = /(?<![\\\^])\^(?!\^)/g;
-const strike_token_regex = /(?<![\\~])~~(?!~~)/g;
-const header_regex = /^\s*#+\s/g;
+export const highlight_regex = /(?<!\\)==(?=[^\s])[^=]*[^=\s\\]==/g;
+export const insert_regex = /(?<!\\)\+\+(?=[^\s])[^\+]*[^\+\s\\]\+\+/g;
+export const sub_regex = /(?<![\\~])~(?=[^\s])[^~]*[^~\s\\]~/g;
+export const sup_regex = /(?<![\\[])\^(?=[^\s])[^\^]*[^\^\s\\[]\^/g;
+export const emph_star_regex = /(?<![\\\*])\*(?!\*)/g;
+export const emph_underline_regex = /(?<![\\\_])\_(?!\_)/g;
+export const strong_star_regex = /(?<![\\\*])\*\*(?!\*)/g;
+export const strong_underline_regex = /(?<![\\\_])\_\_(?!\_)/g;
+export const highlight_token_regex = /(?<![\\=])==(?!=)/g;
+export const insert_token_regex = /(?<![\\\+])\+\+(?!\+)/g;
+export const sub_token_regex = /(?<![\\~])~(?!~)/g;
+export const sup_token_regex = /(?<![\\\^])\^(?!\^)/g;
+export const strike_token_regex = /(?<![\\~])~~(?!~~)/g;
+export const header_regex = /^\s*#+\s/g;
 // Taken from codemirror/addon/edit/continuelist.js
 export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+->]\s|(\d+)([.)]\s))(\s*)/g;
 // Taken from codemirror/mode/markdown/markdown.js
-const hr_regex = /^([*\-_])(?:\s*\1){2,}\s*$/;
+export const hr_regex = /^([*\-_])(?:\s*\1){2,}\s*$/;
 
-const checkbox_mono_regex = /^(\s*)([*+-] )\[[Xx ]\]\s/g;
-const table_regex = /^\|[^\n]+\|/g;
+export const checkbox_mono_regex = /^(\s*)([*+-] )\[[Xx ]\]\s/g;
+export const table_regex = /^\|[^\n]+\|/g;
 
 function exec(query: RegExp, stream: any) {
 	query.lastIndex = stream.pos;

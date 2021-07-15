@@ -1,9 +1,9 @@
-import * as ClickHandlers from './clickHandlers.ts';
-import * as Overlay from './overlay.ts';
+import * as ClickHandlers from './clickHandlers';
+import * as Overlay from './overlay';
 
-const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)\s*$/;
-const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)/g;
-const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
+export const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)\s*$/;
+export const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)/g;
+export const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
 
 export function onSourceChanged(cm: any, from: number, to: number) {
