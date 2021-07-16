@@ -3,6 +3,8 @@ import { ContentScriptType, MenuItemLocation, Path, ToolbarButtonLocation } from
 
 import { getAllSettings, registerAllSettings } from './settings';
 
+import { mime } from '@joplin/lib/mime-utils';
+
 // TODO: Waiting for https://github.com/laurent22/joplin/pull/4509
 // import prettier = require('prettier/standalone');
 // import markdown = require('prettier/parser-markdown');
@@ -13,10 +15,15 @@ const contentScriptId = 'richMarkdownEditor';
 
 async function getResourcePath(resourceDir: string, id: string) {
 	const info = await joplin.data.get(['resources', id], {
-		fields: ['file_extension'],
+		fields: ['file_extension', 'mime'],
 	});
 
-	return path.join('file:/', resourceDir, id + '.' + info.file_extension); 
+	let file_extension = info.file_extension;
+	if (!file_extension)
+		file_extension = mime.toFileExtension(info.mime);
+	file_extension = file_extension ? '.' + file_extension : ''
+
+	return path.join('file:/', resourceDir, id + file_extension); 
 }
 
 joplin.plugins.register({
