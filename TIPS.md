@@ -115,6 +115,15 @@ span.cm-rm-checkbox.cm-property {
 }
 ```
 
+## List spacing
+
+```css
+/* Match list spacing to the viewer */
+.cm-overlay.cm-rm-list-token {
+  line-height: 2em;
+}
+```
+
 ## Colour Schemes
 
 Each Joplin theme uses a different CodeMirror colour scheme, it's useful to know what these colour schemes are because they can be used to support customizations that differ across Joplin themes (see [Coloured List Tokens](#coloured-list-tokens) for an example).
