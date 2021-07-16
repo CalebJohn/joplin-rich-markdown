@@ -5,6 +5,10 @@
     "dist": "webpack --joplin-plugin-config buildMain && webpack --joplin-plugin-config buildExtraScripts && webpack --joplin-plugin-config createArchive",
     "prepare": "npm run dist",
     "update": "npm install -g generator-joplin && yo joplin --update",
+    "preversion": "npm run test",
+    "updatetags": "LOGS=$(git log $(git describe --tags --abbrev=0 HEAD~1)..HEAD~1 --oneline) && git tag -fam \"$LOGS\" v$npm_package_version && git tag -fa v$npm_package_version",
+    "postversion": "npm run updatetags && git push origin main --tags",
+    "version": "sed -i '/\\\"version\\\": \\\"/s/[^\\\"]*\\\",/'\"$npm_package_version\\\",/\" src/manifest.json && git add src/manifest.json",
     "test": "jest"
   },
   "license": "MIT",
