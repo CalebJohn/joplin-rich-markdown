@@ -2,6 +2,7 @@ import joplin from 'api';
 import { ContentScriptType, MenuItemLocation, Path, ToolbarButtonLocation } from 'api/types';
 
 import { getAllSettings, registerAllSettings } from './settings';
+import { getApiPort } from './findPort';
 
 import { mime } from '@joplin/lib/mime-utils';
 
@@ -13,7 +14,7 @@ import opener = require('opener');
 
 const contentScriptId = 'richMarkdownEditor';
 
-async function getResourcePath(resourceDir: string, id: string) {
+async function getResourcePath(resourceDir: string, id: string): Promise<string> {
 	const info = await joplin.data.get(['resources', id], {
 		fields: ['file_extension', 'mime'],
 	});
@@ -45,6 +46,8 @@ joplin.plugins.register({
 		await joplin.views.menuItems.create('clickAtCursorContext', 'editor.richMarkdown.clickAtCursor', MenuItemLocation.EditorContextMenu, { accelerator: 'Ctrl+Enter' });
 
 		const resourceDir = await joplin.settings.globalValue('resourceDir');
+		const apiToken = await joplin.settings.globalValue('api.token');
+		const apiPort = await getApiPort();
 		await registerAllSettings();
 
 		await joplin.contentScripts.register(
@@ -61,12 +64,19 @@ joplin.plugins.register({
 				return await getAllSettings();
 			}
 			else if (message.name === 'followLink') {
+
 				if (message.url.startsWith(':/')) {
+					const id = message.url.slice(2, 34);
 					try {
-						await joplin.commands.execute('openNote', message.url.slice(2, 34));
+						await joplin.commands.execute('openNote', id);
 					} catch (e) {
-						const resource = await getResourcePath(resourceDir, message.url.slice(2));
-						opener(resource);
+						await fetch(`http://localhost:${apiPort}/services/resourceEditWatcher/?token=${apiToken}`, {
+							method: 'POST',
+							body: `{ "action": "openAndWatch", "resourceId": "${id}" }`,
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						});
 					}
 				}
 				else {

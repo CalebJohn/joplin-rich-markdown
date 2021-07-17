@@ -110,7 +110,6 @@ See more in [Tips](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/T
 
 
 # Known Issues
-- Resources aren't watched. Don't edit any opened resource an expect it to be saved, toggle visual mode for that. This will be fixed in the future.
 - [Reference Links](https://spec.commonmark.org/0.29/#reference-link) are not supported yet.
 - file:// links only work with markdown link syntax (\[\]\(\) \<\>)
 - When hovering over an image on the bottom line, the image will be cut off
