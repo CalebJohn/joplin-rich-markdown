@@ -17,8 +17,7 @@ jobs:
           node-version: '12'
           cache: 'npm'
       - name: Build
-        run: npm ci
-        run: npm run dist
+        run: npm ci && npm run dist
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
