@@ -38,6 +38,7 @@ module.exports = {
 					ImageHandlers.clearAllWidgets(this);
 					ImageHandlers.onSourceChanged(this, this.firstLine(), this.lastLine());
 					ImageHandlers.afterSourceChanges(this);
+					Overlay.onSourceChanged(this, this.firstLine(), this.lastLine());
 					this.getWrapperElement().onmousemove = on_mousemove(newSettings);
 				});
 
@@ -67,6 +68,7 @@ module.exports = {
 					const { from, to } = get_change_lines(change);
 					
 					ImageHandlers.onSourceChanged(cm, from, to);
+					Overlay.onSourceChanged(cm, from, to);
 				}
 				function on_update(cm: any) {
 					ImageHandlers.afterSourceChanges(cm);

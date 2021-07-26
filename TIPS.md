@@ -124,6 +124,15 @@ span.cm-rm-checkbox.cm-property {
 }
 ```
 
+## Code Blocks
+
+```css
+/* Add a background color to code blocks */
+.cm-rm-code-block {
+  background-color: lightgrey;
+}
+```
+
 ## Colour Schemes
 
 Each Joplin theme uses a different CodeMirror colour scheme, it's useful to know what these colour schemes are because they can be used to support customizations that differ across Joplin themes (see [Coloured List Tokens](#coloured-list-tokens) for an example).

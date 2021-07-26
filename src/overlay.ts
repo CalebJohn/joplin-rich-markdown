@@ -31,6 +31,18 @@ export const hr_regex = /^([*\-_])(?:\s*\1){2,}\s*$/;
 export const checkbox_mono_regex = /^(\s*)([*+-] )\[[Xx ]\]\s/g;
 export const table_regex = /^\|[^\n]+\|/g;
 
+// Special function to apply a line class to code blocks
+function codeBlock(cls: string) {
+	return (cm: any, line: number, state: any) => {
+		if (state.outer.code || (state.outer.thisLine && state.outer.thisLine.fencedCodeEnd)) {
+			cm.addLineClass(line, 'wrap', cls);
+		}
+		else {
+			cm.removeLineClass(line, 'wrap', cls);
+		}
+	}
+}
+
 function exec(query: RegExp, stream: any) {
 	query.lastIndex = stream.pos;
 	return query.exec(stream.string);
@@ -87,6 +99,10 @@ const overlays = [
 	regexOverlay('rm-monospace', table_regex, ['enforceMono']),
 ];
 
+const blocks = [
+	codeBlock('cm-rm-code-block')
+];
+
 function validate(settings: any, values: string[]): boolean {
 	for (let value of values) {
 		if (!settings[value])
@@ -107,4 +123,17 @@ export function add(cm: any) {
 export function remove(cm: any) {
 	for (let overlay of overlays)
 		cm.removeOverlay(overlay);
+}
+
+// from and to are ignored for now becuase a change on one line
+// can affect any number of other lines, this means we need to 
+// reprocess the entire document
+export function onSourceChanged(cm: any, from: number, to: number) {
+	for (let i = cm.firstLine(); i <= cm.lastLine(); i++) {
+		const state = cm.getStateAfter(i, true);
+
+		for (let block of blocks) {
+			block(cm, i, state);
+		}
+	}
 }
