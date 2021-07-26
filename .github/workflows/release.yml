@@ -19,6 +19,6 @@ jobs:
       - name: Build
         run: npm ci && npm run dist
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v1.6
         with:
           files: publish/plugin.calebjohn.rich-markdown.jpl
