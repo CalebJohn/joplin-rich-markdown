@@ -87,7 +87,7 @@ The plugin manager can be access under Tools -> Options -> Plugins (Joplin -> Pr
 Once there use the search bar at the top to search for "Rich Markdown". The plugin should appear with a large "Install" button.
 
 <br>
-If you know what you're doing and want access to the bleeding edge, a .jpl file is provided in this plugin for manual installation.
+[A .jpl file is provided in the latest release](https://github.com/laurent22/joplin/releases/latest) for those that want to install manually.
 
 # Feature Requests
 Feature Requests are appreciated and encouraged. Not all feature requests will be technically feasible, so please be patient. Feature requests that align with the projects philosophy (below) are more likely to be implemented. 
