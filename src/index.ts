@@ -70,13 +70,20 @@ joplin.plugins.register({
 					try {
 						await joplin.commands.execute('openNote', id);
 					} catch (e) {
-						await fetch(`http://localhost:${apiPort}/services/resourceEditWatcher/?token=${apiToken}`, {
-							method: 'POST',
-							body: `{ "action": "openAndWatch", "resourceId": "${id}" }`,
-							headers: {
-								'Content-Type': 'application/json'
-							}
-						});
+						if (apiPort > 0) {
+							await fetch(`http://localhost:${apiPort}/services/resourceEditWatcher/?token=${apiToken}`, {
+								method: 'POST',
+								body: `{ "action": "openAndWatch", "resourceId": "${id}" }`,
+								headers: {
+									'Content-Type': 'application/json'
+								}
+							});
+						}
+						else {
+							// If no apiPort can be found, fallback to just opening the resource
+							const resource = await getResourcePath(resourceDir, id);
+							opener(resource);
+						}
 					}
 				}
 				else {

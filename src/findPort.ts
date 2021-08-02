@@ -26,6 +26,6 @@ export async function getApiPort(): Promise<number> {
 	for (port = 41185; port < 41200; port++)
 		if (await checkPort(port)) return port;
 
-	console.error("Can't find an open port for the Joplin api, using 41184");
-	return 41184;
+	console.error("Can't find an open port for the Joplin api, fallback to opener");
+	return -1;
 }
