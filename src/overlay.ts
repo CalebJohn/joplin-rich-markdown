@@ -34,7 +34,7 @@ export const table_regex = /^\|[^\n]+\|/g;
 // Special function to apply a line class to code blocks
 function codeBlock(cls: string) {
 	return (cm: any, line: number, state: any) => {
-		if (state.outer.code || (state.outer.thisLine && state.outer.thisLine.fencedCodeEnd)) {
+		if (state.outer && (state.outer.code || (state.outer.thisLine && state.outer.thisLine.fencedCodeEnd))) {
 			cm.addLineClass(line, 'wrap', cls);
 		}
 		else {
