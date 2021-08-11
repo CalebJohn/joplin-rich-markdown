@@ -47,7 +47,8 @@ joplin.plugins.register({
 
 		const resourceDir = await joplin.settings.globalValue('resourceDir');
 		const apiToken = await joplin.settings.globalValue('api.token');
-		const apiPort = await getApiPort();
+		const clipperEnabled = await joplin.settings.globalValue('clipperServer.autoStart');
+		const apiPort = clipperEnabled ? await getApiPort() : -1;
 		await registerAllSettings();
 
 		await joplin.contentScripts.register(
