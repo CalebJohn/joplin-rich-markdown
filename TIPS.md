@@ -58,7 +58,7 @@ pre.cm-rm-hr.CodeMirror-line  {
 
 ```
 
-## Monospace font
+## Monospace Font
 
 ```css
 /* Changes the monospace font used for tabes/checkboxes */
@@ -68,7 +68,7 @@ pre.cm-rm-hr.CodeMirror-line  {
 }
 ```
 
-## Strike out Checkboxes
+## Strikeout Checkboxes
 ```css
 /* strikeout and dim the text of a checked checkbox */
 span.cm-rm-checkbox.cm-property + span.cm-rm-checkbox ~ span.cm-rm-checkbox {
@@ -115,7 +115,7 @@ span.cm-rm-checkbox.cm-property {
 }
 ```
 
-## List spacing
+## List Spacing
 
 ```css
 /* Match list spacing to the viewer */
@@ -181,7 +181,7 @@ Dims everything outside of the current line.
 }
 ```
 
-#### Check mark Checkboxes
+#### Checkmark Checkboxes
 Much thanks to [ambrt](https://discourse.joplinapp.org/u/ambrt/) for the initial implementation.
 ```css
 /* Requires the extraCss option to be enabled */
