@@ -28,7 +28,7 @@ export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+->]\s|(\d+)([.)]\s)
 // Taken from codemirror/mode/markdown/markdown.js
 export const hr_regex = /^([*\-_])(?:\s*\1){2,}\s*$/;
 
-export const checkbox_mono_regex = /^(\s*)([*+-] )\[[Xx ]\]\s/g;
+// TODO: Extend this to get better table highlighting
 export const table_regex = /^\|[^\n]+\|/g;
 
 // Special function to apply a line class to code blocks
@@ -95,8 +95,6 @@ const overlays = [
 	regexOverlay('rm-sup-token', sup_token_regex, ['extraCSS', 'supHighlight']),
 	regexOverlay('rm-strike-token', strike_token_regex, ['extraCSS']),
 	regexOverlay('rm-hr line-cm-rm-hr', hr_regex, ['extraCSS']),
-	regexOverlay('rm-monospace', checkbox_mono_regex, ['enforceMono']),
-	regexOverlay('rm-monospace', table_regex, ['enforceMono']),
 ];
 
 const blocks = [

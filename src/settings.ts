@@ -10,7 +10,6 @@ export interface RichMarkdownSettings {
 	subHighlight: boolean;
 	supHighlight: boolean;
 	extraCSS: boolean;
-	enforceMono: boolean;
 	alignIndent: boolean;
 	checkbox: boolean;
 	links: boolean;
@@ -27,7 +26,6 @@ export async function getAllSettings() {
 		subHighlight: await joplin.settings.globalValue('markdown.plugin.sub'),
 		supHighlight: await joplin.settings.globalValue('markdown.plugin.sup'),
 		extraCSS: await joplin.settings.value('extraCSS'),
-		enforceMono: await joplin.settings.value('enforceMono'),
 		alignIndent: await joplin.settings.value('alignIndent'),
 		checkbox: await joplin.settings.value('checkbox'),
 		links: await joplin.settings.value('links'),
@@ -63,15 +61,6 @@ export async function registerAllSettings() {
 			section: 'settings.calebjohn.richmarkdown',
 			public: true,
 			label: 'Enable image popup even when Ctrl (or Opt) is not pressed'
-		},
-
-		'enforceMono': {
-			value: false,
-			type: SettingItemType.Bool,
-			section: 'settings.calebjohn.richmarkdown',
-			public: true,
-			label: 'Enable all editor fonts',
-			description: 'Allows the user to set any available font in Appearance -> Editor Font Family',
 		},
 
 		'alignIndent': {

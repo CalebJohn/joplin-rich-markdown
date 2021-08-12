@@ -40,15 +40,6 @@ Insert syntax (++insert++), sub (~sub~), and sup (^sup^) syntaxes are also avail
 
 This can be enabled under `Tools -> Options -> Markdown -> Enable ==mark== syntax`.
 
-## Proportional Fonts
-The Joplin markdown editor already allowed the use of proportional fonts, but some markdown constructs (e.g. tables) are hard to work with if the font isn't monospace. This plugin adds an option to enforce a monospace font for certain markdown elements (tables and checkboxes). 
-
-**Note: this only works for properly formatted tables, i.e. each line must begin and end with |**
-
-If you'd like to use a proportional font, simply set the font of your choice under Appearance -> Editor font family.
-
-This is disabled by default.
-
 ## Align Lists
 Lists that get wrapped will have the wrap match the indentation of the list element.
 This includes checkboxes and block quotes.
