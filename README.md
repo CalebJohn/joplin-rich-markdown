@@ -9,6 +9,7 @@ Rich Markdown comes as a collection of multiple features that can be toggled in 
 (Thanks to [@uxamanda](https://discourse.joplinapp.org/u/uxamanda) for the awesome theme!)
 
 # Features
+The Rich Markdown plugin supports a number of optional features. Unless otherwise stated, these features can be toggled under `Tools -> Options -> Rich Markdown -> Add additional CSS classes for enhanced customization`.
 
 ## Images on Hover
 When hovering over a markdown image tag with Ctrl (or Opt) pressed, a preview of the image will pop up below the mouse cursor.
