@@ -15,6 +15,16 @@ module.exports = {
 					return await context.postMessage({name: 'getSettings'});
 				}
 
+				function is_alt_click_allowed(cm:any, event: MouseEvent) {
+					if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
+						return event.metaKey;
+					}
+
+					const settings = cm.state.richMarkdown.settings;
+					const ctrl = (event.ctrlKey || event.altKey);
+					return ctrl || !settings.clickCtrl;
+				}
+
 				CodeMirror.defineExtension('initializeRichMarkdown', function(settings: RichMarkdownSettings) {
 					this.state.richMarkdown = {
 						settings,
@@ -39,7 +49,8 @@ module.exports = {
 					ImageHandlers.onSourceChanged(this, this.firstLine(), this.lastLine());
 					ImageHandlers.afterSourceChanges(this);
 					Overlay.onSourceChanged(this, this.firstLine(), this.lastLine());
-					this.getWrapperElement().onmousemove = on_mousemove(newSettings);
+					this.getWrapperElement().onmousemove = on_mousemove(this, newSettings);
+					this.getWrapperElement().onmouseup = on_mouseup(this, newSettings);
 				});
 
 				CodeMirror.defineExtension('clickUnderCursor', function() {
@@ -77,10 +88,7 @@ module.exports = {
 				async function on_mousedown(cm: any, event: MouseEvent) {
 					if (!cm.state.richMarkdown) return;
 
-					const settings = cm.state.richMarkdown.settings;
-
-					const ctrl = (event.ctrlKey || event.altKey);
-					const clickAllowed = ctrl || !settings.clickCtrl;
+					const clickAllowed = is_alt_click_allowed(cm, event);
 
 					if (clickAllowed &&
 						 (ClickHandlers.isLink(event) ||
@@ -94,20 +102,29 @@ module.exports = {
 					}
 				}
 
-				function on_mousemove(settings: RichMarkdownSettings) {
+				function update_cursor(cm:any, settings: RichMarkdownSettings, event: MouseEvent) {
+					if (!event.target) return;
+
+					let cursor = '';
+
+					if ((settings.links && ClickHandlers.isLink(event)) ||
+						  (settings.checkbox && ClickHandlers.isCheckbox(event))) {
+						cursor = is_alt_click_allowed(cm, event) ? 'pointer' : cursor;
+					}
+
+					const target = event.target as HTMLElement;
+					target.style.cursor = cursor;
+				}
+
+				function on_mousemove(cm:any, settings: RichMarkdownSettings) {
 					return function(event: MouseEvent) {
-						if (!event.target) return;
+						update_cursor(cm, settings, event);
+					}
+				}
 
-						const ctrl = (event.ctrlKey || event.altKey);
-						let cursor = '';
-
-						if ((settings.links && ClickHandlers.isLink(event)) ||
-							  (settings.checkbox && ClickHandlers.isCheckbox(event))) {
-							cursor = ctrl || !settings.clickCtrl ? 'pointer' : cursor;
-						}
-
-						const target = event.target as HTMLElement;
-						target.style.cursor = cursor;
+				function on_mouseup(cm:any, settings: RichMarkdownSettings) {
+					return function(event: MouseEvent) {
+						update_cursor(cm, settings, event);
 					}
 				}
 
