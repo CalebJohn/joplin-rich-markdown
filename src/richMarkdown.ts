@@ -19,10 +19,18 @@ module.exports = {
 					const settings = cm.state.richMarkdown.settings;
 					if (!settings.clickCtrl) return true;
 
-					if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
-						return event.metaKey;
+					let allowed = false;
+					if (settings.clickAlt) {
+						allowed = allowed || event.altKey;
 					}
-					return event.ctrlKey;
+					if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
+						allowed = allowed || event.metaKey;
+					}
+					else {
+						allowed = allowed || event.ctrlKey;
+					}
+
+					return allowed;
 				}
 
 				CodeMirror.defineExtension('initializeRichMarkdown', function(settings: RichMarkdownSettings) {

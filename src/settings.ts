@@ -30,6 +30,7 @@ export async function getAllSettings() {
 		checkbox: await joplin.settings.value('checkbox'),
 		links: await joplin.settings.value('links'),
 		clickCtrl: await joplin.settings.value('clickCtrl'),
+		clickAlt: await joplin.settings.value('clickAlt'),
 	}
 }
 
@@ -103,6 +104,16 @@ export async function registerAllSettings() {
 			section: 'settings.calebjohn.richmarkdown',
 			public: true,
 			label: 'Require Ctrl (or Cmd) when clicking on elements (links and checkboxes)',
+			description: 'It\'s recommended not to change this',
+		},
+
+		'clickAlt': {
+			value: false,
+			type: SettingItemType.Bool,
+			advanced: true,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Allow Alt (or Opt) in addition to Ctrl/Cmd  when clicking on elements (links and checkboxes)',
 			description: 'It\'s recommended not to change this',
 		}
 	});
