@@ -85,7 +85,7 @@ export async function registerAllSettings() {
 			type: SettingItemType.Bool,
 			section: 'settings.calebjohn.richmarkdown',
 			public: true,
-			label: 'Toggle checkboxes with Ctrl (or Opt)+Click'
+			label: 'Toggle checkboxes with Ctrl (or Cmd)+Click'
 		},
 
 		'links': {
@@ -93,7 +93,7 @@ export async function registerAllSettings() {
 			type: SettingItemType.Bool,
 			section: 'settings.calebjohn.richmarkdown',
 			public: true,
-			label: 'Follow note links with Ctrl (or Opt)+Click'
+			label: 'Follow note links with Ctrl (or Cmd)+Click'
 		},
 
 		'clickCtrl': {
@@ -102,7 +102,7 @@ export async function registerAllSettings() {
 			advanced: true,
 			section: 'settings.calebjohn.richmarkdown',
 			public: true,
-			label: 'Require Ctrl (or Opt) when clicking on elements (links and checkboxes)',
+			label: 'Require Ctrl (or Cmd) when clicking on elements (links and checkboxes)',
 			description: 'It\'s recommended not to change this',
 		}
 	});

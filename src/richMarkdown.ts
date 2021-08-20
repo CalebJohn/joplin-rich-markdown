@@ -15,14 +15,14 @@ module.exports = {
 					return await context.postMessage({name: 'getSettings'});
 				}
 
-				function is_alt_click_allowed(cm:any, event: MouseEvent) {
+				function is_click_allowed(cm:any, event: MouseEvent) {
+					const settings = cm.state.richMarkdown.settings;
+					if (!settings.clickCtrl) return true;
+
 					if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
 						return event.metaKey;
 					}
-
-					const settings = cm.state.richMarkdown.settings;
-					const ctrl = (event.ctrlKey || event.altKey);
-					return ctrl || !settings.clickCtrl;
+					return event.ctrlKey;
 				}
 
 				CodeMirror.defineExtension('initializeRichMarkdown', function(settings: RichMarkdownSettings) {
@@ -88,7 +88,7 @@ module.exports = {
 				async function on_mousedown(cm: any, event: MouseEvent) {
 					if (!cm.state.richMarkdown) return;
 
-					const clickAllowed = is_alt_click_allowed(cm, event);
+					const clickAllowed = is_click_allowed(cm, event);
 
 					if (clickAllowed &&
 						 (ClickHandlers.isLink(event) ||
@@ -109,7 +109,7 @@ module.exports = {
 
 					if ((settings.links && ClickHandlers.isLink(event)) ||
 						  (settings.checkbox && ClickHandlers.isCheckbox(event))) {
-						cursor = is_alt_click_allowed(cm, event) ? 'pointer' : cursor;
+						cursor = is_click_allowed(cm, event) ? 'pointer' : cursor;
 					}
 
 					const target = event.target as HTMLElement;
