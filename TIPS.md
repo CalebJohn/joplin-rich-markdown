@@ -46,13 +46,13 @@ div.CodeMirror .cm-header.cm-rm-header-token {
 /* the header text with the rest of the text */
 div.CodeMirror .cm-header.cm-rm-header-token {
 	color: #cccccc;
-    font-size: 0.9em;
-    margin-left: -50px;
-    max-width: 50px;
-    width: 50px;
-    overflow: hidden;
-    display: inline-block;
-    text-align: right;
+	font-size: 0.9em;
+	margin-left: -50px;
+	max-width: 50px;
+	width: 50px;
+	overflow: hidden;
+	display: inline-block;
+	text-align: right;
 	opacity: 0.5;
 }
 ```
