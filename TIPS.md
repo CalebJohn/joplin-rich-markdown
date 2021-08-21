@@ -6,7 +6,7 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
 
 ```css
 /* Limit the max width of editor, and center */
-.CodeMirror-sizer {
+div.CodeMirror .CodeMirror-sizer {
   margin-right: auto !important;
   margin-left: auto !important;
   max-width: 800px !important;
@@ -17,14 +17,14 @@ The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css)
 
 ```css
 /* Render horizontal lines (made with \-\-\- or \*\*\*) as an actual line across the editor. */
-.cm-hr {
+div.CodeMirror .cm-hr {
   border-top: 1px solid #777;
   display: block;
   line-height: 0px;
 }
 
 /* If using the Enforce CSS option, then use the below CSS */
-pre.cm-rm-hr.CodeMirror-line  {
+div.CodeMirror pre.cm-rm-hr.CodeMirror-line  {
   border-top: 1px solid #777;
 	line-height: 0px;
 }
@@ -35,18 +35,36 @@ pre.cm-rm-hr.CodeMirror-line  {
 ```css
 /* Reduce the size and visibility of the header hash tags. */
 /* The additional CSS option must be enabled */
-.cm-header.cm-rm-header-token {
+div.CodeMirror .cm-header.cm-rm-header-token {
 	font-size: 0.9em;
 	color: grey;
 }
 ```
 
+```css
+/* Additionally, this CSS unindent the "#" characters to align */
+/* the header text with the rest of the text */
+div.CodeMirror .cm-header.cm-rm-header-token {
+	color: #cccccc;
+    font-size: 0.9em;
+    margin-left: -50px;
+    max-width: 50px;
+    width: 50px;
+    overflow: hidden;
+    display: inline-block;
+    text-align: right;
+	opacity: 0.5;
+}
+```
+
+Thanks to [uxamanda](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053/105) for the code.
+
 ## Subtle Tokens
 
 ```css
 /* Reduces the intensity of the italics (emph) and bold (strong) markdown tokens */
-.cm-em.cm-rm-em-token,
-.cm-strong.cm-rm-strong-token {
+div.CodeMirror .cm-em.cm-rm-em-token,
+div.CodeMirror .cm-strong.cm-rm-strong-token {
 	opacity: 0.5;
 }
 
@@ -63,7 +81,7 @@ pre.cm-rm-hr.CodeMirror-line  {
 ```css
 /* Changes the monospace font used for tabes/checkboxes */
 /* All fonts option must be enabled */
-.cm-overlay.cm-rm-monospace {
+div.CodeMirror .cm-overlay.cm-rm-monospace {
 	font-family: monospace !important;
 }
 ```
@@ -71,7 +89,7 @@ pre.cm-rm-hr.CodeMirror-line  {
 ## Strikeout Checkboxes
 ```css
 /* strikeout and dim the text of a checked checkbox */
-span.cm-rm-checkbox.cm-property + span.cm-rm-checkbox ~ span.cm-rm-checkbox {
+div.CodeMirror span.cm-rm-checkbox.cm-property + span.cm-rm-checkbox ~ span.cm-rm-checkbox {
 	text-decoration: line-through;
 	opacity: 0.7;
 }
@@ -90,7 +108,7 @@ span.cm-rm-checkbox.cm-property {
 
 ## Highlight the Active Line
 ```css
-.CodeMirror-activeline-background.CodeMirror-linebackground {
+div.CodeMirror .CodeMirror-activeline-background.CodeMirror-linebackground {
   background: grey !important;
 }
 ```
@@ -99,18 +117,18 @@ span.cm-rm-checkbox.cm-property {
 
 ```css
 /* Disable list colours for the default (Light) theme */
-.cm-s-default span.cm-variable-2, .cm-s-default span.cm-variable-3, .cm-s-default  span.cm-keyword {
+div.CodeMirror .cm-s-default span.cm-variable-2, .cm-s-default span.cm-variable-3, .cm-s-default  span.cm-keyword {
 	color: #32373F;
 }
 
 /* Add list colours back in for just the token component of the list */
-.cm-overlay.cm-rm-list-token.cm-variable-2 {
+div.CodeMirror .cm-overlay.cm-rm-list-token.cm-variable-2 {
 	color: blue;
 }
-.cm-overlay.cm-rm-list-token.cm-variable-3 {
+div.CodeMirror .cm-overlay.cm-rm-list-token.cm-variable-3 {
 	color: orange;
 }
-.cm-overlay.cm-rm-list-token.cm-keyword {
+div.CodeMirror .cm-overlay.cm-rm-list-token.cm-keyword {
 	color: green;
 }
 ```
@@ -119,7 +137,7 @@ span.cm-rm-checkbox.cm-property {
 
 ```css
 /* Match list spacing to the viewer */
-.cm-overlay.cm-rm-list-token {
+div.CodeMirror .cm-overlay.cm-rm-list-token {
   line-height: 2em;
 }
 ```
@@ -128,7 +146,7 @@ span.cm-rm-checkbox.cm-property {
 
 ```css
 /* Add a background color to code blocks */
-.cm-rm-code-block {
+div.CodeMirror .cm-rm-code-block {
   background-color: lightgrey;
 }
 ```
@@ -160,11 +178,11 @@ The below configurations are not recommended and are provided for advanced users
 #### Hide Tokens and URLs on Other Lines
 ```css
 /* Requires the extraCss option to be enabled */
-.cm-string.cm-url, .cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, .cm-search-marker.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token {
+div.CodeMirror .cm-string.cm-url, .cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, .cm-search-marker.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token {
 	display: none;
 }
 
-.CodeMirror-activeline .cm-string.cm-url, .CodeMirror-activeline .cm-header.cm-rm-header-token, .CodeMirror-activeline .cm-em.cm-rm-em-token, .CodeMirror-activeline .cm-strong.cm-rm-strong-token, .CodeMirror-activeline .cm-search-marker.cm-rm-highlight-token, .CodeMirror-activeline .cm-strikethrough.cm-rm-strike-token, .CodeMirror-activeline .cm-rm-ins.cm-rm-ins-token, .CodeMirror-activeline .cm-rm-sub.cm-rm-sub-token, .CodeMirror-activeline .cm-rm-sup.cm-rm-sup-token {
+div.CodeMirror .CodeMirror-activeline .cm-string.cm-url, .CodeMirror-activeline .cm-header.cm-rm-header-token, .CodeMirror-activeline .cm-em.cm-rm-em-token, .CodeMirror-activeline .cm-strong.cm-rm-strong-token, .CodeMirror-activeline .cm-search-marker.cm-rm-highlight-token, .CodeMirror-activeline .cm-strikethrough.cm-rm-strike-token, .CodeMirror-activeline .cm-rm-ins.cm-rm-ins-token, .CodeMirror-activeline .cm-rm-sub.cm-rm-sub-token, .CodeMirror-activeline .cm-rm-sup.cm-rm-sup-token {
 	display: inherit;
 }
 ```
@@ -172,11 +190,11 @@ The below configurations are not recommended and are provided for advanced users
 #### Focus Mode
 Dims everything outside of the current line.
 ```css
-.CodeMirror-line {
+div.CodeMirror .CodeMirror-line {
   opacity: 0.4;
 }
 
-.CodeMirror-activeline .CodeMirror-line{
+div.CodeMirror .CodeMirror-activeline .CodeMirror-line{
   opacity: 1.0;
 }
 ```
@@ -185,10 +203,10 @@ Dims everything outside of the current line.
 Much thanks to [ambrt](https://discourse.joplinapp.org/u/ambrt/) for the initial implementation.
 ```css
 /* Requires the extraCss option to be enabled */
-.cm-property.cm-rm-checkbox.cm-rm-checkbox-check {
+div.CodeMirror .cm-property.cm-rm-checkbox.cm-rm-checkbox-check {
   display: none;
 }
-.cm-property.cm-rm-checkbox.cm-rm-checkbox-check + .cm-property:before {
+div.CodeMirror .cm-property.cm-rm-checkbox.cm-rm-checkbox-check + .cm-property:before {
     content: "✓";
 }
 ```
