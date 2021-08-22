@@ -88,16 +88,8 @@ The aim of this project is to ditch the markdown viewer without trying to turn a
 Please make feature requests (please prepend the title with Feature Request) [on the github page](https://github.com/CalebJohn/joplin-rich-markdown/issues), or on the [rich markdown forum topic](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053).
 
 # Tips
-I don't like reading/writing notes at a full width, but find the viewer a bit distracting at times. I add the below CSS to my [userchrome.css](https://joplinapp.org/#custom-css) file in order to get a semi-distraction free writing experience when only the editor is toggled.
-```css
-.CodeMirror-sizer {
-  margin-right: auto !important;
-  margin-left: auto !important;
-  max-width: 800px !important;
-}
-```
 
-See more in [Tips](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/TIPS.md).
+Go to [Tips](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/TIPS.md) to see a collection of CSS styling tips to get the most out of the Rich Markdown plugin.
 
 
 # Known Issues

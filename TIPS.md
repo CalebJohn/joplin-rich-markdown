@@ -2,17 +2,6 @@
 
 The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css) customizations that might be handy. If you have one of your own that you'd like added here, please make a [PR](https://github.com/CalebJohn/joplin-rich-markdown/pulls) or let me know [on the forum](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053).
 
-## Max Width
-
-```css
-/* Limit the max width of editor, and center */
-div.CodeMirror .CodeMirror-sizer {
-  margin-right: auto !important;
-  margin-left: auto !important;
-  max-width: 800px !important;
-}
-```
-
 ## Horizontal Rule 
 
 ```css
