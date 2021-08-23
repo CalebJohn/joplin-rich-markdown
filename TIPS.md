@@ -97,7 +97,7 @@ span.cm-rm-checkbox.cm-property {
 
 ## Highlight the Active Line
 ```css
-div.CodeMirror .CodeMirror-activeline-background.CodeMirror-linebackground {
+div.CodeMirror .CodeMirror-activeline .CodeMirror-activeline-background.CodeMirror-linebackground {
   background: grey !important;
 }
 ```
