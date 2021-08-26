@@ -10,13 +10,15 @@ export interface RichMarkdownSettings {
 	subHighlight: boolean;
 	supHighlight: boolean;
 	extraCSS: boolean;
+	activeLine: boolean;
 	alignIndent: boolean;
 	checkbox: boolean;
 	links: boolean;
 	clickCtrl: boolean;
+	clickAlt: boolean;
 }
 
-export async function getAllSettings() {
+export async function getAllSettings(): Promise<RichMarkdownSettings> {
 	return {
 		inlineImages: await joplin.settings.value('inlineImages'),
 		imageHover: await joplin.settings.value('imageHover'),
@@ -26,6 +28,7 @@ export async function getAllSettings() {
 		subHighlight: await joplin.settings.globalValue('markdown.plugin.sub'),
 		supHighlight: await joplin.settings.globalValue('markdown.plugin.sup'),
 		extraCSS: await joplin.settings.value('extraCSS'),
+		activeLine: await joplin.settings.value('activeLine'),
 		alignIndent: await joplin.settings.value('alignIndent'),
 		checkbox: await joplin.settings.value('checkbox'),
 		links: await joplin.settings.value('links'),
@@ -79,6 +82,14 @@ export async function registerAllSettings() {
 			public: true,
 			label: 'Add additional CSS classes for enhanced customization',
 			description: 'See https://github.com/CalebJohn/joplin-rich-markdown#extra-css for options',
+		},
+
+		'activeLine': {
+			value: false,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Highlight the background of the current line',
 		},
 
 		'checkbox': {

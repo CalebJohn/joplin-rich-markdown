@@ -97,6 +97,7 @@ span.cm-rm-checkbox.cm-property {
 
 ## Highlight the Active Line
 ```css
+/* Requires the "highlight background of current line option to be enabled */
 div.CodeMirror .CodeMirror-activeline .CodeMirror-activeline-background.CodeMirror-linebackground {
   background: grey !important;
 }
@@ -166,7 +167,7 @@ The below configurations are not recommended and are provided for advanced users
 
 #### Hide Tokens and URLs on Other Lines
 ```css
-/* Requires the extraCss option to be enabled */
+/* Requires the additional Css option to be enabled */
 div.CodeMirror .cm-string.cm-url, .cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, .cm-search-marker.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token {
 	display: none;
 }
@@ -191,7 +192,7 @@ div.CodeMirror .CodeMirror-activeline .CodeMirror-line{
 #### Checkmark Checkboxes
 Much thanks to [ambrt](https://discourse.joplinapp.org/u/ambrt/) for the initial implementation.
 ```css
-/* Requires the extraCss option to be enabled */
+/* Requires the additional Css option to be enabled */
 div.CodeMirror .cm-property.cm-rm-checkbox.cm-rm-checkbox-check {
   display: none;
 }

@@ -57,6 +57,11 @@ module.exports = {
 					ImageHandlers.onSourceChanged(this, this.firstLine(), this.lastLine());
 					ImageHandlers.afterSourceChanges(this);
 					Overlay.onSourceChanged(this, this.firstLine(), this.lastLine());
+					if (newSettings.activeLine) {
+						this.setOption('styleActiveLine', { nonEmpty: true });
+					} else {
+						this.setOption('styleActiveLine', false);
+					}
 					this.getWrapperElement().onmousemove = on_mousemove(this, newSettings);
 					this.getWrapperElement().onmouseup = on_mouseup(this, newSettings);
 				});
@@ -172,7 +177,6 @@ module.exports = {
 			},
 			codeMirrorResources: ['addon/selection/active-line', 'addon/selection/mark-selection'],
 			codeMirrorOptions: { 'enable-rich-mode': true,
-													 'styleActiveLine': { nonEmpty: true },
 													 'styleSelectedText': true },
 			assets: function() {
 				return [
@@ -197,12 +201,6 @@ module.exports = {
 										}
 										/* Needed for the renderLine indent hack to work */
 										.CodeMirror pre > * { text-indent: 0px; }
-										/* Remove the active line background */
-										.CodeMirror .CodeMirror-activeline .CodeMirror-activeline-background:not(.cm-jn-code-block):not(.cm-jn-code-block-background),
-										.cm-s-solarized.cm-s-light div.CodeMirror-activeline-background,
-										.cm-s-solarized.cm-s-dark div.CodeMirror-activeline-background {
-										  background: inherit;
-										}
 							`
 					}
 				];
