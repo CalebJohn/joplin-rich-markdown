@@ -160,6 +160,12 @@ async function check_lines(cm: any, from: number, to: number) {
 		}
 
 		if (!line) continue;
+		const state = cm.getStateAfter(i, true);
+
+		// Don't render inline images inside of code blocks
+		if (state?.outer && (state?.outer?.code || (state?.outer?.thisLine?.fencedCodeEnd))) {
+			continue;
+		}
 
 		const match = line.text.match(image_line_regex);
 		let img = null;
