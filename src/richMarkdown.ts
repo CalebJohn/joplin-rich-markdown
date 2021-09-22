@@ -47,6 +47,7 @@ module.exports = {
 					Overlay.add(this);
 					IndentHandlers.calculateSpaceWidth(this);
 					this.updateRichMarkdownSettings(settings);
+					this.state.richMarkdown.scanImgInterval = setInterval(ImageHandlers.refreshAllWidgets, settings.scanImgChangePeriod * 1000, this);
 				});
 
 				CodeMirror.defineExtension('updateRichMarkdownSettings', function(newSettings: RichMarkdownSettings) {
@@ -64,6 +65,8 @@ module.exports = {
 					}
 					this.getWrapperElement().onmousemove = on_mousemove(this, newSettings);
 					this.getWrapperElement().onmouseup = on_mouseup(this, newSettings);
+					clearInterval(this.state.richMarkdown.scanImgInterval)
+					this.state.richMarkdown.scanImgInterval = setInterval(ImageHandlers.refreshAllWidgets, newSettings.scanImgChangePeriod * 1000, this);
 				});
 
 				CodeMirror.defineExtension('clickUnderCursor', function() {
@@ -152,6 +155,7 @@ module.exports = {
 						Overlay.remove(cm);
 						cm.state.richMarkdown = null;
 						ImageHandlers.clearAllWidgets(cm);
+						clearInterval(this.state.richMarkdown.scanImgInterval)
 					}
 					// setup
 					if (val) {

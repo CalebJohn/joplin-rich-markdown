@@ -9,8 +9,10 @@ export const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 export function onSourceChanged(cm: any, from: number, to: number) {
 	if (!cm.state.richMarkdown) return;
 
-	if (cm.state.richMarkdown.settings.inlineImages)
+	if (cm.state.richMarkdown.settings.inlineImages) {
 		check_lines(cm, from, to);
+		refreshAllWidgets(cm);
+	}
 }
 
 export function afterSourceChanges(cm: any) {
@@ -207,6 +209,9 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 			img.src = await path_from_id(id.substring(2));
 		}
 	}
+	// Tack on a timestamp to support refreshing
+	const timestamp = new Date().getTime();
+	img.src = `${img.src}?t=${timestamp}`;
 
 	return img;
 }
@@ -222,13 +227,35 @@ async function createImage(path: string, alt: string, path_from_id: any) {
 		path = path.substring(1, path.length - 1);
 	}
 
+	// Tack on a timestamp to support refreshing
+	const timestamp = new Date().getTime();
 	const img = document.createElement('img');
-	img.src = path;
+	img.src = `${path}?t=${timestamp}`;
 	img.alt = alt;
 	img.style.maxWidth = '100%';
 	img.style.height = 'auto';
 
 	return img;
+}
+
+export function refreshAllWidgets(cm: any) {
+	for (let i = cm.firstLine(); i <= cm.lastLine(); i++) {
+		const line = cm.lineInfo(i);
+
+		const timestamp = new Date().getTime();
+		let path = '';
+		if (line.widgets) {
+			for (const wid of line.widgets) {
+				if (wid.className === 'rich-markdown-resource')
+					path = wid.node.src.split("?t=")[0];
+					wid.node.src = `${path}?t=${timestamp}`;
+			}
+		}
+	}
+
+	// Refresh codemirror to make sure everything is sized correctly
+	cm.refresh();
+
 }
 
 // Used on cleanup
@@ -249,3 +276,4 @@ export function clearAllWidgets(cm: any) {
 	// Refresh codemirror to make sure everything is sized correctly
 	cm.refresh();
 }
+

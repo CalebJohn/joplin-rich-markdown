@@ -71,6 +71,10 @@ If you have a suggestion for something you'd like to be able to customize. Just 
 
 This is disabled by default.
 
+## Image External Edits
+If an image is edited, the change will be reflected in the editor within 3s (by default) or immediately after any change to the note. The 3s period can be changed in the settings (under the advanced tab). Setting the value to 0s will prevent the periodic image changes, but image changes will still be picked up when the note is edited.
+
+
 # Install
 The typical way to install plugins is through the built-in Joplin plugin manager.
 
