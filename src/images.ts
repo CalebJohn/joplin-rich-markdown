@@ -186,7 +186,8 @@ async function check_lines(cm: any, from: number, to: number) {
 			// already a large number present, the scroll seems to jump to a random position
 			// We manually restore the scroll position here, it doesn't prevent jumping
 			// But at least puts the user back in the right place
-			img.onload = function() { cm.scrollTo(currentScroll.left, currentScroll.top); };
+			img.onload = function() { cm.refresh(); cm.scrollTo(currentScroll.left, currentScroll.top); };
+
 			const wid = cm.addLineWidget(i, img, { className: 'rich-markdown-resource' });
 		}
 	}
@@ -215,9 +216,6 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 			img.src = await path_from_id(id.substring(2));
 		}
 	}
-	// Tack on a timestamp to support refreshing
-	const timestamp = new Date().getTime();
-	img.src = `${img.src}?t=${timestamp}`;
 
 	return img;
 }
@@ -233,10 +231,8 @@ async function createImage(path: string, alt: string, path_from_id: any) {
 		path = path.substring(1, path.length - 1);
 	}
 
-	// Tack on a timestamp to support refreshing
-	const timestamp = new Date().getTime();
 	const img = document.createElement('img');
-	img.src = `${path}?t=${timestamp}`;
+	img.src = path
 	img.alt = alt;
 	img.style.maxWidth = '100%';
 	img.style.height = 'auto';
@@ -245,6 +241,8 @@ async function createImage(path: string, alt: string, path_from_id: any) {
 }
 
 export function refreshAllWidgets(cm: any) {
+	const currentScroll = cm.getScrollInfo();
+
 	for (let i = cm.firstLine(); i <= cm.lastLine(); i++) {
 		const line = cm.lineInfo(i);
 
@@ -252,16 +250,23 @@ export function refreshAllWidgets(cm: any) {
 		let path = '';
 		if (line.widgets) {
 			for (const wid of line.widgets) {
-				if (wid.className === 'rich-markdown-resource')
+				if (wid.className === 'rich-markdown-resource') {
 					path = wid.node.src.split("?t=")[0];
+					const width = wid.node.width;
+					const height = wid.node.height;
+					wid.node.onload = function() {
+						let im = this as HTMLElement;
+						if (im.clientWidth != width || im.clientHeight != height) {
+							cm.refresh();
+							// see `checkLines` for rationale
+							cm.scrollTo(currentScroll.left, currentScroll.top);
+						}
+					};
 					wid.node.src = `${path}?t=${timestamp}`;
+				}
 			}
 		}
 	}
-
-	// Refresh codemirror to make sure everything is sized correctly
-	cm.refresh();
-
 }
 
 // Used on cleanup
