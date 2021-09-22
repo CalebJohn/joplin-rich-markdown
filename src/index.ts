@@ -90,7 +90,10 @@ joplin.plugins.register({
 				else {
 					let url = message.url;
 
-					if (!url.match(/^(http|https|file)/))
+					// From RFC 1738 Page 1 a url is <scheme>:<scheme specific part>
+					// the below regex implements matching for the scheme (with support for uppercase)
+					// urls without a scheme will be assumed http
+					if (!url.match(/^(?:[a-zA-Z0-9\+\.\-])+:/))
 						url = 'http://' + url;
 					opener(url);
 				}
