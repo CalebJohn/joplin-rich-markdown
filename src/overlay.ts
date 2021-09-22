@@ -54,8 +54,15 @@ function regexOverlay(name: string, regex: RegExp, requiredSettings: string[]) {
 		requiredSettings: requiredSettings,
 		token: function(stream: any) {
 			const match = exec(regex, stream);
-	
-			if (match && match.index === stream.pos) {
+
+			const baseToken = stream.baseToken();
+			if (baseToken?.type && (
+				baseToken.type.includes("jn-inline-code") ||
+				baseToken.type.includes("comment") ||
+				baseToken.type.includes("katex"))) {
+				stream.pos += baseToken.size;
+			}
+			else if (match && match.index === stream.pos) {
 				// advance
 				stream.pos += match[0].length || 1;
 				return name;
