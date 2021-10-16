@@ -65,6 +65,27 @@ div.CodeMirror .cm-strong.cm-rm-strong-token {
 
 ```
 
+## Quotes
+```css
+
+/* Add a vertical bar to the left side of quote blocks so they match the viewer */
+pre.cm-rm-blockquote.CodeMirror-line {
+  border-left: 4px solid var(--joplin-code-border-color);
+  opacity: 0.7;
+}
+
+pre.cm-rm-blockquote span.cm-quote + span.cm-quote {
+  opacity: 1;
+}
+
+/* WARNING: the below code will hide the > from quotes, use at your own risk */
+/*
+pre.cm-rm-blockquote span.cm-quote.cm-rm-list-token {
+  opacity: 0;
+}
+*/
+```
+
 ## Monospace Font
 
 ```css

@@ -69,6 +69,8 @@ Some additional CSS classes have been added to further enable customization thro
 
 `pre.cm-rm-hr.CodeMirror-line`: Used to support drawing a horizontal rule [see here](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/TIPS.md#horizontal-rule)
 
+`pre.cm-rm-blockquote.CodeMirror-line`: The line that contains a block quote
+
 If you have a suggestion for something you'd like to be able to customize. Just let me know and I'll see whats possible.
 
 This is disabled by default.

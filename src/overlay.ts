@@ -27,6 +27,7 @@ export const header_regex = /^\s*#+\s/g;
 export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+->]\s|(\d+)([.)]\s))(\s*)/g;
 // Taken from codemirror/mode/markdown/markdown.js
 export const hr_regex = /^([*\-_])(?:\s*\1){2,}\s*$/;
+export const blockquote_regex = /^\s*\>+\s/g;
 
 // TODO: Extend this to get better table highlighting
 export const table_regex = /^\|[^\n]+\|/g;
@@ -91,6 +92,7 @@ const overlays = [
 	regexOverlay('rm-sub', sub_regex, ['subHighlight']),
 	regexOverlay('rm-sup', sup_regex, ['supHighlight']),
 	regexOverlay('rm-header-token', header_regex, ['extraCSS']),
+	regexOverlay('line-cm-rm-blockquote', blockquote_regex, ['extraCSS']),
 	regexOverlay('rm-em-token', emph_star_regex, ['extraCSS']),
 	regexOverlay('rm-em-token', emph_underline_regex, ['extraCSS']),
 	regexOverlay('rm-strong-token', strong_star_regex, ['extraCSS']),
