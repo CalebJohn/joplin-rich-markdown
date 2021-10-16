@@ -55,7 +55,9 @@ Some additional CSS classes have been added to further enable customization thro
 
 `.cm-strong.cm-rm-strong-token`: The \*\* or \_\_ used to begin bold
 
-`.cm-search-marker.cm-rm-highlight-token`: The == used to begin highlighting
+`.cm-rm-highlight`: The highlighted text (including the ==)
+
+`.cm-rm-highlight.cm-rm-highlight-token`: The == used to begin highlighting
 
 `.cm-strikethrough.cm-rm-strike-token`: The \~\~ used to begin a strike through
 

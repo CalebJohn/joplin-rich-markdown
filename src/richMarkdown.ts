@@ -207,7 +207,11 @@ module.exports = {
 											vertical-align: super;
 											font-size: smaller;
 										}
-										.CodeMirror-selectedtext.cm-search-marker {
+										.cm-rm-highlight {
+											background-color: var(--joplin-search-marker-background-color);
+											color: var(--joplin-search-marker-color);
+										}
+										.CodeMirror-selectedtext.cm-rm-highlight {
 											background-color: #e5d3ce;
 										}
 										/* Needed for the renderLine indent hack to work */
