@@ -1,6 +1,6 @@
 # Tips
 
-The below is a collection of [userchrome.css](https://joplinapp.org/#custom-css) customizations that might be handy. If you have one of your own that you'd like added here, please make a [PR](https://github.com/CalebJohn/joplin-rich-markdown/pulls) or let me know [on the forum](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053).
+The below is a collection of [userchrome.css](https://joplinapp.org/help/#custom-css) customizations that might be handy. If you have one of your own that you'd like added here, please make a [PR](https://github.com/CalebJohn/joplin-rich-markdown/pulls) or let me know [on the forum](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053).
 
 ## Horizontal Rule 
 
