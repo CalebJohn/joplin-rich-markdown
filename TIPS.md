@@ -188,13 +188,21 @@ The below configurations are not recommended and are provided for advanced users
 
 #### Hide Tokens and URLs on Other Lines
 ```css
-/* Requires the additional Css option to be enabled */
+/* Requires the additional Css and the highlight current line options to be enabled */
 div.CodeMirror .cm-string.cm-url, .cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, .cm-rm-highlight.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token {
 	display: none;
 }
 
 div.CodeMirror .CodeMirror-activeline .cm-string.cm-url, .CodeMirror-activeline .cm-header.cm-rm-header-token, .CodeMirror-activeline .cm-em.cm-rm-em-token, .CodeMirror-activeline .cm-strong.cm-rm-strong-token, .CodeMirror-activeline .cm-rm-highlight.cm-rm-highlight-token, .CodeMirror-activeline .cm-strikethrough.cm-rm-strike-token, .CodeMirror-activeline .cm-rm-ins.cm-rm-ins-token, .CodeMirror-activeline .cm-rm-sub.cm-rm-sub-token, .CodeMirror-activeline .cm-rm-sup.cm-rm-sup-token {
 	display: inherit;
+}
+
+/* Optional: You might also want to disable the highlight background */
+.CodeMirror .CodeMirror-activeline
+.CodeMirror-activeline-background:not(.cm-jn-code-block):not(.cm-jn-code-block-background),
+.cm-s-solarized.cm-s-light div.CodeMirror-activeline-background,
+.cm-s-solarized.cm-s-dark div.CodeMirror-activeline-background {
+  background: inherit;
 }
 ```
 
