@@ -32,18 +32,6 @@ export const blockquote_regex = /^\s*\>+\s/g;
 // TODO: Extend this to get better table highlighting
 export const table_regex = /^\|[^\n]+\|/g;
 
-// Special function to apply a line class to code blocks
-function codeBlock(cls: string) {
-	return (cm: any, line: number, state: any) => {
-		if (state?.outer && (state?.outer?.code || (state?.outer?.thisLine?.fencedCodeEnd))) {
-			cm.addLineClass(line, 'wrap', cls);
-		}
-		else {
-			cm.removeLineClass(line, 'wrap', cls);
-		}
-	}
-}
-
 function exec(query: RegExp, stream: any) {
 	query.lastIndex = stream.pos;
 	return query.exec(stream.string);
@@ -106,10 +94,6 @@ const overlays = [
 	regexOverlay('rm-hr line-cm-rm-hr', hr_regex, ['extraCSS']),
 ];
 
-const blocks = [
-	codeBlock('cm-rm-code-block')
-];
-
 function validate(settings: any, values: string[]): boolean {
 	for (let value of values) {
 		if (!settings[value])
@@ -132,15 +116,3 @@ export function remove(cm: any) {
 		cm.removeOverlay(overlay);
 }
 
-// from and to are ignored for now becuase a change on one line
-// can affect any number of other lines, this means we need to 
-// reprocess the entire document
-export function onSourceChanged(cm: any, from: number, to: number) {
-	for (let i = cm.firstLine(); i <= cm.lastLine(); i++) {
-		const state = cm.getStateAfter(i, true);
-
-		for (let block of blocks) {
-			block(cm, i, state);
-		}
-	}
-}

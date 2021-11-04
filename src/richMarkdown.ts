@@ -60,7 +60,6 @@ module.exports = {
 					ImageHandlers.clearAllWidgets(this);
 					ImageHandlers.onSourceChanged(this, this.firstLine(), this.lastLine());
 					ImageHandlers.afterSourceChanges(this);
-					Overlay.onSourceChanged(this, this.firstLine(), this.lastLine());
 					if (newSettings.activeLine) {
 						this.setOption('styleActiveLine', { nonEmpty: true });
 					} else {
@@ -102,7 +101,6 @@ module.exports = {
 					const { from, to } = get_change_lines(change);
 					
 					ImageHandlers.onSourceChanged(cm, from, to);
-					Overlay.onSourceChanged(cm, from, to);
 				}
 				function on_update(cm: any) {
 					ImageHandlers.afterSourceChanges(cm);

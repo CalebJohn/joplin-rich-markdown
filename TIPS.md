@@ -155,12 +155,8 @@ div.CodeMirror .cm-overlay.cm-rm-list-token {
 
 ## Code Blocks
 
-```css
-/* Add a background color to code blocks */
-div.CodeMirror .cm-rm-code-block {
-  background-color: lightgrey;
-}
-```
+Code block highlighting is implemented by the main Joplin app as of v2.3.4 and was removed from Rich Markdown  versions 0.8.0 onwards.
+
 
 ## Colour Schemes
 
