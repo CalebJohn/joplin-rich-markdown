@@ -144,9 +144,6 @@ function update_hover_widgets(cm: any) {
 async function check_lines(cm: any, from: number, to: number) {
 	if (!cm.state.richMarkdown) return;
 
-	// This should probably be a percentage?
-	// We'll need to restore scroll after the images load
-	const currentScroll = cm.getScrollInfo();
 	const path_from_id = cm.state.richMarkdown.path_from_id;
 
 	for (let i = from; i <= to; i++) {
@@ -182,12 +179,6 @@ async function check_lines(cm: any, from: number, to: number) {
 		}
 
 		if (img) {
-			// Joplin doesn't like it when new images are added, particularly when there's
-			// already a large number present, the scroll seems to jump to a random position
-			// We manually restore the scroll position here, it doesn't prevent jumping
-			// But at least puts the user back in the right place
-			img.onload = function() { cm.refresh(); cm.scrollTo(currentScroll.left, currentScroll.top); };
-
 			const wid = cm.addLineWidget(i, img, { className: 'rich-markdown-resource' });
 		}
 	}
@@ -240,9 +231,11 @@ async function createImage(path: string, alt: string, path_from_id: any) {
 	return img;
 }
 
+// This function updates the timestamp of each image that is rendered in the editor
+// This signals the internal rendering engine to reload the image from disk
+// This is a cheaters way of having images respond to on disk changes. It's not very performant
+// so it will need to be replaced eventually
 export function refreshAllWidgets(cm: any) {
-	const currentScroll = cm.getScrollInfo();
-
 	for (let i = cm.firstLine(); i <= cm.lastLine(); i++) {
 		const line = cm.lineInfo(i);
 
@@ -258,8 +251,6 @@ export function refreshAllWidgets(cm: any) {
 						let im = this as HTMLElement;
 						if (im.clientWidth != width || im.clientHeight != height) {
 							cm.refresh();
-							// see `checkLines` for rationale
-							cm.scrollTo(currentScroll.left, currentScroll.top);
 						}
 					};
 					wid.node.src = `${path}?t=${timestamp}`;
