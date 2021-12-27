@@ -1,9 +1,13 @@
 import { FolderEntity } from '../../database/types';
-import { Disposable } from './types';
+import { Disposable, MenuItem } from './types';
+export interface EditContextMenuFilterObject {
+    items: MenuItem[];
+}
+declare type FilterHandler<T> = (object: T) => Promise<void>;
 declare enum ItemChangeEventType {
     Create = 1,
     Update = 2,
-    Delete = 3,
+    Delete = 3
 }
 interface ItemChangeEvent {
     id: string;
@@ -12,8 +16,8 @@ interface ItemChangeEvent {
 interface SyncStartEvent {
     withErrors: boolean;
 }
-declare type ItemChangeHandler = (event: ItemChangeEvent)=> void;
-declare type SyncStartHandler = (event: SyncStartEvent)=> void;
+declare type ItemChangeHandler = (event: ItemChangeEvent) => void;
+declare type SyncStartHandler = (event: SyncStartEvent) => void;
 /**
  * The workspace service provides access to all the parts of Joplin that
  * are being worked on - i.e. the currently selected notes or notebooks as
@@ -50,6 +54,11 @@ export default class JoplinWorkspace {
      * Called when the synchronisation process has finished.
      */
     onSyncComplete(callback: Function): Promise<Disposable>;
+    /**
+     * Called just before the editor context menu is about to open. Allows
+     * adding items to it.
+     */
+    filterEditorContextMenu(handler: FilterHandler<EditContextMenuFilterObject>): void;
     /**
      * Gets the currently selected note
      */
