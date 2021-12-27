@@ -1,5 +1,5 @@
 import joplin from 'api';
-import { ContentScriptType, MenuItemLocation, Path, ToolbarButtonLocation } from 'api/types';
+import { ContentScriptType, MenuItem, ModelType } from 'api/types';
 
 import { getAllSettings, registerAllSettings } from './settings';
 import { getApiPort } from './findPort';
@@ -11,9 +11,13 @@ import { mime } from '@joplin/lib/mime-utils';
 // import markdown = require('prettier/parser-markdown');
 import path = require('path');
 import opener = require('opener');
+import { TextItem, TextItemType } from './clickHandlers';
+
+const { parseResourceUrl } = require('@joplin/lib/urlUtils');
 
 const contentScriptId = 'richMarkdownEditor';
 
+// TODO: This could be done using `joplin.data.resourcePath`
 async function getResourcePath(resourceDir: string, id: string): Promise<string> {
 	const info = await joplin.data.get(['resources', id], {
 		fields: ['file_extension', 'mime'],
@@ -33,18 +37,91 @@ joplin.plugins.register({
 		// doesn't always work when first opening the app. Opening the keyboard
 		// shortcuts will properly bind it and make it work.
 		// Placing the command before registering settings also seems to fix it
+
+		// TODO: no longer needed?
+
+		// await joplin.commands.register({
+		// 	name: 'editor.richMarkdown.clickAtCursor',
+		// 	label: 'Perform action',
+		// 	iconName: 'fas fa-link',
+		// 	execute: async () => {
+		// 		await joplin.commands.execute('editor.execCommand', {
+		// 			name: 'clickUnderCursor',
+		// 		});
+		//   },
+		// });
+
 		await joplin.commands.register({
-			name: 'editor.richMarkdown.clickAtCursor',
-			label: 'Perform action',
-			iconName: 'fas fa-link',
-			execute: async () => {
+			name: 'editor.richMarkdown.toggleCheckbox',
+			execute: async (coord:any) => {
 				await joplin.commands.execute('editor.execCommand', {
-					name: 'clickUnderCursor',
+					name: 'toggleCheckbox',
+					args: [coord],
 				});
 		  },
 		});
-		await joplin.views.menuItems.create('clickAtCursorContext', 'editor.richMarkdown.clickAtCursor', MenuItemLocation.EditorContextMenu, { accelerator: 'Ctrl+Enter' });
 
+		await joplin.commands.register({
+			name: 'editor.richMarkdown.copyPathToClipboard',
+			execute: async (path:string) => {
+				await joplin.clipboard.writeText(path);
+			},
+		});
+
+		await joplin.workspace.filterEditorContextMenu(async (object:any) => {
+			const textItem:TextItem = await joplin.commands.execute('editor.execCommand', {
+				name: 'getItemUnderCursor',
+			});
+
+			if (!textItem) return object;
+
+			const newItems:MenuItem[] = [];
+
+			if (textItem.type === TextItemType.Link) {
+				newItems.push({
+					label: 'Open link',
+					commandName: 'openItem',
+					commandArgs: [textItem.url],
+				});
+
+				const info = parseResourceUrl(textItem.url);
+				const itemId = info ? info.itemId : null;
+				const itemType = itemId ? await joplin.data.itemType(itemId) : null;
+				
+				if (itemType === ModelType.Resource) {
+					newItems.push({
+						label: 'Reveal file in folder',
+						commandName: 'revealResourceFile',
+						commandArgs: [itemId],
+					});
+
+					const resourcePath = await joplin.data.resourcePath(itemId);
+
+					newItems.push({
+						label: 'Copy path to clipboard',
+						commandName: 'editor.richMarkdown.copyPathToClipboard',
+						commandArgs: [resourcePath],
+					});
+				}
+			} else if (textItem.type === TextItemType.Checkbox) {
+				newItems.push({
+					label: 'Toggle checkbox',
+					commandName: 'editor.richMarkdown.toggleCheckbox',
+					commandArgs: [textItem.coord],
+				});
+			}
+
+			if (newItems.length) {
+				newItems.splice(0, 0, {
+					type: 'separator',
+				});
+
+				object.items = object.items.concat(newItems);
+			}
+
+			return object;
+		});
+		
 		const resourceDir = await joplin.settings.globalValue('resourceDir');
 		const apiToken = await joplin.settings.globalValue('api.token');
 		const clipperEnabled = await joplin.settings.globalValue('clipperServer.autoStart');

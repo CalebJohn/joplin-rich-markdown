@@ -37,7 +37,7 @@
     "yargs": "^16.2.0"
   },
   "dependencies": {
-    "@joplin/lib": "^2.1.1",
+    "@joplin/lib": "^2.6.3",
     "opener": "^1.5.2"
   }
 }
