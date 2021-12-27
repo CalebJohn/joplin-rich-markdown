@@ -249,6 +249,9 @@ export function refreshAllWidgets(cm: any) {
 					const height = wid.node.height;
 					wid.node.onload = function() {
 						let im = this as HTMLElement;
+						// If the image is scrolled out of view (no need to refresh), it won't have a clientRect
+						if (im.getClientRects().length == 0) return
+
 						if (im.clientWidth != width || im.clientHeight != height) {
 							cm.refresh();
 						}
