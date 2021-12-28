@@ -245,14 +245,13 @@ export function refreshAllWidgets(cm: any) {
 			for (const wid of line.widgets) {
 				if (wid.className === 'rich-markdown-resource') {
 					path = wid.node.src.split("?t=")[0];
-					const width = wid.node.width;
 					const height = wid.node.height;
 					wid.node.onload = function() {
-						let im = this as HTMLElement;
+						let im = this as HTMLImageElement;
 						// If the image is scrolled out of view (no need to refresh), it won't have a clientRect
 						if (im.getClientRects().length == 0) return
 
-						if (im.clientWidth != width || im.clientHeight != height) {
+						if (im.height != height) {
 							cm.refresh();
 						}
 					};
