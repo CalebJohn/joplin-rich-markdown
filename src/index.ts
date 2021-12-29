@@ -37,7 +37,6 @@ joplin.plugins.register({
 		// doesn't always work when first opening the app. Opening the keyboard
 		// shortcuts will properly bind it and make it work.
 		// Placing the command before registering settings also seems to fix it
-
 		await joplin.commands.register({
 			name: 'editor.richMarkdown.clickAtCursor',
 			label: 'Perform action',
