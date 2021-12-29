@@ -38,18 +38,16 @@ joplin.plugins.register({
 		// shortcuts will properly bind it and make it work.
 		// Placing the command before registering settings also seems to fix it
 
-		// TODO: no longer needed?
-
-		// await joplin.commands.register({
-		// 	name: 'editor.richMarkdown.clickAtCursor',
-		// 	label: 'Perform action',
-		// 	iconName: 'fas fa-link',
-		// 	execute: async () => {
-		// 		await joplin.commands.execute('editor.execCommand', {
-		// 			name: 'clickUnderCursor',
-		// 		});
-		//   },
-		// });
+		await joplin.commands.register({
+			name: 'editor.richMarkdown.clickAtCursor',
+			label: 'Perform action',
+			iconName: 'fas fa-link',
+			execute: async () => {
+				await joplin.commands.execute('editor.execCommand', {
+					name: 'clickUnderCursor',
+				});
+		  },
+		});
 
 		await joplin.commands.register({
 			name: 'editor.richMarkdown.toggleCheckbox',
