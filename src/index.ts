@@ -2,7 +2,6 @@ import joplin from 'api';
 import { ContentScriptType, MenuItem, ModelType } from 'api/types';
 
 import { getAllSettings, registerAllSettings } from './settings';
-import { getApiPort } from './findPort';
 
 import { mime } from '@joplin/lib/mime-utils';
 
@@ -10,7 +9,6 @@ import { mime } from '@joplin/lib/mime-utils';
 // import prettier = require('prettier/standalone');
 // import markdown = require('prettier/parser-markdown');
 import path = require('path');
-import opener = require('opener');
 import { TextItem, TextItemType } from './clickHandlers';
 
 const { parseResourceUrl } = require('@joplin/lib/urlUtils');
@@ -32,6 +30,20 @@ joplin.plugins.register({
 					name: 'clickUnderCursor',
 				});
 		  },
+		});
+
+		// TODO: See about getting this same behaviour into the openItem function
+		await joplin.commands.register({
+			name: 'app.richMarkdown.openItem',
+			execute: async (url:string) => {
+				// From RFC 1738 Page 1 a url is <scheme>:<scheme specific part>
+				// the below regex implements matching for the scheme (with support for uppercase)
+				// urls without a scheme will be assumed http
+				if (!url.startsWith(':/') && !url.match(/^(?:[a-zA-Z0-9\+\.\-])+:/)) {
+					url = 'http://' + url;
+				}
+				await joplin.commands.execute('openItem', url);
+			},
 		});
 
 		await joplin.commands.register({
@@ -63,7 +75,7 @@ joplin.plugins.register({
 			if (textItem.type === TextItemType.Link) {
 				newItems.push({
 					label: 'Open link',
-					commandName: 'openItem',
+					commandName: 'app.richMarkdown.openItem',
 					commandArgs: [textItem.url],
 				});
 
@@ -105,10 +117,6 @@ joplin.plugins.register({
 			return object;
 		});
 		
-		const resourceDir = await joplin.settings.globalValue('resourceDir');
-		const apiToken = await joplin.settings.globalValue('api.token');
-		const clipperEnabled = await joplin.settings.globalValue('clipperServer.autoStart');
-		const apiPort = clipperEnabled ? await getApiPort() : -1;
 		await registerAllSettings();
 
 		await joplin.contentScripts.register(
@@ -125,38 +133,7 @@ joplin.plugins.register({
 				return await getAllSettings();
 			}
 			else if (message.name === 'followLink') {
-
-				if (message.url.startsWith(':/')) {
-					const id = message.url.slice(2, 34);
-					try {
-						await joplin.commands.execute('openNote', id);
-					} catch (e) {
-						if (apiPort > 0) {
-							await fetch(`http://localhost:${apiPort}/services/resourceEditWatcher/?token=${apiToken}`, {
-								method: 'POST',
-								body: `{ "action": "openAndWatch", "resourceId": "${id}" }`,
-								headers: {
-									'Content-Type': 'application/json'
-								}
-							});
-						}
-						else {
-							// If no apiPort can be found, fallback to just opening the resource
-							const resource = await joplin.data.resourcePath(message.id);
-							opener(resource);
-						}
-					}
-				}
-				else {
-					let url = message.url;
-
-					// From RFC 1738 Page 1 a url is <scheme>:<scheme specific part>
-					// the below regex implements matching for the scheme (with support for uppercase)
-					// urls without a scheme will be assumed http
-					if (!url.match(/^(?:[a-zA-Z0-9\+\.\-])+:/))
-						url = 'http://' + url;
-					opener(url);
-				}
+				await joplin.commands.execute('app.richMarkdown.openItem', message.url);
 			}
 
 			return "Error: " + message + " is not a valid message";
