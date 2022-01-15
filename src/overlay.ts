@@ -85,7 +85,7 @@ const overlays = [
 	regexOverlay('rm-em-token', emph_underline_regex, ['extraCSS']),
 	regexOverlay('rm-strong-token', strong_star_regex, ['extraCSS']),
 	regexOverlay('rm-strong-token', strong_underline_regex, ['extraCSS']),
-	regexOverlay('rm-highlight', highlight_regex, ['extraCSS', 'markHighlight']),
+	regexOverlay('rm-highlight', highlight_regex, ['markHighlight']),
 	regexOverlay('rm-highlight-token', highlight_token_regex, ['extraCSS', 'markHighlight']),
 	regexOverlay('rm-ins-token', insert_token_regex, ['extraCSS', 'insertHighlight']),
 	regexOverlay('rm-sub-token', sub_token_regex, ['extraCSS', 'subHighlight']),
