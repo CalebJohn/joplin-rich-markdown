@@ -71,6 +71,36 @@ export function clickAt(cm: any, coord: any) {
 	return null;
 }
 
+export enum TextItemType {
+	Link = 'link',
+	Checkbox = 'checkbox',
+}
+
+export interface TextItem {
+	type: TextItemType;
+	coord: any;
+	url?: string;
+}
+
+export function getItemAt(cm:any, coord:any):TextItem {
+	if (!cm.state.richMarkdown) return null;
+
+	const settings = cm.state.richMarkdown.settings;
+
+	if (settings.links) {
+		const url = getLinkAt(cm, coord);
+		if (url)
+			return { type: TextItemType.Link, url, coord };
+	}
+
+	if (settings.checkbox) {
+		const checkboxInfo = getCheckboxInfo(cm, coord);
+		if (checkboxInfo) return { type: TextItemType.Checkbox, coord };
+	}
+
+	return null;
+}
+
 function getLinkAt(cm: any, coord: any) {
 	let { line, ch } = coord;
 
@@ -109,15 +139,21 @@ function getLinkAt(cm: any, coord: any) {
 	return url;
 }
 
-function toggleCheckbox(cm: any, coord: any) {
-	const cursor = cm.getCursor();
-
+function getCheckboxInfo(cm:any, coord:any) {
 	const { line, ch } = coord;
 	const lineText = cm.getLine(line);
 
 	const match = getMatchAt(lineText, Overlay.checkbox_regex, ch);
 
-	if (!match || !match[3]) return false;
+	if (!match || !match[3]) return null;
+
+	return { match, lineText, line };
+}
+
+export function toggleCheckbox(cm: any, coord: any) {
+	const cursor = cm.getCursor();
+
+	const { match, line, lineText } = getCheckboxInfo(cm, coord);
 
 	let from = lineText.indexOf(match[3])
 	let to = from + match[3].length;
