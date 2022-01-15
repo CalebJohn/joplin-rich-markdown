@@ -46,9 +46,6 @@ module.exports = {
 
 					Overlay.add(this);
 					IndentHandlers.calculateSpaceWidth(this);
-					if (settings.inlineImages && settings.scanImgChangePeriod > 0) {
-						this.state.richMarkdown.scanImgInterval = setInterval(ImageHandlers.refreshAllWidgets, settings.scanImgChangePeriod * 1000, this);
-					}
 
 					this.updateRichMarkdownSettings(settings);
 				});
@@ -67,12 +64,6 @@ module.exports = {
 					}
 					this.getWrapperElement().onmousemove = on_mousemove(this, newSettings);
 					this.getWrapperElement().onmouseup = on_mouseup(this, newSettings);
-					if (this.state.richMarkdown.scanImgInterval) {
-						clearInterval(this.state.richMarkdown.scanImgInterval)
-					}
-					if (newSettings.inlineImages && newSettings.scanImgChangePeriod > 0) {
-						this.state.richMarkdown.scanImgInterval = setInterval(ImageHandlers.refreshAllWidgets, newSettings.scanImgChangePeriod * 1000, this);
-					}
 				});
 
 				CodeMirror.defineExtension('clickUnderCursor', function() {
@@ -89,6 +80,10 @@ module.exports = {
 
 				CodeMirror.defineExtension('toggleCheckbox', function(coord:any) {
 					ClickHandlers.toggleCheckbox(this, coord);
+				});
+
+				CodeMirror.defineExtension('refreshResource', function(resourceId:string) {
+					ImageHandlers.refreshResource(this, resourceId);
 				});
 
 				function on_renderLine(cm: any, line: any, element: HTMLElement) {
@@ -169,7 +164,6 @@ module.exports = {
 						Overlay.remove(cm);
 						cm.state.richMarkdown = null;
 						ImageHandlers.clearAllWidgets(cm);
-						clearInterval(this.state.richMarkdown.scanImgInterval)
 					}
 					// setup
 					if (val) {

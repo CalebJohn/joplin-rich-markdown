@@ -5,13 +5,14 @@ export const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)\s*
 export const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)/g;
 export const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
+// Used to quickly index widgets that will get updated
+let allWidgets = {};
 
 export function onSourceChanged(cm: any, from: number, to: number) {
 	if (!cm.state.richMarkdown) return;
 
 	if (cm.state.richMarkdown.settings.inlineImages) {
 		check_lines(cm, from, to);
-		refreshAllWidgets(cm);
 	}
 }
 
@@ -145,6 +146,7 @@ async function check_lines(cm: any, from: number, to: number) {
 	if (!cm.state.richMarkdown) return;
 
 	const path_from_id = cm.state.richMarkdown.path_from_id;
+	let needsRefresh = false;
 
 	for (let i = from; i <= to; i++) {
 		const line = cm.lineInfo(i);
@@ -153,10 +155,11 @@ async function check_lines(cm: any, from: number, to: number) {
 			for (const wid of line.widgets) {
 				if (wid.className === 'rich-markdown-resource')
 					wid.clear();
+					delete allWidgets[wid.node.id];
 			}
 		}
 
-		if (!line) continue;
+		if (!line) { continue; }
 		const state = cm.getStateAfter(i, true);
 
 		// Don't render inline images inside of code blocks
@@ -174,13 +177,18 @@ async function check_lines(cm: any, from: number, to: number) {
 			const imgMatch = line.text.match(html_image_line_regex);
 
 			if (imgMatch) {
-				img = await createImageFromImg(imgMatch[0], path_from_id)
+				img = await createImageFromImg(imgMatch[0], path_from_id);
 			}
 		}
 
 		if (img) {
 			const wid = cm.addLineWidget(i, img, { className: 'rich-markdown-resource' });
+			allWidgets[img.id] = wid;
+			needsRefresh = true;
 		}
+	}
+	if (needsRefresh) {
+		cm.refresh();
 	}
 }
 
@@ -196,7 +204,7 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 	for (let i = 0; i < img.attributes.length; i++) {
 		const name = img.attributes[i].name;
 		if (disallowedTags.includes(name) || name.startsWith('on')) {
-			img.attributes[i].value = ''
+			img.attributes[i].value = '';
 		}
 	}
 
@@ -205,6 +213,7 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 		const id = img.src.substring(img.src.length - 34);
 		if (id.startsWith(':/')) {
 			img.src = await path_from_id(id.substring(2));
+			img.id = id.substring(2);
 		}
 	}
 
@@ -212,8 +221,9 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 }
 
 async function createImage(path: string, alt: string, path_from_id: any) {
+	let id = path.substring(2)
 	if (path.startsWith(':/') && path.length == 34) {
-		path = await path_from_id(path.substring(2));
+		path = await path_from_id(id);
 	}
 	if (path.startsWith('<') && path.endsWith('>')) {
 		// <> quotes are not allowed in URLs as per RFC 1738
@@ -223,59 +233,45 @@ async function createImage(path: string, alt: string, path_from_id: any) {
 	}
 
 	const img = document.createElement('img');
-	img.src = path
+	img.src = path;
 	img.alt = alt;
 	img.style.maxWidth = '100%';
 	img.style.height = 'auto';
+	// This will either contain the resource id or some gibberish path
+	img.id = id;
 
 	return img;
 }
 
-// This function updates the timestamp of each image that is rendered in the editor
-// This signals the internal rendering engine to reload the image from disk
-// This is a cheaters way of having images respond to on disk changes. It's not very performant
-// so it will need to be replaced eventually
-export function refreshAllWidgets(cm: any) {
-	for (let i = cm.firstLine(); i <= cm.lastLine(); i++) {
-		const line = cm.lineInfo(i);
+// Reload the specified resource on disk, this will be in response
+// to changes made by the user
+export function refreshResource(cm: any, id: string) {
+	const timestamp = new Date().getTime();
+	let wid = allWidgets[id];
 
-		const timestamp = new Date().getTime();
-		let path = '';
-		if (line.widgets) {
-			for (const wid of line.widgets) {
-				if (wid.className === 'rich-markdown-resource') {
-					path = wid.node.src.split("?t=")[0];
-					const height = wid.node.height;
-					wid.node.onload = function() {
-						let im = this as HTMLImageElement;
-						// If the image is scrolled out of view (no need to refresh), it won't have a clientRect
-						if (im.getClientRects().length == 0) return
+	const path = wid.node.src.split("?t=")[0];
 
-						if (im.height != height) {
-							cm.refresh();
-						}
-					};
-					wid.node.src = `${path}?t=${timestamp}`;
-				}
-			}
+	const height = wid.node.height;
+	wid.node.onload = function() {
+		let im = this as HTMLImageElement;
+		// If the image is scrolled out of view (no need to refresh), it won't have a clientRect
+		if (im.getClientRects().length == 0) { return; }
+
+		if (im.height != height) {
+			cm.refresh();
 		}
-	}
+	};
+	wid.node.src = `${path}?t=${timestamp}`;
 }
 
 // Used on cleanup
 export function clearAllWidgets(cm: any) {
 	clearHoverImages(cm);
 
-	for (let i = cm.firstLine(); i <= cm.lastLine(); i++) {
-		const line = cm.lineInfo(i);
-
-		if (line.widgets) {
-			for (const wid of line.widgets) {
-				if (wid.className === 'rich-markdown-resource')
-					wid.clear();
-			}
-		}
+	for (let id in allWidgets) {
+		allWidgets[id].clear();
 	}
+	allWidgets = {};
 
 	// Refresh codemirror to make sure everything is sized correctly
 	cm.refresh();

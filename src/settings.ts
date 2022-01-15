@@ -16,7 +16,6 @@ export interface RichMarkdownSettings {
 	links: boolean;
 	clickCtrl: boolean;
 	clickAlt: boolean;
-	scanImgChangePeriod: number;
 }
 
 export async function getAllSettings(): Promise<RichMarkdownSettings> {
@@ -35,7 +34,6 @@ export async function getAllSettings(): Promise<RichMarkdownSettings> {
 		links: await joplin.settings.value('links'),
 		clickCtrl: await joplin.settings.value('clickCtrl'),
 		clickAlt: await joplin.settings.value('clickAlt'),
-		scanImgChangePeriod: await joplin.settings.value('scanImgChangePeriod'),
 	}
 }
 
@@ -128,15 +126,6 @@ export async function registerAllSettings() {
 			public: true,
 			label: 'Allow Alt (or Opt) in addition to Ctrl/Cmd  when clicking on elements (links and checkboxes)',
 			description: 'It\'s recommended not to change this',
-		},
-
-		'scanImgChangePeriod': {
-			value: 3,
-			type: SettingItemType.Int,
-			advanced: true,
-			section: 'settings.calebjohn.richmarkdown',
-			public: true,
-			label: 'Image-change-scanning period (set to 0 to disable change scanning).',
 		},
 	});
 	registerToggle('inlineImages',

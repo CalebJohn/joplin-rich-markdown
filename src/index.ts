@@ -17,20 +17,6 @@ const { parseResourceUrl } = require('@joplin/lib/urlUtils');
 
 const contentScriptId = 'richMarkdownEditor';
 
-// TODO: This could be done using `joplin.data.resourcePath`
-async function getResourcePath(resourceDir: string, id: string): Promise<string> {
-	const info = await joplin.data.get(['resources', id], {
-		fields: ['file_extension', 'mime'],
-	});
-
-	let file_extension = info.file_extension;
-	if (!file_extension)
-		file_extension = mime.toFileExtension(info.mime);
-	file_extension = file_extension ? '.' + file_extension : ''
-
-	return path.join('file:/', resourceDir, id + file_extension); 
-}
-
 joplin.plugins.register({
 	onStart: async function() {
 		// There is a bug (race condition?) where the perform action command
@@ -133,7 +119,7 @@ joplin.plugins.register({
 
 		await joplin.contentScripts.onMessage(contentScriptId, async (message:any) => {
 			if (message.name === 'getResourcePath') {
-				return await getResourcePath(resourceDir, message.id);
+				return await joplin.data.resourcePath(message.id);
 			}
 			else if (message.name === 'getSettings') {
 				return await getAllSettings();
@@ -156,7 +142,7 @@ joplin.plugins.register({
 						}
 						else {
 							// If no apiPort can be found, fallback to just opening the resource
-							const resource = await getResourcePath(resourceDir, id);
+							const resource = await joplin.data.resourcePath(message.id);
 							opener(resource);
 						}
 					}
@@ -174,6 +160,13 @@ joplin.plugins.register({
 			}
 
 			return "Error: " + message + " is not a valid message";
+		});
+
+		await (joplin.workspace as any).onResourceChange(async (event:any) => {
+			await joplin.commands.execute('editor.execCommand', {
+				name: 'refreshResource',
+				args: [event.id],
+			});
 		});
 
 		// TODO: Waiting for https://github.com/laurent22/joplin/pull/4509
