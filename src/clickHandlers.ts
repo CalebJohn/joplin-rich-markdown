@@ -82,23 +82,27 @@ export interface TextItem {
 	url?: string;
 }
 
-export function getItemAt(cm:any, coord:any):TextItem {
+export function getItemsAt(cm:any, coord:any):TextItem[] {
 	if (!cm.state.richMarkdown) return null;
 
 	const settings = cm.state.richMarkdown.settings;
+	let items: TextItem[] = [];
 
 	if (settings.links) {
 		const url = getLinkAt(cm, coord);
-		if (url)
-			return { type: TextItemType.Link, url, coord };
+		if (url) {
+			items.push({ type: TextItemType.Link, url, coord });
+		}
 	}
 
 	if (settings.checkbox) {
 		const checkboxInfo = getCheckboxInfo(cm, coord);
-		if (checkboxInfo) return { type: TextItemType.Checkbox, coord };
+		if (checkboxInfo) {
+			items.push({ type: TextItemType.Checkbox, coord });
+		}
 	}
 
-	return null;
+	return items;
 }
 
 function getLinkAt(cm: any, coord: any) {

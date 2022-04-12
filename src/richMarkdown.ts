@@ -73,9 +73,9 @@ module.exports = {
 						context.postMessage(mes);
 				});
 
-				CodeMirror.defineExtension('getItemUnderCursor', function(responsePromiseId:string) {
+				CodeMirror.defineExtension('getItemsUnderCursor', function(responsePromiseId:string) {
 					const coord = this.getCursor('head');
-					return ClickHandlers.getItemAt(this, coord);
+					return ClickHandlers.getItemsAt(this, coord);
 				});
 
 				CodeMirror.defineExtension('toggleCheckbox', function(coord:any) {

@@ -64,46 +64,48 @@ joplin.plugins.register({
 		});
 
 		await joplin.workspace.filterEditorContextMenu(async (object:any) => {
-			const textItem:TextItem = await joplin.commands.execute('editor.execCommand', {
-				name: 'getItemUnderCursor',
+			const textItems:TextItem[] = await joplin.commands.execute('editor.execCommand', {
+				name: 'getItemsUnderCursor',
 			});
 
-			if (!textItem) return object;
+			if (!textItems.length) return object;
 
 			const newItems:MenuItem[] = [];
 
-			if (textItem.type === TextItemType.Link) {
-				newItems.push({
-					label: 'Open link',
-					commandName: 'app.richMarkdown.openItem',
-					commandArgs: [textItem.url],
-				});
-
-				const info = parseResourceUrl(textItem.url);
-				const itemId = info ? info.itemId : null;
-				const itemType = itemId ? await joplin.data.itemType(itemId) : null;
-				
-				if (itemType === ModelType.Resource) {
+			for (let textItem of textItems) {
+				if (textItem.type === TextItemType.Link) {
 					newItems.push({
-						label: 'Reveal file in folder',
-						commandName: 'revealResourceFile',
-						commandArgs: [itemId],
+						label: 'Open link',
+						commandName: 'app.richMarkdown.openItem',
+						commandArgs: [textItem.url],
 					});
 
-					const resourcePath = await joplin.data.resourcePath(itemId);
+					const info = parseResourceUrl(textItem.url);
+					const itemId = info ? info.itemId : null;
+					const itemType = itemId ? await joplin.data.itemType(itemId) : null;
 
+					if (itemType === ModelType.Resource) {
+						newItems.push({
+							label: 'Reveal file in folder',
+							commandName: 'revealResourceFile',
+							commandArgs: [itemId],
+						});
+
+						const resourcePath = await joplin.data.resourcePath(itemId);
+
+						newItems.push({
+							label: 'Copy path to clipboard',
+							commandName: 'editor.richMarkdown.copyPathToClipboard',
+							commandArgs: [resourcePath],
+						});
+					}
+				} else if (textItem.type === TextItemType.Checkbox) {
 					newItems.push({
-						label: 'Copy path to clipboard',
-						commandName: 'editor.richMarkdown.copyPathToClipboard',
-						commandArgs: [resourcePath],
+						label: 'Toggle checkbox',
+						commandName: 'editor.richMarkdown.toggleCheckbox',
+						commandArgs: [textItem.coord],
 					});
 				}
-			} else if (textItem.type === TextItemType.Checkbox) {
-				newItems.push({
-					label: 'Toggle checkbox',
-					commandName: 'editor.richMarkdown.toggleCheckbox',
-					commandArgs: [textItem.coord],
-				});
 			}
 
 			if (newItems.length) {
