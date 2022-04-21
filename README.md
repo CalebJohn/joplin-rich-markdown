@@ -79,14 +79,20 @@ This is disabled by default.
 If an image is edited, the change will be reflected in the editor within 3s (by default) or immediately after any change to the note. The 3s period can be changed in the settings (under the advanced tab). Setting the value to 0s will prevent the periodic image changes, but image changes will still be picked up when the note is edited.
 
 
-# Install
+# Installation
 The typical way to install plugins is through the built-in Joplin plugin manager.
 
-The plugin manager can be access under Tools -> Options -> Plugins (Joplin -> Preferences -> Plugins).
+- Go to `Tools -> Options -> Plugins`(macOS: Joplin -> Preferences -> Plugins)
+- Search for "Rich Markdown" in the search box
+- Click Install and restart Joplin
 
-Once there use the search bar at the top to search for "Rich Markdown". The plugin should appear with a large "Install" button.
+#### Or
+- Download the [plugin jpl](https://github.com/joplin/plugins/raw/master/plugins/plugin.calebjohn.rich-markdown/plugin.jpl)
+- Go to `Tools -> Options -> Plugins`
+- Click on the gear icon and select "Install from file"
+- Select the downloaded jpl file
+- Restart Joplin
 
-[A jpl file is provided in the latest release](https://github.com/CalebJohn/joplin-rich-markdown/releases/latest) for those that want to install manually.
 
 # Feature Requests
 Feature Requests are appreciated and encouraged. Not all feature requests will be technically feasible, so please be patient. Feature requests that align with the projects philosophy (below) are more likely to be implemented. 
