@@ -2,11 +2,11 @@
 
 A plugin that will finally allow you to ditch the markdown viewer, saving space and making your life easier.
 
-Rich Markdown comes as a collection of multiple features that can be toggled in settings.
+Rich Markdown comes as a collection of multiple features that can be toggled in settings. The main goal is to add better interaction features to the editor, namely [image](#images-on-hover) [viewing](#images-in-editor), [checkbox interaction](#checkbox), and [links](#links). It also adds a number of CSS classes that make it possible to add extra customization to the markdown editor. Checkout the image below to see how far this can go!
 
 ![Welcome Notebook Screenshot](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/welcome.png)
 
-(Thanks to [@uxamanda](https://discourse.joplinapp.org/u/uxamanda) for the awesome theme!)
+(Thanks to [@uxamanda](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053/105) for the awesome theme!)
 
 # Features
 The Rich Markdown plugin supports a number of optional features. Unless otherwise stated, these features can be toggled under `Tools -> Options -> Rich Markdown -> Add additional CSS classes for enhanced customization`.
