@@ -49,29 +49,29 @@ joplin.plugins.register({
 
 		await joplin.commands.register({
 			name: 'editor.richMarkdown.toggleCheckbox',
-			execute: async (coord:any) => {
+			execute: async (coord: any) => {
 				await joplin.commands.execute('editor.execCommand', {
 					name: 'toggleCheckbox',
 					args: [coord],
 				});
-		  },
+			},
 		});
 
 		await joplin.commands.register({
 			name: 'editor.richMarkdown.copyPathToClipboard',
-			execute: async (path:string) => {
+			execute: async (path: string) => {
 				await joplin.clipboard.writeText(path);
 			},
 		});
 
-		await joplin.workspace.filterEditorContextMenu(async (object:any) => {
-			const textItems:TextItem[] = await joplin.commands.execute('editor.execCommand', {
+		await joplin.workspace.filterEditorContextMenu(async (object: any) => {
+			const textItems: TextItem[] = await joplin.commands.execute('editor.execCommand', {
 				name: 'getItemsUnderCursor',
 			});
 
 			if (!textItems.length) return object;
 
-			const newItems:MenuItem[] = [];
+			const newItems: MenuItem[] = [];
 
 			for (let textItem of textItems) {
 				if (textItem.type === TextItemType.Link) {
@@ -119,7 +119,7 @@ joplin.plugins.register({
 
 			return object;
 		});
-		
+
 		await registerAllSettings();
 
 		await joplin.contentScripts.register(
@@ -128,7 +128,7 @@ joplin.plugins.register({
 			'./richMarkdown.js'
 		);
 
-		await joplin.contentScripts.onMessage(contentScriptId, async (message:any) => {
+		await joplin.contentScripts.onMessage(contentScriptId, async (message: any) => {
 			if (message.name === 'getResourcePath') {
 				return await joplin.data.resourcePath(message.id);
 			}
@@ -142,7 +142,7 @@ joplin.plugins.register({
 			return "Error: " + message + " is not a valid message";
 		});
 
-		await (joplin.workspace as any).onResourceChange(async (event:any) => {
+		await (joplin.workspace as any).onResourceChange(async (event: any) => {
 			await joplin.commands.execute('editor.execCommand', {
 				name: 'refreshResource',
 				args: [event.id],
