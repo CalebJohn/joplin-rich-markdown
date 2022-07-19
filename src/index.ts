@@ -1,5 +1,5 @@
 import joplin from 'api';
-import { ContentScriptType, MenuItem, ModelType } from 'api/types';
+import { ContentScriptType, MenuItem, MenuItemLocation, ModelType } from 'api/types';
 
 import { getAllSettings, registerAllSettings } from './settings';
 
@@ -29,13 +29,14 @@ joplin.plugins.register({
 				await joplin.commands.execute('editor.execCommand', {
 					name: 'clickUnderCursor',
 				});
-		  },
+			},
 		});
+		await joplin.views.menuItems.create('richMarkdownClickAtCursor', 'editor.richMarkdown.clickAtCursor', MenuItemLocation.Note, { accelerator: 'Ctrl+Enter' });
 
 		// TODO: See about getting this same behaviour into the openItem function
 		await joplin.commands.register({
 			name: 'app.richMarkdown.openItem',
-			execute: async (url:string) => {
+			execute: async (url: string) => {
 				// From RFC 1738 Page 1 a url is <scheme>:<scheme specific part>
 				// the below regex implements matching for the scheme (with support for uppercase)
 				// urls without a scheme will be assumed http
