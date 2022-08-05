@@ -172,7 +172,7 @@ async function check_lines(cm: any, from: number, to: number) {
 
 		if (match) {
 			console.log(match);
-			img = await createImage(match[2], match[1], path_from_id, match[4]);
+			img = await createImage(match[2], match[1], path_from_id, match[4], match[5]);
 		}
 		else {
 			const imgMatch = line.text.match(html_image_line_regex);
@@ -221,7 +221,7 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 	return img;
 }
 
-async function createImage(path: string, alt: string, path_from_id: any, width?: string) {
+async function createImage(path: string, alt: string, path_from_id: any, width?: string, unit?: string) {
 	let id = path.substring(2)
 	if (path.startsWith(':/') && path.length == 34) {
 		path = await path_from_id(id);
@@ -239,7 +239,7 @@ async function createImage(path: string, alt: string, path_from_id: any, width?:
 	img.style.maxWidth = '100%';
 	img.style.height = 'auto';
 	if (width) {
-		img.style.width = width;
+		img.style.width = width + unit ? '' : 'px';
 	}
 
 	// This will either contain the resource id or some gibberish path
