@@ -171,7 +171,6 @@ async function check_lines(cm: any, from: number, to: number) {
 		let img = null;
 
 		if (match) {
-			console.log(match);
 			img = await createImage(match[2], match[1], path_from_id, match[4], match[5]);
 		}
 		else {
@@ -239,7 +238,7 @@ async function createImage(path: string, alt: string, path_from_id: any, width?:
 	img.style.maxWidth = '100%';
 	img.style.height = 'auto';
 	if (width) {
-		img.style.width = width + unit ? '' : 'px';
+		img.style.width = width + (unit ? '' : 'px');
 	}
 
 	// This will either contain the resource id or some gibberish path
