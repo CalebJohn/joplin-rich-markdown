@@ -1,7 +1,7 @@
 import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay';
 
-export const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)\s*$/;
+export const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?\s*$/;
 export const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)/g;
 export const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
@@ -171,7 +171,7 @@ async function check_lines(cm: any, from: number, to: number) {
 		let img = null;
 
 		if (match) {
-			img = await createImage(match[2], match[1], path_from_id);
+			img = await createImage(match[2], match[1], path_from_id, match[4], match[5]);
 		}
 		else {
 			const imgMatch = line.text.match(html_image_line_regex);
@@ -220,7 +220,7 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 	return img;
 }
 
-async function createImage(path: string, alt: string, path_from_id: any) {
+async function createImage(path: string, alt: string, path_from_id: any, width?: string, unit?: string) {
 	let id = path.substring(2)
 	if (path.startsWith(':/') && path.length == 34) {
 		path = await path_from_id(id);
@@ -237,6 +237,10 @@ async function createImage(path: string, alt: string, path_from_id: any) {
 	img.alt = alt;
 	img.style.maxWidth = '100%';
 	img.style.height = 'auto';
+	if (width) {
+		img.style.width = width + (unit ? '' : 'px');
+	}
+
 	// This will either contain the resource id or some gibberish path
 	img.id = id;
 
