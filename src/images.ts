@@ -2,7 +2,7 @@ import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay';
 
 export const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?\s*$/;
-export const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)/g;
+export const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?/g;
 export const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
 // Used to quickly index widgets that will get updated
@@ -32,7 +32,7 @@ async function getImageData(cm: any, coord: any) {
 	let img = null;
 
 	if (match) {
-		img = await createImage(match[2], match[1], cm.state.richMarkdown.path_from_id);
+		img = await createImage(match[2], match[1], cm.state.richMarkdown.path_from_id, match[4], match[5]);
 	}
 	else {
 		const imgMatch = ClickHandlers.getMatchAt(lineText, Overlay.html_image_regex, ch);

@@ -1,11 +1,11 @@
 import * as ImageHandlers from './images';
 
 const test_text = `
-![space-fish.png](:/40530199c558430d8ea01363748d9657)
+![space-fish.png](:/40530199c558430d8ea01363748d9657){width=100%}
 ![おはいよ](https://www.inmoth.ca/images/envelope.png)
 ![red.png](file:///home/joplinuser/Pictures/red.png)
 ![](:/40530199c558430d8ea)
-![おはいよ](https://www.inmoth.ca/images/envelope.png "title")
+![おはいよ](https://www.inmoth.ca/images/envelope.png "title"){width=78px}
 ![name](https://url.com "title" this is all bad)
 some paragr ![i1.png](:/d9e191134dad42dda2d94ab3e98d3517) something![](:/f190a79a355e4bbb86990cb3b55bedb6)som
 
@@ -24,13 +24,13 @@ const test_html = `<img src=":/5d1ac6e676094f4f908c1d0a65694eff" alt="69f775caf8
 
 
 const line_cases = [
-	[1, "space-fish.png", ":/40530199c558430d8ea01363748d9657", null],
-	[2, "おはいよ", "https://www.inmoth.ca/images/envelope.png", null],
-	[3, "red.png", "file:///home/joplinuser/Pictures/red.png", null],
-	[4, "", ":/40530199c558430d8ea", null],
-	[5, "おはいよ", "https://www.inmoth.ca/images/envelope.png", " \"title\""],
+	[1, "space-fish.png", ":/40530199c558430d8ea01363748d9657", null, "100%", "%"],
+	[2, "おはいよ", "https://www.inmoth.ca/images/envelope.png", null, undefined, undefined],
+	[3, "red.png", "file:///home/joplinuser/Pictures/red.png", null, undefined, undefined],
+	[4, "", ":/40530199c558430d8ea", null, undefined, undefined],
+	[5, "おはいよ", "https://www.inmoth.ca/images/envelope.png", " \"title\"", "78px", "px"],
 	// The current regex correctly grabs the title, but it doesn't guard against extra bits
-	[6, "name", "https://url.com", " \"title\" this is all bad"],
+	[6, "name", "https://url.com", " \"title\" this is all bad", undefined, undefined],
 ]
 
 describe("Test image line regex matches images that own a line", () => {
@@ -38,12 +38,16 @@ describe("Test image line regex matches images that own a line", () => {
 
 	test.each(line_cases)(
 		"Line %p matches ![%p](%p)",
-		(line: number, name: string, url: string, title: string|null) => {
+		(line, name, url, title, width, unit) => {
 			let match = ImageHandlers.image_line_regex.exec(lines[line]);
 			expect(match).not.toBeNull();
-			expect(match[0]).toBe(`![${name}](${url}${title ? title : ''})`);
+			const widthString = width ? `{width=${match[4]}}` : '';
+			expect(match[0]).toBe(`![${name}](${url}${title ? title : ''})${widthString}`);
 			expect(match[1]).toBe(name);
 			expect(match[2]).toBe(url);
+			// match[3] is the full match of the {width=?} I won't bother checking it
+			expect(match[4]).toBe(width);
+			expect(match[5]).toBe(unit);
 		}
 	);
 });
@@ -62,25 +66,28 @@ describe("Test image line regex does not match anything else", () => {
 
 describe("Test image inline regex matches all images", () => {
 	const cases = [
-		["space-fish.png", ":/40530199c558430d8ea01363748d9657", null],
-		["おはいよ", "https://www.inmoth.ca/images/envelope.png", null],
-		["red.png", "file:///home/joplinuser/Pictures/red.png", null],
-		["", ":/40530199c558430d8ea", null],
-		["おはいよ", "https://www.inmoth.ca/images/envelope.png", " \"title\""],
+		["space-fish.png", ":/40530199c558430d8ea01363748d9657", null, "100%", "%"],
+		["おはいよ", "https://www.inmoth.ca/images/envelope.png", null, undefined, undefined],
+		["red.png", "file:///home/joplinuser/Pictures/red.png", null, undefined	, undefined],
+		["", ":/40530199c558430d8ea", null, undefined, undefined],
+		["おはいよ", "https://www.inmoth.ca/images/envelope.png", " \"title\"", "78px", "px"],
 		// The current regex correctly grabs the title, but it doesn't guard against extra bits
-		["name", "https://url.com", " \"title\" this is all bad"],
-		["i1.png", ":/d9e191134dad42dda2d94ab3e98d3517", null],
-		["", ":/f190a79a355e4bbb86990cb3b55bedb6", null],
+		["name", "https://url.com", " \"title\" this is all bad", undefined, undefined],
+		["i1.png", ":/d9e191134dad42dda2d94ab3e98d3517", null, undefined, undefined],
+		["", ":/f190a79a355e4bbb86990cb3b55bedb6", null, undefined, undefined],
 	];
 
 	test.each(cases)(
-		"Matches ![%p](%p)",
-		(name: string, url: string, title: string|null) => {
+		"Matches from ![%p](%p)",
+		(name, url, title, width, unit) => {
 			let match = ImageHandlers.image_inline_regex.exec(test_text);
 			expect(match).not.toBeNull();
-			expect(match[0]).toBe(`![${name}](${url}${title ? title : ''})`);
+			const widthString = width ? `{width=${match[4]}}` : '';
+			expect(match[0]).toBe(`![${name}](${url}${title ? title : ''})${widthString}`);
 			expect(match[1]).toBe(name);
 			expect(match[2]).toBe(url);
+			expect(match[4]).toBe(width);
+			expect(match[5]).toBe(unit);
 		}
 	);
 
