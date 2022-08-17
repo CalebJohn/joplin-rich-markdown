@@ -2,6 +2,7 @@ import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay';
 
 export const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?\s*$/;
+export const image_line_link_regex = /^\[(!\[.*)\]\(.*\)$/;
 export const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?/g;
 export const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
@@ -167,7 +168,15 @@ async function check_lines(cm: any, from: number, to: number) {
 			continue;
 		}
 
-		const match = line.text.match(image_line_regex);
+		// Special Case
+		// If the line only contains a link wrapped around an image, we should match against that
+		const line_link_match = line.text.match(image_line_link_regex);
+		let lineText = line.text;
+		if (line_link_match) {
+			lineText = line_link_match[1];
+		}
+
+		const match = lineText.match(image_line_regex);
 		let img = null;
 
 		if (match) {
