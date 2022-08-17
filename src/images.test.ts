@@ -122,3 +122,49 @@ describe("Test image html line regex only matches html images that own a line", 
 	);
 });
 
+const test_link_text = `
+![space-fish.png](:/40530199c558430d8ea01363748d9657){width=100%}
+[![おはいよ](https://www.inmoth.ca/images/envelope.png)](https://www.inmoth.ca)
+![red.png](file:///home/joplinuser/Pictures/red.png)
+[![](:/40530199c558430d8ea)](https://joplinapp.org)
+[![おはいよ](https://www.inmoth.ca/images/envelope.png "title"){width=78px}](https://www.inmoth.ca)
+![name](https://url.com "title" this is all bad)
+some paragr ![i1.png](:/d9e191134dad42dda2d94ab3e98d3517) something![](:/f190a79a355e4bbb86990cb3b55bedb6)som
+
+[space-fish.png](:/40530199c558430d8ea01363748d9657)
+[おはいよ](https://www.inmoth.ca/images/envelope.png)
+[red.png](file:///home/joplinuser/Pictures/red.png)
+some paragr [i1.png](:/d9e191134dad42dda2d94ab3e98d3517) something! [](:/f190a79a355e4bbb86990cb3b55bedb6)som
+`
+
+const line_link_cases = [
+	[1, null],
+	[2, "![おはいよ](https://www.inmoth.ca/images/envelope.png)"],
+	[3, null],
+	[4, "![](:/40530199c558430d8ea)"],
+	[5, "![おはいよ](https://www.inmoth.ca/images/envelope.png \"title\"){width=78px}"],
+	[6, null],
+	[7, null],
+	[8, null],
+	[9, null],
+	[10, null],
+	[11, null],
+	[12, null],
+]
+
+describe("Test image line inside link regex matches only lines with images inside links", () => {
+	const lines = test_link_text.split("\n");
+
+	test.each(line_link_cases)(
+		"Line %p matches %p",
+		(line, image) => {
+			let match = ImageHandlers.image_line_link_regex.exec(lines[line]);
+			if (image) {
+				expect(match).not.toBeNull();
+				expect(match[1]).toBe(image);
+			} else {
+				expect(match).toBeNull();
+			}
+		}
+	);
+});
