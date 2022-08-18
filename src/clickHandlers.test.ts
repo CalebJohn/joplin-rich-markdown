@@ -9,6 +9,7 @@ this note has [many](https://calebjohn.ca) links
 it also contains other links like <joplinapp.org> this
 but it doesn't forget plain old https://joplinapp.org links
 and all the rest!
+(In this [page](https://joplinapp.org) you can see a test)
 `
 
 test("getMatchAt works for markdown links", () => {
@@ -30,6 +31,11 @@ test("getMatchAt works for markdown links", () => {
 	expect(match[2]).toBeUndefined();
 	expect(match[3]).toBe("https://joplinapp.org");
 	
+	match = ClickHandlers.getMatchAt(test_text, Overlay.link_regex, 220)
+	expect(match[0]).toBe("[page](https://joplinapp.org)");
+	expect(match[1]).toBe("https://joplinapp.org");
+	expect(match[2]).toBeUndefined();
+	expect(match[3]).toBeUndefined();
 });
 
 test("getMatchAt works on the boundary of a match (but not over)", () => {
