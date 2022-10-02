@@ -84,6 +84,8 @@ joplin.plugins.register({
 					const info = parseResourceUrl(textItem.url);
 					const itemId = info ? info.itemId : null;
 					const itemType = itemId ? await joplin.data.itemType(itemId) : null;
+					let urlToCopy = textItem.url;
+					let urlType = 'link';
 
 					if (itemType === ModelType.Resource) {
 						newItems.push({
@@ -92,14 +94,15 @@ joplin.plugins.register({
 							commandArgs: [itemId],
 						});
 
-						const resourcePath = await joplin.data.resourcePath(itemId);
-
-						newItems.push({
-							label: 'Copy path to clipboard',
-							commandName: 'editor.richMarkdown.copyPathToClipboard',
-							commandArgs: [resourcePath],
-						});
+						urlToCopy = await joplin.data.resourcePath(itemId);
+						urlType = 'path';
 					}
+
+					newItems.push({
+						label: `Copy ${urlType} to clipboard`,
+						commandName: 'editor.richMarkdown.copyPathToClipboard',
+						commandArgs: [urlToCopy],
+					});
 				} else if (textItem.type === TextItemType.Checkbox) {
 					newItems.push({
 						label: 'Toggle checkbox',
