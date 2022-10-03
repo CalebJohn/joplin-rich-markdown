@@ -2,18 +2,18 @@ import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay';
 
 export const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?\s*$/;
-export const image_line_link_regex = /^\[(!\[.*)\]\(.*\)$/;
+export const image_line_link_regex = /^\[(!\[.*)\]\((.*)\)$/;
 export const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?/g;
 export const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
 // Used to quickly index widgets that will get updated
 let allWidgets = {};
 
-export function onSourceChanged(cm: any, from: number, to: number) {
+export function onSourceChanged(cm: any, from: number, to: number, context: any) {
 	if (!cm.state.richMarkdown) return;
 
 	if (cm.state.richMarkdown.settings.inlineImages) {
-		check_lines(cm, from, to);
+		check_lines(cm, from, to, context);
 	}
 }
 
@@ -143,7 +143,7 @@ function update_hover_widgets(cm: any) {
 	}
 }
 
-async function check_lines(cm: any, from: number, to: number) {
+async function check_lines(cm: any, from: number, to: number, context: any) {
 	if (!cm.state.richMarkdown) return;
 
 	const path_from_id = cm.state.richMarkdown.path_from_id;
@@ -172,15 +172,18 @@ async function check_lines(cm: any, from: number, to: number) {
 		// If the line only contains a link wrapped around an image, we should match against that
 		const line_link_match = line.text.match(image_line_link_regex);
 		let lineText = line.text;
+		let lineLink = '';
 		if (line_link_match) {
 			lineText = line_link_match[1];
+			lineLink = line_link_match[2];
+
 		}
 
 		const match = lineText.match(image_line_regex);
 		let img = null;
 
 		if (match) {
-			img = await createImage(match[2], match[1], path_from_id, match[4], match[5]);
+			img = await createImage(match[2], match[1], path_from_id, match[4], match[5], context, lineLink);
 		}
 		else {
 			const imgMatch = line.text.match(html_image_line_regex);
@@ -229,7 +232,7 @@ async function createImageFromImg(imgTag: string, path_from_id: any) {
 	return img;
 }
 
-async function createImage(path: string, alt: string, path_from_id: any, width?: string, unit?: string) {
+async function createImage(path: string, alt: string, path_from_id: any, width?: string, unit?: string, context?: any, link?: string) {
 	let id = path.substring(2)
 	if (path.startsWith(':/') && path.length == 34) {
 		path = await path_from_id(id);
@@ -246,6 +249,11 @@ async function createImage(path: string, alt: string, path_from_id: any, width?:
 	img.alt = alt;
 	img.style.maxWidth = '100%';
 	img.style.height = 'auto';
+	if (link && context) {
+		img.onclick = () => {
+			context.postMessage({ name: 'followLink', url: link });
+		};
+	}
 	if (width) {
 		img.style.width = width + (unit ? '' : 'px');
 	}

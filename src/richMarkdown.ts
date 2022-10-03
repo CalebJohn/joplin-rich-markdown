@@ -55,7 +55,7 @@ module.exports = {
 
 					this.state.richMarkdown.settings = newSettings;
 					ImageHandlers.clearAllWidgets(this);
-					ImageHandlers.onSourceChanged(this, this.firstLine(), this.lastLine());
+					ImageHandlers.onSourceChanged(this, this.firstLine(), this.lastLine(), context);
 					ImageHandlers.afterSourceChanges(this);
 					if (newSettings.activeLine) {
 						this.setOption('styleActiveLine', { nonEmpty: true });
@@ -104,7 +104,7 @@ module.exports = {
 				function on_change(cm: any, change: any) {
 					const { from, to } = get_change_lines(change);
 					
-					ImageHandlers.onSourceChanged(cm, from, to);
+					ImageHandlers.onSourceChanged(cm, from, to, context);
 				}
 				function on_update(cm: any) {
 					ImageHandlers.afterSourceChanges(cm);
