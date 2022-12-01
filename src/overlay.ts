@@ -22,6 +22,8 @@ export const insert_token_regex = /(?<![\\\+])\+\+(?!\+)/g;
 export const sub_token_regex = /(?<![\\~])~(?!~)/g;
 export const sup_token_regex = /(?<![\\\^])\^(?!\^)/g;
 export const strike_token_regex = /(?<![\\~])~~(?!~~)/g;
+export const backtick_token_regex = /(?<![\\`])`(?!`)/g;
+export const backtick_block_token_regex = /^```\S*$/g;
 export const header_regex = /^\s*#+\s/g;
 // Taken from codemirror/addon/edit/continuelist.js
 export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+->]\s|(\d+)([.)]\s))(\s*)/g;
@@ -38,6 +40,8 @@ function exec(query: RegExp, stream: any) {
 }
 
 function regexOverlay(name: string, regex: RegExp, requiredSettings: string[]) {
+	// Hack to allow the backtick regexes in code blocks
+	const allowedInCodeblock = name.indexOf("tick") > 0;
 	return {
 		name: "RichMarkdownOverlay-" + name,
 		requiredSettings: requiredSettings,
@@ -46,8 +50,13 @@ function regexOverlay(name: string, regex: RegExp, requiredSettings: string[]) {
 
 			const baseToken = stream.baseToken();
 			if (baseToken?.type && (
-				baseToken.type.includes("jn-inline-code") ||
-				baseToken.type.includes("comment") ||
+				// This baseToken stuff doesn't actually work in Joplin code blocks, but it does
+				// work to prevent highlighting of the backtick tokens, so I need to add a special
+				// case to allow them. It also works inside comments which I think is handy
+				!allowedInCodeblock && (
+					baseToken.type.includes("jn-inline-code") ||
+					baseToken.type.includes("comment")
+				) ||
 				baseToken.type.includes("katex"))) {
 				stream.pos += baseToken.size;
 			}
@@ -91,6 +100,8 @@ const overlays = [
 	regexOverlay('rm-sub-token', sub_token_regex, ['extraCSS', 'subHighlight']),
 	regexOverlay('rm-sup-token', sup_token_regex, ['extraCSS', 'supHighlight']),
 	regexOverlay('rm-strike-token', strike_token_regex, ['extraCSS']),
+	regexOverlay('rm-backtick-token', backtick_token_regex, ['extraCSS']),
+	regexOverlay('rm-triptick-token', backtick_block_token_regex, ['extraCSS']),
 	regexOverlay('rm-hr line-cm-rm-hr', hr_regex, ['extraCSS']),
 ];
 

@@ -200,6 +200,9 @@ module.exports = {
 										.cm-rm-ins {
 											text-decoration: underline;
 										}
+										.cm-jn-code-block .cm-rm-ins {
+											text-decoration: revert;
+										}
 										.cm-rm-sub {
 											vertical-align: sub;
 											font-size: smaller;
@@ -208,9 +211,21 @@ module.exports = {
 											vertical-align: super;
 											font-size: smaller;
 										}
+										.cm-jn-code-block .cm-rm-sub, .cm-jn-code-block .cm-rm-sup {
+											vertical-align: revert;
+											font-size: revert;
+										}
 										.cm-rm-highlight {
 											background-color: var(--joplin-search-marker-background-color);
 											color: var(--joplin-search-marker-color);
+										}
+										.cm-jn-code-block .cm-rm-highlight, .cm-jn-code-block .cm-rm-highlight-token {
+										    color: revert;
+										    background-color: revert;
+										}
+										div.CodeMirror span.cm-comment.cm-jn-inline-code.cm-overlay.cm-rm-backtick-token:not(.cm-search-marker):not(.cm-fat-cursor-mark):not(.cm-search-marker-selected):not(.CodeMirror-selectedtext) {
+											background-color: transparent;
+											border: none;
 										}
 										.CodeMirror-selectedtext.cm-rm-highlight {
 											background-color: #e5d3ce;
