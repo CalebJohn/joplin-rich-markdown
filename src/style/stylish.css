@@ -1,0 +1,107 @@
+/*
+ * Adapted from the theme that uxamanda shared on the Joplin forum
+ * https://discourse.joplinapp.org/t/plugin-rich-markdown/15053/108
+ * */ 
+
+/* Horizontal Rule*/
+div.CodeMirror span.cm-hr {
+	border-top: 2px solid var(--joplin-divider-color);
+	display: block;
+	line-height: 1px;
+	width: 100%;
+}
+/* END Horizontal Rule*/
+
+/* Blockquotes */
+pre.cm-rm-blockquote.CodeMirror-line {
+	border-left: 4px solid var(--joplin-code-border-color);
+	opacity: 0.7;
+}
+
+pre.cm-rm-blockquote span.cm-quote + span.cm-quote {
+	opacity: 1;
+}
+/* END Blockquotes */
+
+/* Fade tokens*/
+div.CodeMirror .cm-string.cm-url,
+div.CodeMirror .cm-header.cm-rm-header-token,
+div.CodeMirror .cm-rm-highlight.cm-rm-highlight-token,
+div.CodeMirror .cm-strikethrough.cm-rm-strike-token,
+div.CodeMirror .cm-rm-ins.cm-rm-ins-token,
+div.CodeMirror .cm-rm-sub.cm-rm-sub-token,
+div.CodeMirror .cm-rm-sup.cm-rm-sup-token,
+div.CodeMirror .cm-quote.cm-rm-list-token,
+div.CodeMirror .cm-rm-backtick-token,
+div.CodeMirror .cm-rm-triptick-token,
+div.CodeMirror .cm-em.cm-rm-em-token,
+div.CodeMirror .cm-katex-marker-open,
+div.CodeMirror .cm-katex-marker-close,
+div.CodeMirror .cm-strong.cm-rm-strong-token {
+	opacity: 0.6;
+	background: transparent;
+}
+/* Don't apply the fading in code blocks */
+div.CodeMirror .cm-jn-code-block .cm-string.cm-url,
+div.CodeMirror .cm-jn-code-block .cm-header.cm-rm-header-token,
+div.CodeMirror .cm-jn-code-block .cm-em.cm-rm-em-token,
+div.CodeMirror .cm-jn-code-block .cm-strong.cm-rm-strong-token,
+div.CodeMirror .cm-jn-code-block .cm-rm-highlight.cm-rm-highlight-token,
+div.CodeMirror .cm-jn-code-block .cm-strikethrough.cm-rm-strike-token,
+div.CodeMirror .cm-jn-code-block .cm-rm-ins.cm-rm-ins-token,
+div.CodeMirror .cm-jn-code-block .cm-rm-sub.cm-rm-sub-token,
+div.CodeMirror .cm-jn-code-block .cm-rm-sup.cm-rm-sup-token,
+div.CodeMirror .cm-jn-code-block .cm-quote.cm-rm-list-token,
+div.CodeMirror .cm-jn-code-block .cm-katex-marker-open,
+div.CodeMirror .cm-jn-code-block .cm-katex-marker-close {
+	opacity: revert;
+}
+/* END Fade tokens*/
+
+/* Headers */
+div.CodeMirror .cm-header.cm-rm-header-token {
+	font-family: monospace;
+	font-size: 0.9em;
+	/* Add some spacing for breathing room */
+	margin-right: 0.3ex;
+}
+div.CodeMirror .cm-rm-header-token.cm-header-1 {
+	/* 1ex is the height of a lowercase x, it's an approximation for width */
+	/* We need 2ex to account for the space character */
+	margin-left: -2ex;
+}
+
+div.CodeMirror .cm-rm-header-token.cm-header-2 {
+	margin-left: -3ex;
+}
+
+div.CodeMirror .cm-rm-header-token.cm-header-3 {
+	margin-left: -4ex;
+}
+
+div.CodeMirror .cm-rm-header-token.cm-header-4 {
+	margin-left: -5ex;
+}
+
+div.CodeMirror .cm-rm-header-token.cm-header-5 {
+	margin-left: -6ex;
+}
+
+div.CodeMirror .cm-rm-header-token.cm-header-6 {
+	margin-left: -7ex;
+}
+/* END Headers */
+
+/* Checkbox */
+/* strikeout and dim the text of a checked checkbox */
+.cm-property + span.cm-rm-checkbox + span.cm-rm-checkbox {
+	text-decoration: line-through;
+	opacity: 0.7;
+}
+/* Remove the strikethrough from the right edge of the checkbox */
+div.CodeMirror span.cm-property.cm-rm-checkbox {
+	text-decoration: none;
+	opacity: 1;
+}
+/* END Checkbox */
+

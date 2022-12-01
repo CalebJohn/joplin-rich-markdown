@@ -4,6 +4,7 @@
 		"images.ts",
 		"indent.ts",
 		"clickHandlers.ts",
+		"stylesheets.ts",
 		"overlay.ts"
 	]
 }

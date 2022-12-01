@@ -1,0 +1,20 @@
+div.CodeMirror .CodeMirror-line, div.CodeMirror img {
+  opacity: 0.4;
+  color: var(--joplin-color) !important;
+	transition: opacity 0.2s;
+}
+
+div.CodeMirror .CodeMirror-activeline .CodeMirror-line,
+div.CodeMirror .CodeMirror-activeline img {
+  opacity: 1.0;
+	transition: opacity 0.4s;
+}
+
+/* Revert background colour change on the activeline */
+.CodeMirror .CodeMirror-activeline
+.CodeMirror-activeline-background:not(.cm-jn-code-block):not(.cm-jn-code-block-background),
+.cm-s-solarized.cm-s-light div.CodeMirror-activeline-background,
+.cm-s-solarized.cm-s-dark div.CodeMirror-activeline-background {
+  background: inherit;
+}
+

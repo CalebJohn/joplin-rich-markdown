@@ -1,5 +1,7 @@
 # Tips
 
+Note: Most of these have been wrapped up in to the themes (available in the plugin settings). So make sure to check there before spending too much time with custom css.
+
 The below is a collection of [userchrome.css](https://joplinapp.org/help/#custom-css) customizations that might be handy. If you have one of your own that you'd like added here, please make a [PR](https://github.com/CalebJohn/joplin-rich-markdown/pulls) or let me know [on the forum](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053).
 
 ## Horizontal Rule 
@@ -12,10 +14,10 @@ div.CodeMirror .cm-hr {
   line-height: 0px;
 }
 
-/* If using the Enforce CSS option, then use the below CSS */
+/* If using the Additional CSS option, then the below CSS can be used for a different effect */
 div.CodeMirror pre.cm-rm-hr.CodeMirror-line  {
   border-top: 1px solid #777;
-	line-height: 0px;
+  line-height: 0px;
 }
 ```
 

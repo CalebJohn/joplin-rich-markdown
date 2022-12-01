@@ -6,7 +6,7 @@ Rich Markdown comes as a collection of multiple features that can be toggled in 
 
 ![Welcome Notebook Screenshot](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/examples/welcome.png)
 
-(Thanks to [@uxamanda](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053/105) for the awesome theme!)
+The above theme can be applied in the plugin settings menu (this one is called "Stylish"). Thanks to [@uxamanda](https://discourse.joplinapp.org/t/plugin-rich-markdown/15053/105) for the awesome theme!
 
 # Features
 The Rich Markdown plugin supports a number of optional features. Unless otherwise stated, these features can be toggled under `Tools -> Options -> Rich Markdown -> Add additional CSS classes for enhanced customization`.

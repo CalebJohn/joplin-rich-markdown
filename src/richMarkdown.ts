@@ -2,6 +2,7 @@ import * as ImageHandlers from './images';
 import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay';
 import * as IndentHandlers from './indent';
+import * as Stylesheets from './stylesheets';
 import { RichMarkdownSettings } from './settings';
 
 module.exports = {
@@ -64,6 +65,7 @@ module.exports = {
 					}
 					this.getWrapperElement().onmousemove = on_mousemove(this, newSettings);
 					this.getWrapperElement().onmouseup = on_mouseup(this, newSettings);
+					Stylesheets.refreshStylesheets(this);
 				});
 
 				CodeMirror.defineExtension('clickUnderCursor', function() {

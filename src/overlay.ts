@@ -107,7 +107,7 @@ const overlays = [
 
 function validate(settings: any, values: string[]): boolean {
 	for (let value of values) {
-		if (!settings[value])
+		if (!settings[value] && !(value === "extraCSS" && (settings.theme !== "none" || settings.extraFancy)))
 			return false;
 	}
 

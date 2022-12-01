@@ -16,6 +16,10 @@ export interface RichMarkdownSettings {
 	links: boolean;
 	clickCtrl: boolean;
 	clickAlt: boolean;
+	focusMode: boolean;
+	theme: string;
+	extraFancy: string;
+	cssPath: string;
 }
 
 export async function getAllSettings(): Promise<RichMarkdownSettings> {
@@ -34,6 +38,10 @@ export async function getAllSettings(): Promise<RichMarkdownSettings> {
 		links: await joplin.settings.value('links'),
 		clickCtrl: await joplin.settings.value('clickCtrl'),
 		clickAlt: await joplin.settings.value('clickAlt'),
+		focusMode: await joplin.settings.value('focusMode'),
+		theme: await joplin.settings.value('theme'),
+		extraFancy: await joplin.settings.value('extraFancy'),
+		cssPath: await joplin.plugins.installationDir(),
 	}
 }
 
@@ -127,10 +135,43 @@ export async function registerAllSettings() {
 			label: 'Allow Alt (or Opt) in addition to Ctrl/Cmd  when clicking on elements (links and checkboxes)',
 			description: 'It\'s recommended not to change this',
 		},
+
+		'focusMode': {
+			value: false,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Focus Mode',
+			description: 'Fade everything that isn\'t the current paragraph.',
+		},
+		'theme': {
+			label: 'Theme',
+			value: 'none',
+			type: SettingItemType.String,
+			section: 'settings.calebjohn.richmarkdown',
+			isEnum: true,
+			public: true,
+			options: {
+				'none': 'none',
+				'stylish': 'Stylish',
+			},
+			description: 'Warning: Changing theme can change the settings above.',
+		},
+		'extraFancy': {
+			value: false,
+			type: SettingItemType.Bool,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			label: 'Hide Markdown Elements',
+			description: 'Fades the markdown characters on other lines',
+		},
 	});
 	registerToggle('inlineImages',
 		'Toggle images in the markdown editor',
 		'fas fa-image');
+	registerToggle('focusMode',
+		'Toggle focus mode in the markdown editor',
+		'fas fa-eye');
 }
 
 async function registerToggle(name: string, label: string, icon: string) {
