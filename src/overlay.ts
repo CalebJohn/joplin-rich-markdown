@@ -24,6 +24,8 @@ export const sup_token_regex = /(?<![\\\^])\^(?!\^)/g;
 export const strike_token_regex = /(?<![\\~])~~(?!~~)/g;
 export const backtick_token_regex = /(?<![\\`])`(?!`)/g;
 export const backtick_block_token_regex = /^```\S*$/g;
+export const admonition_token_regex = /^!!!/g;
+export const admonition_line_regex = /^!!!.*$/g;
 export const header_regex = /^\s*#+\s/g;
 // Taken from codemirror/addon/edit/continuelist.js
 export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+->]\s|(\d+)([.)]\s))(\s*)/g;
@@ -103,6 +105,8 @@ const overlays = [
 	regexOverlay('rm-backtick-token', backtick_token_regex, ['extraCSS']),
 	regexOverlay('rm-triptick-token', backtick_block_token_regex, ['extraCSS']),
 	regexOverlay('rm-hr line-cm-rm-hr', hr_regex, ['extraCSS']),
+	regexOverlay('rm-admonition-token line-cm-rm-admonition line-background-cm-rm-admonition', admonition_token_regex, ['extraCSS']),
+	regexOverlay('rm-admonition', admonition_line_regex, ['extraCSS']),
 ];
 
 function validate(settings: any, values: string[]): boolean {
