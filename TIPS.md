@@ -144,6 +144,18 @@ div.CodeMirror .cm-overlay.cm-rm-list-token.cm-variable-3 {
 div.CodeMirror .cm-overlay.cm-rm-list-token.cm-keyword {
 	color: green;
 }
+
+/* If using the stylish theme, add the below to correct strikethrough colouration */
+/* ref https://discourse.joplinapp.org/t/plugin-rich-markdown/15053/337? */
+div.CodeMirror .cm-overlay + .cm-overlay.cm-rm-list-token.cm-variable-2 {
+	color: inherit;
+}
+div.CodeMirror .cm-overlay + .cm-overlay.cm-rm-list-token.cm-variable-3 {
+	color: inherit;
+}
+div.CodeMirror .cm-overlay + .cm-overlay.cm-rm-list-token.cm-keyword {
+	color: inherit;
+}
 ```
 
 ## List Spacing
