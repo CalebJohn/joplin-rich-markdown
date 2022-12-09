@@ -217,7 +217,7 @@ module.exports = {
 											vertical-align: revert;
 											font-size: revert;
 										}
-										.cm-rm-highlight {
+										div.CodeMirror span.cm-overlay.cm-rm-highlight {
 											background-color: var(--joplin-search-marker-background-color);
 											color: var(--joplin-search-marker-color);
 										}

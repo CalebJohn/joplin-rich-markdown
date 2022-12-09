@@ -1,7 +1,9 @@
 /* Hide everything */
-.cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, .cm-rm-highlight.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token, .cm-quote.cm-rm-list-token, .cm-katex-marker-open, .cm-katex-marker-close, .cm-rm-backtick-token, .cm-rm-triptick-token {
+.cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, div.CodeMirror span.cm-overlay.cm-rm-highlight.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token, .cm-quote.cm-rm-list-token, .cm-katex-marker-open, .cm-katex-marker-close, .cm-rm-backtick-token, .cm-rm-triptick-token {
 	opacity: 0.2 !important;
 	font-size: 0.9em;
+	background: transparent;
+	color: inherit;
 	transition: opacity 0.3s;
 }
 
@@ -12,9 +14,10 @@ div.CodeMirror .cm-string.cm-url {
 	transition: opacity 0.3s;
 }
 
-div.CodeMirror .CodeMirror-activeline .cm-string.cm-url, .CodeMirror-activeline .cm-header.cm-rm-header-token, .CodeMirror-activeline .cm-em.cm-rm-em-token, .CodeMirror-activeline .cm-strong.cm-rm-strong-token, .CodeMirror-activeline .cm-rm-highlight.cm-rm-highlight-token, .CodeMirror-activeline .cm-strikethrough.cm-rm-strike-token, .CodeMirror-activeline .cm-rm-ins.cm-rm-ins-token, .CodeMirror-activeline .cm-rm-sub.cm-rm-sub-token, .CodeMirror-activeline .cm-rm-sup.cm-rm-sup-token, .CodeMirror-activeline .cm-quote.cm-rm-list-token, .CodeMirror-activeline .cm-katex-marker-open, .CodeMirror-activeline .cm-katex-marker-close, .CodeMirror-activeline .cm-rm-backtick-token, .CodeMirror-activeline .cm-rm-triptick-token {
-	/* display: inherit; */
+div.CodeMirror .CodeMirror-activeline .cm-string.cm-url, .CodeMirror-activeline .cm-header.cm-rm-header-token, .CodeMirror-activeline .cm-em.cm-rm-em-token, .CodeMirror-activeline .cm-strong.cm-rm-strong-token, div.CodeMirror .CodeMirror-activeline span.cm-overlay.cm-rm-highlight.cm-rm-highlight-token, .CodeMirror-activeline .cm-strikethrough.cm-rm-strike-token, .CodeMirror-activeline .cm-rm-ins.cm-rm-ins-token, .CodeMirror-activeline .cm-rm-sub.cm-rm-sub-token, .CodeMirror-activeline .cm-rm-sup.cm-rm-sup-token, .CodeMirror-activeline .cm-quote.cm-rm-list-token, .CodeMirror-activeline .cm-katex-marker-open, .CodeMirror-activeline .cm-katex-marker-close, .CodeMirror-activeline .cm-rm-backtick-token, .CodeMirror-activeline .cm-rm-triptick-token {
 	opacity: 0.7 !important;
+	background: transparent;
+	color: inherit;
 	transition: opacity 0.5s;
 }
 
