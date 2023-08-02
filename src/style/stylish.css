@@ -61,35 +61,35 @@ div.CodeMirror .cm-jn-code-block .cm-katex-marker-close {
 /* END Fade tokens*/
 
 /* Headers */
-div.CodeMirror .cm-header.cm-rm-header-token {
+div.CodeMirror .cm-header.cm-rm-header-token:not(.cm-whitespace-a, .cm-whitespace-b) {
 	font-family: monospace;
 	font-size: 0.9em;
 	/* Add some spacing for breathing room */
 	margin-right: 0.3ex;
 }
-div.CodeMirror .cm-rm-header-token.cm-header-1 {
+div.CodeMirror .cm-rm-header-token.cm-header-1:not(.cm-whitespace-a, .cm-whitespace-b) {
 	/* 1ex is the height of a lowercase x, it's an approximation for width */
 	/* We need 2ex to account for the space character */
 	margin-left: -2ex;
 }
 
-div.CodeMirror .cm-rm-header-token.cm-header-2 {
+div.CodeMirror .cm-rm-header-token.cm-header-2:not(.cm-whitespace-a, .cm-whitespace-b) {
 	margin-left: -3ex;
 }
 
-div.CodeMirror .cm-rm-header-token.cm-header-3 {
+div.CodeMirror .cm-rm-header-token.cm-header-3:not(.cm-whitespace-a, .cm-whitespace-b) {
 	margin-left: -4ex;
 }
 
-div.CodeMirror .cm-rm-header-token.cm-header-4 {
+div.CodeMirror .cm-rm-header-token.cm-header-4:not(.cm-whitespace-a, .cm-whitespace-b) {
 	margin-left: -5ex;
 }
 
-div.CodeMirror .cm-rm-header-token.cm-header-5 {
+div.CodeMirror .cm-rm-header-token.cm-header-5:not(.cm-whitespace-a, .cm-whitespace-b) {
 	margin-left: -6ex;
 }
 
-div.CodeMirror .cm-rm-header-token.cm-header-6 {
+div.CodeMirror .cm-rm-header-token.cm-header-6:not(.cm-whitespace-a, .cm-whitespace-b) {
 	margin-left: -7ex;
 }
 /* END Headers */
