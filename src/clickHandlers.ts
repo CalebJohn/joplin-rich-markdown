@@ -12,14 +12,14 @@ export function isLink(event: MouseEvent) {
 	if (!event.target) return false;
 	const target = event.target as HTMLElement;
 
-	return target.classList.contains('cm-rm-link');
+	return target.matches('.cm-rm-link *, .cm-rm-link');
 }
 
 export function isCheckbox(event: MouseEvent) {
 	if (!event.target) return false;
 	const target = event.target as HTMLElement;
 
-	return target.classList.contains('cm-rm-checkbox');
+	return target.matches('.cm-rm-checkbox *, .cm-rm-checkbox');
 }
 
 // Joplin uses es2015 so we don't have matchAll
