@@ -1,12 +1,16 @@
-div.CodeMirror .CodeMirror-line, div.CodeMirror img {
+div.CodeMirror .CodeMirror-line,
+div.cm-editor .cm-line,
+div.CodeMirror img {
   opacity: 0.4;
   color: var(--joplin-color) !important;
 	transition: opacity 0.2s;
 }
 
 div.CodeMirror .CodeMirror-activeline .CodeMirror-line,
+div.CodeMirror .CodeMirror-activeline img,
 div.CodeMirror .CodeMirror-activeline.cm-line,
-div.CodeMirror .CodeMirror-activeline img {
+div.cm-editor .CodeMirror-activeline + .rich-markdown-resource.cm-line > img,
+div.cm-editor .CodeMirror-activeline + .rich-markdown-resource.cm-line {
   opacity: 1.0;
 	transition: opacity 0.4s;
 }
