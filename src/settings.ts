@@ -20,6 +20,7 @@ export interface RichMarkdownSettings {
 	theme: string;
 	extraFancy: string;
 	cssPath: string;
+	regexOverlays: string;
 }
 
 export async function getAllSettings(): Promise<RichMarkdownSettings> {
@@ -42,6 +43,7 @@ export async function getAllSettings(): Promise<RichMarkdownSettings> {
 		theme: await joplin.settings.value('theme'),
 		extraFancy: await joplin.settings.value('extraFancy'),
 		cssPath: await joplin.plugins.installationDir(),
+		regexOverlays: await joplin.settings.value('regexOverlays'),
 	}
 }
 
@@ -164,6 +166,15 @@ export async function registerAllSettings() {
 			public: true,
 			label: 'Hide Markdown Elements',
 			description: 'Fades the markdown characters on other lines',
+		},
+		'regexOverlays': {
+			value: '',
+			type: SettingItemType.String,
+			section: 'settings.calebjohn.richmarkdown',
+			public: true,
+			advanced: true,
+			label: 'Custom classes JSON',
+			description: 'Add custom classes in the format of [{"name": "className", "regex": string}] to create custom overlays referenced as "cm-className".',
 		},
 	});
 	registerToggle('inlineImages',
