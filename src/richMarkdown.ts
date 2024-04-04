@@ -45,6 +45,16 @@ module.exports = {
 					this.on('mousedown', on_mousedown);
 					this.on('renderLine', on_renderLine);
 
+					try {
+						JSON.parse(settings.regexOverlays).forEach((overlay: any) => {
+							Overlay.overlays.push(
+								Overlay.regexOverlay(overlay.name, new RegExp(overlay.regex, 'g'), ['extraCSS'])
+							);
+						});
+					} catch (e) {
+						console.error('Error parsing regexOverlays', e);
+					}
+
 					Overlay.add(this);
 					IndentHandlers.calculateSpaceWidth(this);
 

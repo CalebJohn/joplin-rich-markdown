@@ -41,7 +41,7 @@ function exec(query: RegExp, stream: any) {
 	return query.exec(stream.string);
 }
 
-function regexOverlay(name: string, regex: RegExp, requiredSettings: string[]) {
+export function regexOverlay(name: string, regex: RegExp, requiredSettings: string[]) {
 	// Hack to allow the backtick regexes in code blocks
 	const allowedInCodeblock = name.indexOf("tick") > 0;
 	return {
@@ -80,7 +80,7 @@ function regexOverlay(name: string, regex: RegExp, requiredSettings: string[]) {
 	};
 }
 
-const overlays = [
+export const overlays = [
 	regexOverlay('rm-checkbox', checkbox_regex, []),
 	regexOverlay('rm-checkbox-check', checkbox_inner_regex, ['extraCSS']),
 	regexOverlay('rm-link', link_regex, []),
