@@ -10,6 +10,9 @@ it also contains other links like <joplinapp.org> this
 but it doesn't forget plain old https://joplinapp.org links
 and all the rest!
 (In this [page](https://joplinapp.org) you can see a test)
+it also has [reference links] which are neat!
+
+[reference links]: https://joplinapp.org
 `
 
 test("getMatchAt works for markdown links", () => {
@@ -47,4 +50,11 @@ test("getMatchAt works on the boundary of a match (but not over)", () => {
 	expect(match).not.toBeNull();
 	match = ClickHandlers.getMatchAt(test_text, Overlay.link_regex, 71);
 	expect(match).toBeNull();
+});
+
+test("reference link regexes are working okay", () => {
+	let match = ClickHandlers.getMatchAt(test_text, Overlay.link_reference_regex, 290);
+	expect(match).not.toBeNull();
+	match = ClickHandlers.getMatchAt(test_text, Overlay.link_label_regex, 290);
+	expect(match).not.toBeNull();
 });

@@ -7,12 +7,11 @@ function normalizeCoord(coord: any) {
 	return coord;
 }
 
-// Only internal links are supported for now
 export function isLink(event: MouseEvent) {
 	if (!event.target) return false;
 	const target = event.target as HTMLElement;
 
-	return target.matches('.cm-rm-link *, .cm-rm-link');
+	return target.matches('.cm-rm-link *, .cm-rm-link') || target.matches('.cm-rm-link-label');
 }
 
 export function isCheckbox(event: MouseEvent) {
@@ -112,11 +111,38 @@ function getLinkAt(cm: any, coord: any) {
 
 	const match = getMatchAt(lineText, Overlay.link_regex, ch);
 
-	if (!match) return;
-
 	let url = '';
-	for (let i = 1; i <= 4; i++) {
-		url = url || match[i];
+	if (match) {
+		for (let i = 1; i <= 4; i++) {
+			url = url || match[i];
+		}
+	}
+	else { // This might be a reference link, check for that
+		const reference_match = getMatchAt(lineText, Overlay.link_reference_regex, ch)
+
+		if (!reference_match) return;
+
+		const reference = reference_match[1] || reference_match[2];
+
+		const link_definition_regex = new RegExp(`\\[${reference}\\]:\\s([^\\n]+)`, 'g');
+
+		for (let i = 0; i < cm.lineCount(); i++) {
+			// a link reference definition can only be preceded by up to 3
+			// spaces, so we will be sure to find a match (if it exists) that
+			// contains character 4
+			const definition_match = getMatchAt(cm.getLine(i), link_definition_regex, 4);
+
+			if (definition_match) {
+				url = definition_match[1];
+				break;
+			};
+		}
+
+		// No match found, just exit
+		if (url === '') {
+			alert(`No link defintion for [${reference}]. Press Esc to dismiss.`);
+			return;
+		}
 	}
 
 	// Special case, if this matches a link inside of an image, we will need to strip

@@ -6,6 +6,8 @@ export const checkbox_inner_regex = /(?<=\[)[Xx ](?=\])/g;
 // This regex will match html tags tht somehow include a . in them
 // I've decided that this is an acceptable level of functionality
 export const link_regex = /(?<![\\])\[[^\]]*\]\(([^\(\)]+)\)|<([^>\s]+\.[^>\s]+)>|((?:[a-zA-Z0-9\+\.\-])+:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|(?:[a-zA-Z0-9\+\.\-])+:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}[^\)])(?<!\))|joplin:\/\/x-callback-url\/.*/g;
+export const link_reference_regex = /(?<![\\])\[([^\]]*)\](?!\()|\]\[([^\]]*)\]\s/g;
+export const link_label_regex = /((?<![\\])\[[^\]]*\])/g;
 export const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
 // Modified from https://stackoverflow.com/a/18665138/12245502
 export const html_image_regex = /<img([^>]+?)\/?>/g;
@@ -84,6 +86,7 @@ export const overlays = [
 	regexOverlay('rm-checkbox', checkbox_regex, []),
 	regexOverlay('rm-checkbox-check', checkbox_inner_regex, ['extraCSS']),
 	regexOverlay('rm-link', link_regex, []),
+	regexOverlay('rm-link-label', link_label_regex, []),
 	regexOverlay('rm-image', image_regex, []),
 	regexOverlay('rm-image', html_image_regex, []),
 	regexOverlay('rm-list-token', list_token_regex, []),

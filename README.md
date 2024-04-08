@@ -107,7 +107,6 @@ Go to [Tips](https://github.com/CalebJohn/joplin-rich-markdown/blob/main/TIPS.md
 
 
 # Known Issues
-- [Reference Links](https://spec.commonmark.org/0.29/#reference-link) are not supported yet.
 - file:// links only work with markdown link syntax (\[\]\(\) \<\>)
 - When hovering over an image on the bottom line, the image will be cut off
 	- This can be fixed by scrolling the editor down enough to display the image
