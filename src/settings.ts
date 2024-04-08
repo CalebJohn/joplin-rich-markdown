@@ -168,7 +168,7 @@ export async function registerAllSettings() {
 			description: 'Fades the markdown characters on other lines',
 		},
 		'regexOverlays': {
-			value: '',
+			value: '[]',
 			type: SettingItemType.String,
 			section: 'settings.calebjohn.richmarkdown',
 			public: true,
