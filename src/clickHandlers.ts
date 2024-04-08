@@ -124,6 +124,8 @@ function getLinkAt(cm: any, coord: any) {
 
 		const reference = reference_match[1] || reference_match[2];
 
+		if (reference.trim() === '' || reference.toLowerCase() === 'x') return; // This is a checkbox
+
 		const link_definition_regex = new RegExp(`\\[${reference}\\]:\\s([^\\n]+)`, 'g');
 
 		for (let i = 0; i < cm.lineCount(); i++) {
