@@ -63,7 +63,7 @@ export function clickAt(cm: any, coord: any) {
 	}
 
 	if (settings.checkbox) {
-		if (toggleCheckbox(cm, coord))
+		if (toggleCheckbox(cm, coord, ''))
 			return null;
 	}
 
@@ -182,20 +182,50 @@ function getCheckboxInfo(cm:any, coord:any) {
 	return { match, lineText, line };
 }
 
-export function toggleCheckbox(cm: any, coord: any) {
+function toggleCheckboxInner(cm: any, coord: any, replacement: string) {
 	const cursor = cm.getCursor();
 
-	const { match, line, lineText } = getCheckboxInfo(cm, coord);
+	const info = getCheckboxInfo(cm, coord);
+
+	if (!info) return false;
+
+	const { match, line, lineText } = info;
 
 	let from = lineText.indexOf(match[3])
 	let to = from + match[3].length;
 
-	const replace = match[3][1] === ' ' ? '[x]' : '[ ]';
+	let replace = replacement;
+	if (replace === '') {
+		replace = match[3][1] === ' ' ? '[x]' : '[ ]';
+	}
 
 	cm.replaceRange(replace, { ch: from, line }, { ch: to, line }, '+input');
 	// This isn't exactly needed, but the replaceRange does move the cursor
 	// to the end of the range if the cursor is withing the section that changes
 	cm.setCursor(cursor, null, { scroll: false });
+
+	return true;
+}
+
+export function toggleCheckbox(cm: any, coord: any, replacement: string) {
+	if (!cm.somethingSelected()) {
+		return toggleCheckboxInner(cm, coord, replacement);
+	}
+
+	for (let selection of cm.listSelections()) {
+		let start, end;
+		if (selection.anchor.line > selection.head.line) {
+			start = selection.head;
+			end = selection.anchor;
+		} else {
+			start = selection.anchor;
+			end = selection.head;
+		}
+
+		for (let i = start.line; i <= end.line; i++) {
+			toggleCheckboxInner(cm, {line: i, ch: 0}, replacement);
+		}
+	}
 
 	return true;
 }

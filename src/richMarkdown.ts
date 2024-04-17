@@ -91,7 +91,15 @@ module.exports = {
 				});
 
 				CodeMirror.defineExtension('toggleCheckbox', function(coord:any) {
-					ClickHandlers.toggleCheckbox(this, coord);
+					ClickHandlers.toggleCheckbox(this, coord, '');
+				});
+
+				CodeMirror.defineExtension('checkCheckbox', function(coord:any) {
+					ClickHandlers.toggleCheckbox(this, coord, '[x]');
+				});
+
+				CodeMirror.defineExtension('uncheckCheckbox', function(coord:any) {
+					ClickHandlers.toggleCheckbox(this, coord, '[ ]');
 				});
 
 				CodeMirror.defineExtension('refreshResource', function(resourceId:string) {

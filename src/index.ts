@@ -56,6 +56,24 @@ joplin.plugins.register({
 				});
 			},
 		});
+		await joplin.commands.register({
+			name: 'editor.richMarkdown.checkCheckbox',
+			execute: async (coord: any) => {
+				await joplin.commands.execute('editor.execCommand', {
+					name: 'checkCheckbox',
+					args: [coord],
+				});
+			},
+		});
+		await joplin.commands.register({
+			name: 'editor.richMarkdown.uncheckCheckbox',
+			execute: async (coord: any) => {
+				await joplin.commands.execute('editor.execCommand', {
+					name: 'uncheckCheckbox',
+					args: [coord],
+				});
+			},
+		});
 
 		await joplin.commands.register({
 			name: 'editor.richMarkdown.copyPathToClipboard',
@@ -68,6 +86,7 @@ joplin.plugins.register({
 			const textItems: TextItem[] = await joplin.commands.execute('editor.execCommand', {
 				name: 'getItemsUnderCursor',
 			});
+			const selection = await joplin.commands.execute('selectedText');
 
 			if (!textItems.length) return object;
 
@@ -104,11 +123,30 @@ joplin.plugins.register({
 						commandArgs: [urlToCopy],
 					});
 				} else if (textItem.type === TextItemType.Checkbox) {
-					newItems.push({
-						label: 'Toggle checkbox',
-						commandName: 'editor.richMarkdown.toggleCheckbox',
-						commandArgs: [textItem.coord],
-					});
+					const newlineRegex = /[\r\n]/;
+					if (newlineRegex.test(selection)) {
+						newItems.push({
+							label: 'Toggle all',
+							commandName: 'editor.richMarkdown.toggleCheckbox',
+							commandArgs: [textItem.coord],
+						});
+						newItems.push({
+							label: 'Uncheck all',
+							commandName: 'editor.richMarkdown.uncheckCheckbox',
+							commandArgs: [textItem.coord],
+						});
+						newItems.push({
+							label: 'Check all',
+							commandName: 'editor.richMarkdown.checkCheckbox',
+							commandArgs: [textItem.coord],
+						});
+					} else {
+						newItems.push({
+							label: 'Toggle checkbox',
+							commandName: 'editor.richMarkdown.toggleCheckbox',
+							commandArgs: [textItem.coord],
+						});
+					}
 				}
 			}
 
