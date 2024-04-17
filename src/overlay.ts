@@ -1,6 +1,6 @@
 
 // Taken from codemirror/addon/edit/continuelist.js
-export const checkbox_regex = /^(\s*)([*+-] )(\[[Xx ]\])\s.*$/g;
+export const checkbox_regex = /^(\s*)((?:[\*\+\-\#]|[\#]+) )(\[[Xx ]\])\s.*$/g;
 export const checkbox_inner_regex = /(?<=\[)[Xx ](?=\])/g;
 // Last part of regex taken from https://stackoverflow.com/a/17773849/12245502
 // This regex will match html tags tht somehow include a . in them
