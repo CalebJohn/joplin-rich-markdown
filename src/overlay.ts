@@ -1,7 +1,9 @@
 
 // Taken from codemirror/addon/edit/continuelist.js
 export const checkbox_regex = /^(\s*)((?:[\*\+\-\#]|[\#]+) )(\[[Xx ]\])\s.*$/g;
+export const checkboxed_regex = /^(\s*)((?:[\*\+\-\#]|[\#]+) )(\[[Xx]\])\s.*$/g;
 export const checkbox_inner_regex = /(?<=\[)[Xx ](?=\])/g;
+export const checkbox_inner_checked_regex = /(?<=\[)[Xx](?=\])/g;
 // Last part of regex taken from https://stackoverflow.com/a/17773849/12245502
 // This regex will match html tags tht somehow include a . in them
 // I've decided that this is an acceptable level of functionality
@@ -84,7 +86,9 @@ export function regexOverlay(name: string, regex: RegExp, requiredSettings: stri
 
 export const overlays = [
 	regexOverlay('rm-checkbox', checkbox_regex, []),
+	regexOverlay('rm-checkboxed', checkboxed_regex, ['extraCSS']),
 	regexOverlay('rm-checkbox-check', checkbox_inner_regex, ['extraCSS']),
+	regexOverlay('rm-checkbox-checked', checkbox_inner_checked_regex, ['extraCSS']),
 	regexOverlay('rm-link', link_regex, []),
 	regexOverlay('rm-link-label', link_label_regex, []),
 	regexOverlay('rm-image', image_regex, []),

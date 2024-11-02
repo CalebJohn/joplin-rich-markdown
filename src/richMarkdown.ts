@@ -239,11 +239,19 @@ module.exports = {
 											background-color: var(--joplin-search-marker-background-color);
 											color: var(--joplin-search-marker-color);
 										}
+										div.CodeMirror span.cm-rm-highlight {
+											background-color: var(--joplin-search-marker-background-color);
+											color: var(--joplin-search-marker-color);
+										}
 										.cm-jn-code-block .cm-rm-highlight, .cm-jn-code-block .cm-rm-highlight-token {
 										    color: revert;
 										    background-color: revert;
 										}
 										div.CodeMirror span.cm-comment.cm-jn-inline-code.cm-overlay.cm-rm-backtick-token:not(.cm-search-marker):not(.cm-fat-cursor-mark):not(.cm-search-marker-selected):not(.CodeMirror-selectedtext) {
+											background-color: transparent;
+											border: none;
+										}
+										div.CodeMirror span.cm-comment.cm-jn-inline-code.cm-rm-backtick-token:not(.cm-search-marker):not(.cm-fat-cursor-mark):not(.cm-search-marker-selected):not(.CodeMirror-selectedtext) {
 											background-color: transparent;
 											border: none;
 										}

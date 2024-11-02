@@ -28,6 +28,7 @@ pre.cm-rm-blockquote span.cm-quote + span.cm-quote {
 div.CodeMirror .cm-string.cm-url,
 div.CodeMirror .cm-header.cm-rm-header-token,
 div.CodeMirror .cm-overlay.cm-rm-highlight.cm-rm-highlight-token,
+div.CodeMirror .cm-rm-highlight .cm-rm-highlight-token,
 div.CodeMirror .cm-strikethrough.cm-rm-strike-token,
 div.CodeMirror .cm-rm-ins.cm-rm-ins-token,
 div.CodeMirror .cm-rm-sub.cm-rm-sub-token,
@@ -38,7 +39,8 @@ div.CodeMirror .cm-rm-triptick-token,
 div.CodeMirror .cm-em.cm-rm-em-token,
 div.CodeMirror .cm-katex-marker-open,
 div.CodeMirror .cm-katex-marker-close,
-div.CodeMirror .cm-strong.cm-rm-strong-token {
+div.CodeMirror .cm-strong.cm-rm-strong-token,
+div.cm-editor .tok-meta {
 	opacity: 0.6;
 	background: transparent;
 	color: inherit;
@@ -49,13 +51,15 @@ div.CodeMirror .cm-jn-code-block .cm-header.cm-rm-header-token,
 div.CodeMirror .cm-jn-code-block .cm-em.cm-rm-em-token,
 div.CodeMirror .cm-jn-code-block .cm-strong.cm-rm-strong-token,
 div.CodeMirror .cm-jn-code-block .cm-rm-highlight.cm-rm-highlight-token,
+div.CodeMirror .cm-jn-code-block .cm-rm-highlight .cm-rm-highlight-token,
 div.CodeMirror .cm-jn-code-block .cm-strikethrough.cm-rm-strike-token,
 div.CodeMirror .cm-jn-code-block .cm-rm-ins.cm-rm-ins-token,
 div.CodeMirror .cm-jn-code-block .cm-rm-sub.cm-rm-sub-token,
 div.CodeMirror .cm-jn-code-block .cm-rm-sup.cm-rm-sup-token,
 div.CodeMirror .cm-jn-code-block .cm-quote.cm-rm-list-token,
 div.CodeMirror .cm-jn-code-block .cm-katex-marker-open,
-div.CodeMirror .cm-jn-code-block .cm-katex-marker-close {
+div.CodeMirror .cm-jn-code-block .cm-katex-marker-close,
+div.cm-editor .cm-jn-code-block .tok-meta {
 	opacity: revert;
 	color: inherit;
 }

@@ -13,12 +13,6 @@ div.CodeMirror .cm-hr {
   display: block;
   line-height: 0px;
 }
-
-/* If using the Additional CSS option, then the below CSS can be used for a different effect */
-div.CodeMirror pre.cm-rm-hr.CodeMirror-line  {
-  border-top: 1px solid #777;
-  line-height: 0px;
-}
 ```
 
 ## Subtle Headers
@@ -26,7 +20,7 @@ div.CodeMirror pre.cm-rm-hr.CodeMirror-line  {
 ```css
 /* Reduce the size and visibility of the header hash tags. */
 /* The additional CSS option must be enabled */
-div.CodeMirror .cm-header.cm-rm-header-token {
+div.cm-editor .cm-header > .cm-rm-header-token {
 	font-size: 0.9em;
 	color: grey;
 }
@@ -35,7 +29,7 @@ div.CodeMirror .cm-header.cm-rm-header-token {
 ```css
 /* Additionally, this CSS unindent the "#" characters to align */
 /* the header text with the rest of the text */
-div.CodeMirror .cm-header.cm-rm-header-token {
+div.cm-editor .cm-header > .cm-rm-header-token {
 	color: #cccccc;
 	font-size: 0.9em;
 	margin-left: -50px;
@@ -53,108 +47,33 @@ Thanks to [uxamanda](https://discourse.joplinapp.org/t/plugin-rich-markdown/1505
 ## Subtle Tokens
 
 ```css
-/* Reduces the intensity of the italics (emph) and bold (strong) markdown tokens */
-div.CodeMirror .cm-em.cm-rm-em-token,
-div.CodeMirror .cm-strong.cm-rm-strong-token {
+/* Reduces the intensity of the markdown tokens
+div.cm-editor .tok-meta {
 	opacity: 0.5;
 }
 
 /* This is also available for highlight and strikethrough, but it doesn't look very good */
 /*
-.cm-rm-highlight.cm-rm-highlight-token,
-.cm-strikethrough.cm-rm-strike-token,
+.cm-rm-highlight .cm-rm-highlight-token,
+.cm-strikethrough .cm-rm-strike-token,
 */
 
-```
-
-## Quotes
-```css
-
-/* Add a vertical bar to the left side of quote blocks so they match the viewer */
-pre.cm-rm-blockquote.CodeMirror-line {
-  border-left: 4px solid var(--joplin-code-border-color);
-  opacity: 0.7;
-}
-
-pre.cm-rm-blockquote span.cm-quote + span.cm-quote {
-  opacity: 1;
-}
-
-/* WARNING: the below code will hide the > from quotes, use at your own risk */
-/*
-pre.cm-rm-blockquote span.cm-quote.cm-rm-list-token {
-  opacity: 0;
-}
-*/
-```
-
-## Monospace Font
-
-```css
-/* Changes the monospace font used for tabes/checkboxes */
-/* All fonts option must be enabled */
-div.CodeMirror .cm-overlay.cm-rm-monospace {
-	font-family: monospace !important;
-}
 ```
 
 ## Strikeout Checkboxes
 ```css
-/* strikeout and dim the text of a checked checkbox */
-div.CodeMirror span.cm-rm-checkbox.cm-property + span.cm-rm-checkbox ~ span.cm-rm-checkbox {
+/* strikeout and dim a checked checkbox */
+div.CodeMirror span.cm-rm-checkboxed {
 	text-decoration: line-through;
 	opacity: 0.7;
 }
-/* Uncomment the below sections to include the checkbox itself  */
-/*
-span.cm-rm-checkbox.cm-property + span.cm-rm-checkbox {
-	text-decoration: line-through;
-	opacity: 0.7;
-}
-span.cm-rm-checkbox.cm-property {
-	text-decoration: line-through;
-	opacity: 0.7;
-}
-*/
 ```
 
 ## Highlight the Active Line
 ```css
 /* Requires the "highlight background of current line option to be enabled */
-div.CodeMirror .CodeMirror-activeline .CodeMirror-activeline-background.CodeMirror-linebackground {
+div.CodeMirror .CodeMirror-activeline.CodeMirror-activeline-background {
   background: grey !important;
-}
-```
-
-## Coloured List Tokens
-
-```css
-/* Disable list colours for the default (Light) theme */
-div.CodeMirror .cm-s-default span.cm-variable-2, .cm-s-default span.cm-variable-3, .cm-s-default  span.cm-keyword {
-	color: #32373F;
-}
-
-/* Add list colours back in for just the token component of the list */
-div.CodeMirror .cm-overlay.cm-rm-list-token.cm-variable-2 {
-	color: blue;
-}
-div.CodeMirror .cm-overlay.cm-rm-list-token.cm-variable-3 {
-	color: orange;
-}
-div.CodeMirror .cm-overlay.cm-rm-list-token.cm-keyword {
-	color: green;
-}
-
-/* If using the stylish theme, add the below to correct strikethrough colouration */
-/* ref https://discourse.joplinapp.org/t/plugin-rich-markdown/15053/337? */
-div.CodeMirror .cm-overlay + .cm-overlay.cm-rm-list-token.cm-variable-2 {
-	color: inherit;
-}
-div.CodeMirror .cm-overlay + .cm-overlay.cm-rm-list-token.cm-variable-3 {
-	color: inherit;
-}
-div.CodeMirror .cm-overlay + .cm-overlay.cm-rm-list-token.cm-keyword {
-	color: inherit;
 }
 ```
 
@@ -162,7 +81,7 @@ div.CodeMirror .cm-overlay + .cm-overlay.cm-rm-list-token.cm-keyword {
 
 ```css
 /* Match list spacing to the viewer */
-div.CodeMirror .cm-overlay.cm-rm-list-token {
+div.CodeMirror .cm-rm-list-token {
   line-height: 2em;
 }
 ```
@@ -194,48 +113,23 @@ The Joplin forum has [a collection](https://discourse.joplinapp.org/t/joplin-cus
 ---
 
 ## Warning
-The below configurations are not recommended and are provided for advanced users only.
-
-#### Hide Tokens and URLs on Other Lines
-```css
-/* Requires the additional Css and the highlight current line options to be enabled */
-div.CodeMirror .cm-string.cm-url, .cm-header.cm-rm-header-token, .cm-em.cm-rm-em-token, .cm-strong.cm-rm-strong-token, .cm-rm-highlight.cm-rm-highlight-token, .cm-strikethrough.cm-rm-strike-token, .cm-rm-ins.cm-rm-ins-token, .cm-rm-sub.cm-rm-sub-token, .cm-rm-sup.cm-rm-sup-token {
-	display: none;
-}
-
-div.CodeMirror .CodeMirror-activeline .cm-string.cm-url, .CodeMirror-activeline .cm-header.cm-rm-header-token, .CodeMirror-activeline .cm-em.cm-rm-em-token, .CodeMirror-activeline .cm-strong.cm-rm-strong-token, .CodeMirror-activeline .cm-rm-highlight.cm-rm-highlight-token, .CodeMirror-activeline .cm-strikethrough.cm-rm-strike-token, .CodeMirror-activeline .cm-rm-ins.cm-rm-ins-token, .CodeMirror-activeline .cm-rm-sub.cm-rm-sub-token, .CodeMirror-activeline .cm-rm-sup.cm-rm-sup-token {
-	display: inherit;
-}
-
-/* Optional: You might also want to disable the highlight background */
-.CodeMirror .CodeMirror-activeline
-.CodeMirror-activeline-background:not(.cm-jn-code-block):not(.cm-jn-code-block-background),
-.cm-s-solarized.cm-s-light div.CodeMirror-activeline-background,
-.cm-s-solarized.cm-s-dark div.CodeMirror-activeline-background {
-  background: inherit;
-}
-```
-
-#### Focus Mode
-Dims everything outside of the current line.
-```css
-div.CodeMirror .CodeMirror-line {
-  opacity: 0.4;
-}
-
-div.CodeMirror .CodeMirror-activeline .CodeMirror-line{
-  opacity: 1.0;
-}
-```
-
 #### Checkmark Checkboxes
 Much thanks to [ambrt](https://discourse.joplinapp.org/u/ambrt/) for the initial implementation.
 ```css
 /* Requires the additional Css option to be enabled */
-div.CodeMirror .cm-property.cm-rm-checkbox.cm-rm-checkbox-check {
+div.CodeMirror .cm-rm-checkbox .cm-rm-checkbox-checked {
   display: none;
 }
-div.CodeMirror .cm-property.cm-rm-checkbox.cm-rm-checkbox-check + .cm-property:before {
+div.CodeMirror .cm-rm-checkbox .cm-rm-checkbox-checked + .cm-taskMarker:before {
     content: "✓";
 }
 ```
+
+## Notes on legacy editor (pre 3.1.1)
+Some tokens had the class `.cm-overlay` pre-pended to them. This class is removed in the new editor, any styles that involved can simply have it removed. For example
+
+```diff
+- div.CodeMirror .cm-overlay.cm-rm-list-token {
++ div.CodeMirror .cm-rm-list-token {
+```
+If still using the legacy editor, please view the older [TIPS](https://github.com/CalebJohn/joplin-rich-markdown/blob/7d6bd9c984176a1a0d6fdc5683c34f03669967b5/TIPS.md)
