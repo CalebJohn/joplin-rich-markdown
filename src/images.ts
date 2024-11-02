@@ -132,6 +132,12 @@ function close_widget(cm: any) {
 function update_hover_widgets(cm: any) {
 	if (!cm.state.richMarkdown) return;
 
+	// If the image source is removed, this update funciton won't catch it
+	// and the image will be stuck around forever joplin-rich-markdown/issues/69
+	// this prevents this from happening (by pre-emptively clearing the image)
+	// but causes a flicker while editing and hovering.
+	clearHoverImages(cm);
+
 	const images = cm.getWrapperElement().getElementsByClassName("cm-rm-image");
 
 	for (let image of images) {
