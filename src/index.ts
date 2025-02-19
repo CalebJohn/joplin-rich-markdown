@@ -1,14 +1,14 @@
 import joplin from 'api';
 import { ContentScriptType, MenuItem, MenuItemLocation, ModelType } from 'api/types';
-
 import { getAllSettings, registerAllSettings } from './settings';
 
 // TODO: Waiting for https://github.com/laurent22/joplin/pull/4509
 // import prettier = require('prettier/standalone');
 // import markdown = require('prettier/parser-markdown');
 import { TextItem, TextItemType } from './clickHandlers';
-import { imageToDataURL, isSupportedImageMimeType } from './images';
+import { imageToDataURL, isSupportedImageMimeType, isSupportedOcrMimeType } from './images';
 
+const fs = joplin.require('fs-extra');
 const { parseResourceUrl } = require('@joplin/lib/urlUtils');
 
 const contentScriptId = 'richMarkdownEditor';
@@ -84,6 +84,19 @@ joplin.plugins.register({
 		});
 
 		await joplin.commands.register({
+			name: 'editor.richMarkdown.viewOcrText',
+			execute: async (itemId: string) => {
+				const resource = await joplin.data.get(['resources', itemId], { fields: ['id', 'mime', 'ocr_text', 'ocr_status'] });
+				if (resource.ocr_status === 2) { // ResourceOcrStatus.Done
+					const tempFilePath = `${await joplin.plugins.dataDir()}/${resource.id}_ocr.txt`;
+					await fs.writeFile(tempFilePath, resource.ocr_text, 'utf8');
+					const fileUrl = `file://${tempFilePath.replace(/\\/g, '/')}`;
+					await joplin.commands.execute('openItem', fileUrl);
+				}
+			},
+		});
+
+		await joplin.commands.register({
 			name: 'editor.richMarkdown.copyPathToClipboard',
 			execute: async (path: string) => {
 				await joplin.clipboard.writeText(path);
@@ -116,6 +129,21 @@ joplin.plugins.register({
 
 					if (itemType === ModelType.Resource) {
 						const resource = await joplin.data.get(['resources', itemId], { fields: ['mime'] });
+						
+						newItems.push({
+							label: 'Reveal file in folder',
+							commandName: 'revealResourceFile',
+							commandArgs: [itemId],
+						});
+
+						if (isSupportedOcrMimeType(resource.mime)) {
+							newItems.push({
+								label: 'View OCR text',
+								commandName: 'editor.richMarkdown.viewOcrText',
+								commandArgs: [itemId],
+							});
+						}
+
 						if (isSupportedImageMimeType(resource.mime)) {
 							newItems.push({
 								label: 'Copy image',
@@ -123,12 +151,6 @@ joplin.plugins.register({
 								commandArgs: [itemId],
 							});
 						}
-						
-						newItems.push({
-							label: 'Reveal file in folder',
-							commandName: 'revealResourceFile',
-							commandArgs: [itemId],
-						});
 
 						urlToCopy = await joplin.data.resourcePath(itemId);
 						urlType = 'path';

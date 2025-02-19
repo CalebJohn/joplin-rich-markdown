@@ -14,6 +14,10 @@ export function isSupportedImageMimeType(mime:string) {
 	return ['image/png', 'image/jpg', 'image/jpeg'].includes(mime.toLowerCase());
 }
 
+export function isSupportedOcrMimeType(mime:string) {
+	return ['application/pdf'].includes(mime.toLowerCase()) || isSupportedImageMimeType(mime);
+}
+
 export async function imageToDataURL(filePath:string, mimeType:string) {
 	const fs = joplin.require('fs-extra');
 	const fileBuffer = await fs.readFile(filePath);
