@@ -3,13 +3,11 @@ import { ContentScriptType, MenuItem, MenuItemLocation, ModelType } from 'api/ty
 
 import { getAllSettings, registerAllSettings } from './settings';
 
-import { mime } from '@joplin/lib/mime-utils';
-
 // TODO: Waiting for https://github.com/laurent22/joplin/pull/4509
 // import prettier = require('prettier/standalone');
 // import markdown = require('prettier/parser-markdown');
-import path = require('path');
 import { TextItem, TextItemType } from './clickHandlers';
+import { imageToDataURL, isSupportedImageMimeType } from './images';
 
 const { parseResourceUrl } = require('@joplin/lib/urlUtils');
 
@@ -76,6 +74,16 @@ joplin.plugins.register({
 		});
 
 		await joplin.commands.register({
+			name: 'editor.richMarkdown.copyImage',
+			execute: async (itemId: string) => {
+				const resource = await joplin.data.get(['resources', itemId], { fields: ['mime'] });
+				const resourcePath = await joplin.data.resourcePath(itemId);
+				const dataUrl = await imageToDataURL(resourcePath, resource.mime);
+				await joplin.clipboard.writeImage(dataUrl);
+			},
+		});
+
+		await joplin.commands.register({
 			name: 'editor.richMarkdown.copyPathToClipboard',
 			execute: async (path: string) => {
 				await joplin.clipboard.writeText(path);
@@ -107,6 +115,15 @@ joplin.plugins.register({
 					let urlType = 'link';
 
 					if (itemType === ModelType.Resource) {
+						const resource = await joplin.data.get(['resources', itemId], { fields: ['mime'] });
+						if (isSupportedImageMimeType(resource.mime)) {
+							newItems.push({
+								label: 'Copy image',
+								commandName: 'editor.richMarkdown.copyImage',
+								commandArgs: [itemId],
+							});
+						}
+						
 						newItems.push({
 							label: 'Reveal file in folder',
 							commandName: 'revealResourceFile',

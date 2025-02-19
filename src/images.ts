@@ -1,3 +1,4 @@
+import joplin from 'api';
 import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay';
 
@@ -8,6 +9,17 @@ export const html_image_line_regex = /^\s*<img([^>]+?)\/?>\s*$/;
 
 // Used to quickly index widgets that will get updated
 let allWidgets = {};
+
+export function isSupportedImageMimeType(mime:string) {
+	return ['image/png', 'image/jpg', 'image/jpeg'].includes(mime.toLowerCase());
+}
+
+export async function imageToDataURL(filePath:string, mimeType:string) {
+	const fs = joplin.require('fs-extra');
+	const fileBuffer = await fs.readFile(filePath);
+	const base64String = fileBuffer.toString('base64');
+	return `data:${mimeType};base64,${base64String}`;
+}
 
 export function onSourceChanged(cm: any, from: number, to: number, context: any) {
 	if (!cm.state.richMarkdown) return;
