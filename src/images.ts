@@ -1,4 +1,3 @@
-import joplin from 'api';
 import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay';
 
@@ -16,13 +15,6 @@ export function isSupportedImageMimeType(mime:string) {
 
 export function isSupportedOcrMimeType(mime:string) {
 	return ['application/pdf'].includes(mime.toLowerCase()) || isSupportedImageMimeType(mime);
-}
-
-export async function imageToDataURL(filePath:string, mimeType:string) {
-	const fs = joplin.require('fs-extra');
-	const fileBuffer = await fs.readFile(filePath);
-	const base64String = fileBuffer.toString('base64');
-	return `data:${mimeType};base64,${base64String}`;
 }
 
 export function onSourceChanged(cm: any, from: number, to: number, context: any) {

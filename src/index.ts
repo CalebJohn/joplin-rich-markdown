@@ -6,7 +6,8 @@ import { getAllSettings, registerAllSettings } from './settings';
 // import prettier = require('prettier/standalone');
 // import markdown = require('prettier/parser-markdown');
 import { TextItem, TextItemType } from './clickHandlers';
-import { imageToDataURL, isSupportedImageMimeType, isSupportedOcrMimeType } from './images';
+import { isSupportedImageMimeType, isSupportedOcrMimeType } from './images';
+import { imageToDataURL } from './imageData';
 
 const fs = joplin.require('fs-extra');
 const { parseResourceUrl } = require('@joplin/lib/urlUtils');
