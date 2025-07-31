@@ -11,7 +11,7 @@ export function isLink(event: MouseEvent) {
 	if (!event.target) return false;
 	const target = event.target as HTMLElement;
 
-	return target.matches('.cm-rm-link *, .cm-rm-link') || target.matches('.cm-rm-link-label');
+	return target.matches('.cm-rm-link *, .cm-rm-link') || target.matches('.cm-rm-link-label *, .cm-rm-link-label');
 }
 
 export function isCheckbox(event: MouseEvent) {
