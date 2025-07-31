@@ -93,6 +93,8 @@ joplin.plugins.register({
 					await fs.writeFile(tempFilePath, resource.ocr_text, 'utf8');
 					const fileUrl = `file://${tempFilePath.replace(/\\/g, '/')}`;
 					await joplin.commands.execute('openItem', fileUrl);
+				} else {
+					console.info(`OCR of resource ${itemId} is not ready yet ${resource.ocr_status}`);
 				}
 			},
 		});
