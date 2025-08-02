@@ -1,6 +1,8 @@
 import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay';
 
+import { syntaxTree } from "@codemirror/language"
+
 export const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?\s*$/;
 export const image_line_link_regex = /^\[(!\[.*)\]\((.*)\)$/;
 export const image_inline_regex = /!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?/g;
@@ -30,6 +32,24 @@ export function afterSourceChanges(cm: any) {
 
 	if (cm.state.richMarkdown.settings.imageHover)
 		update_hover_widgets(cm);
+}
+
+function isLineInCodeBlock(editor, lineNumber) {
+	const doc = editor.state.doc
+	const line = doc.line(lineNumber)
+	const tree = syntaxTree(editor.state)
+
+	let node = tree.resolveInner(line.from)
+
+	// Walk up the tree to find if we're inside a code block
+	while (node) {
+		if (node.name === "FencedCode" || node.name === "CodeBlock") {
+			return true
+		}
+		node = node.parent
+	}
+
+	return false
 }
 
 async function getImageData(cm: any, coord: any) {
@@ -161,6 +181,7 @@ async function check_lines(cm: any, from: number, to: number, context: any) {
 	if (!cm.state.richMarkdown) return;
 
 	const path_from_id = cm.state.richMarkdown.path_from_id;
+	const isLegacy = cm.state.richMarkdown.settings.legacyEditor;
 	let needsRefresh = false;
 
 	for (let i = from; i <= to; i++) {
@@ -175,11 +196,21 @@ async function check_lines(cm: any, from: number, to: number, context: any) {
 		}
 
 		if (!line) { continue; }
-		const state = cm.getStateAfter(i, true);
 
-		// Don't render inline images inside of code blocks
-		if (state?.outer && (state?.outer?.code || (state?.outer?.thisLine?.fencedCodeEnd))) {
-			continue;
+		if (isLegacy) {
+			const state = cm.getStateAfter(i, true);
+
+			// Don't render inline images inside of code blocks (not for cm5/legacy editor only)
+			if (state?.outer && (state?.outer?.code || (state?.outer?.thisLine?.fencedCodeEnd))) {
+				continue;
+			}
+		} else {
+			// cm6 uses 1 based indexing for line numbers, but cm5 uses 0 based
+			// the line object we have here is emulated cm5, so it uses 0 based
+			// but the checking function is cm6, so we need to adjust
+			if (isLineInCodeBlock(cm.editor, line.line + 1)) {
+				continue;
+			}
 		}
 
 		// Special Case
@@ -190,7 +221,6 @@ async function check_lines(cm: any, from: number, to: number, context: any) {
 		if (line_link_match) {
 			lineText = line_link_match[1];
 			lineLink = line_link_match[2];
-
 		}
 
 		const match = lineText.match(image_line_regex);

@@ -38,6 +38,7 @@
     "yargs": "^16.2.0"
   },
   "dependencies": {
+    "@codemirror/language": "^6.11.2",
     "@joplin/lib": "^2.6.3"
   },
   "files": [
