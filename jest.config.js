@@ -1,4 +1,7 @@
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+/** @type {import('jest').Config} */
+const config = {
+	preset: 'ts-jest',
+	testEnvironment: 'node',
 };
+
+module.exports = config;
