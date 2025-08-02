@@ -8,6 +8,11 @@ div.cm-editor .tok-meta {
 	transition: opacity 0.3s;
 }
 
+/* Restore font-size inside of markdown tables because it messes up alignment */
+div.cm-editor .cm-tableDelimiter .tok-meta {
+	font-size: 1em;
+}
+
 /* The url string looks not great when it's faded all the way to 0.2*/
 div.CodeMirror .cm-string.cm-url,
 div.cm-editor .cm-url {
