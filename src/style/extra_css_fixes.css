@@ -1,0 +1,4 @@
+div.cm-editor .cm-inlineCode {
+  background-color: var(--joplin-code-background-color);
+  border-style: none;
+}

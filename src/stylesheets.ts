@@ -4,6 +4,7 @@ const elements = [
 	'focus',
 	'stylish',
 	'extra_fancy',
+	'extra_css_fixes',
 ];
 const idPrefix = "content-script-richMarkdown-link-";
 
@@ -34,6 +35,10 @@ export function refreshStylesheets(cm: any) {
 	if (settings.extraFancy) {
 		cm.setOption('styleActiveLine', { nonEmpty: true });
 		const element = createElement('extra_fancy', settings.cssPath);
+		document.head.appendChild(element);
+	}
+	if (settings.extraCSS || settings.extraFancy || settings.theme == "stylish") {
+		const element = createElement('extra_css_fixes', settings.cssPath);
 		document.head.appendChild(element);
 	}
 	cm.refresh();
