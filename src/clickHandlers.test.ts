@@ -11,6 +11,9 @@ but it doesn't forget plain old https://joplinapp.org links
 and all the rest!
 (In this [page](https://joplinapp.org) you can see a test)
 it also has [reference links] which are neat!
+Links with () should not drop the trailing )
+https://joplinapp.org/www(x=y)
+[even this](https://joplinapp.org/www(x=y))
 
 [reference links]: https://joplinapp.org
 `
@@ -37,6 +40,18 @@ test("getMatchAt works for markdown links", () => {
 	match = ClickHandlers.getMatchAt(test_text, Overlay.link_regex, 220)
 	expect(match[0]).toBe("[page](https://joplinapp.org)");
 	expect(match[1]).toBe("https://joplinapp.org");
+	expect(match[2]).toBeUndefined();
+	expect(match[3]).toBeUndefined();
+
+	match = ClickHandlers.getMatchAt(test_text, Overlay.link_regex, 380)
+	expect(match[0]).toBe("https://joplinapp.org/www(x=y)");
+	expect(match[1]).toBeUndefined();
+	expect(match[2]).toBeUndefined();
+	expect(match[3]).toBe("https://joplinapp.org/www(x=y)");
+
+	match = ClickHandlers.getMatchAt(test_text, Overlay.link_regex, 403)
+	expect(match[0]).toBe("[even this](https://joplinapp.org/www(x=y))");
+	expect(match[1]).toBe("https://joplinapp.org/www(x=y)");
 	expect(match[2]).toBeUndefined();
 	expect(match[3]).toBeUndefined();
 });
