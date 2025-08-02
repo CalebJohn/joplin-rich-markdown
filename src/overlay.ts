@@ -36,6 +36,7 @@ export const list_token_regex = /^(\s*)([*+-] \[[Xx ]\]\s|[*+->]\s|(\d+)([.)]\s)
 // Taken from codemirror/mode/markdown/markdown.js
 export const hr_regex = /^([*\-_])(?:\s*\1){2,}\s*$/;
 export const blockquote_regex = /^\s*\>+\s/g;
+export const nbsp_regex = /&nbsp;/g;
 
 // TODO: Extend this to get better table highlighting
 export const table_regex = /^\|[^\n]+\|/g;
@@ -114,6 +115,7 @@ export const overlays = [
 	regexOverlay('rm-hr line-cm-rm-hr', hr_regex, ['extraCSS']),
 	regexOverlay('rm-admonition-token line-cm-rm-admonition line-background-cm-rm-admonition', admonition_token_regex, ['extraCSS']),
 	regexOverlay('rm-admonition', admonition_line_regex, ['extraCSS']),
+	regexOverlay('rm-nbsp', nbsp_regex, ['extraCSS']),
 ];
 
 function validate(settings: any, values: string[]): boolean {

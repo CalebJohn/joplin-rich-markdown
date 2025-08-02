@@ -40,6 +40,7 @@ div.CodeMirror .cm-em.cm-rm-em-token,
 div.CodeMirror .cm-katex-marker-open,
 div.CodeMirror .cm-katex-marker-close,
 div.CodeMirror .cm-strong.cm-rm-strong-token,
+div.CodeMirror .cm-rm-nbsp,
 div.cm-editor .tok-meta {
 	opacity: 0.6;
 	background: transparent;
@@ -59,6 +60,7 @@ div.CodeMirror .cm-jn-code-block .cm-rm-sup.cm-rm-sup-token,
 div.CodeMirror .cm-jn-code-block .cm-quote.cm-rm-list-token,
 div.CodeMirror .cm-jn-code-block .cm-katex-marker-open,
 div.CodeMirror .cm-jn-code-block .cm-katex-marker-close,
+div.CodeMirror .cm-rm-nbsp,
 div.cm-editor .cm-jn-code-block .tok-meta {
 	opacity: revert;
 	color: inherit;
