@@ -91,3 +91,20 @@ describe('link regex', () => {
 
 	});
 });
+
+describe('highlight regex', () => {
+	test('valid highlight', () => {
+		expect('==highlight==').toMatch(Overlay.highlight_regex);
+		expect('==high light==').toMatch(Overlay.highlight_regex);
+		expect('==highlight=me==').toMatch(Overlay.highlight_regex);
+		expect('==highlight=me=please==').toMatch(Overlay.highlight_regex);
+	});
+	test('invalid highlight', () => {
+		expect('\\==lowlight==').not.toMatch(Overlay.highlight_regex);
+		expect('==lowlight\\==').not.toMatch(Overlay.highlight_regex);
+		expect('== lowlight==').not.toMatch(Overlay.highlight_regex);
+		expect('==lowlight ==').not.toMatch(Overlay.highlight_regex);
+		expect('=lowlight=').not.toMatch(Overlay.highlight_regex);
+		expect('lowlight== lowlight==').not.toMatch(Overlay.highlight_regex);
+	});
+});

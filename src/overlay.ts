@@ -13,7 +13,7 @@ export const link_label_regex = /((?<![\\])\[(?:[^\sxX]|(?:[^\]][^\]]+))\])/g;
 export const image_regex = /!\[[^\]]*\]\([^\(]+\)/g;
 // Modified from https://stackoverflow.com/a/18665138/12245502
 export const html_image_regex = /<img([^>]+?)\/?>/g;
-export const highlight_regex = /(?<!\\)==(?=[^\s])[^=]*[^=\s\\]==/g;
+export const highlight_regex = /(?<!\\)==(?=[^\s])(?:[^=]=?)*[^=\s\\]==/g;
 export const insert_regex = /(?<!\\)\+\+(?=[^\s])[^\+]*[^\+\s\\]\+\+/g;
 export const sub_regex = /(?<![\\~])~(?=[^\s])[^~]*[^~\s\\]~/g;
 export const sup_regex = /(?<![\\[])\^(?=[^\s])[^\^]*[^\^\s\\[]\^/g;
