@@ -117,7 +117,7 @@ joplin.plugins.register({
 			const newItems: MenuItem[] = [];
 
 			for (let textItem of textItems) {
-				if (textItem.type === TextItemType.Link) {
+				if (textItem.type === TextItemType.Link || textItem.type === TextItemType.Image) {
 					newItems.push({
 						label: 'Open link',
 						commandName: 'app.richMarkdown.openItem',

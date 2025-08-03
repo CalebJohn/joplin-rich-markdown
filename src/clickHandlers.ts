@@ -73,6 +73,7 @@ export function clickAt(cm: any, coord: any) {
 export enum TextItemType {
 	Link = 'link',
 	Checkbox = 'checkbox',
+	Image = 'image',
 }
 
 export interface TextItem {
@@ -98,6 +99,15 @@ export function getItemsAt(cm:any, coord:any):TextItem[] {
 		const checkboxInfo = getCheckboxInfo(cm, coord);
 		if (checkboxInfo) {
 			items.push({ type: TextItemType.Checkbox, coord });
+		}
+	}
+
+	// no setting yet for html image behaviours, I'm not sure if this is going to mess things
+	// up, so reserving it as a future option
+	if (true) {
+		const url = getRegexAt(cm, coord, Overlay.html_full_image_regex, 2);
+		if (url) {
+			items.push({ type: TextItemType.Image, url, coord });
 		}
 	}
 
@@ -169,6 +179,20 @@ function getLinkAt(cm: any, coord: any) {
 	url = url.split(' ')[0];
 
 	return url;
+}
+
+function getRegexAt(cm: any, coord: any, regex: RegExp, groupNum: number) {
+	let { line, ch } = coord;
+
+	const lineText = cm.getLine(line);
+
+	const match = getMatchAt(lineText, regex, ch);
+
+	if (match) {
+		return match[groupNum];
+	}
+
+	return '';
 }
 
 function getCheckboxInfo(cm:any, coord:any) {

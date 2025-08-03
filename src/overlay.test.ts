@@ -108,3 +108,31 @@ describe('highlight regex', () => {
 		expect('lowlight== lowlight==').not.toMatch(Overlay.highlight_regex);
 	});
 });
+
+describe('html full image regex', () => {
+	test('valid html matches', () => {
+		expect('<img src=":/8be52e7f659b4cd29f1fe962e9e42b1d" alt="" width="547" height="420" class="jop-noMdConv">').toMatch(Overlay.html_full_image_regex);
+
+		expect('<img    class="fit-picture" src="/shared-assets/images/examples/grapefruit-slice.jpg" alt="Grapefruit slice atop a pile of other slices" />').toMatch(Overlay.html_full_image_regex);
+
+		expect('<img src="image-file.png" alt="My image file description" attributionsrc="https://a.example/register-source https://b.example/register-source" />').toMatch(Overlay.html_full_image_regex);
+
+		expect('<img alt="A Penguin on a beach." src="penguin.jpg" />').toMatch(Overlay.html_full_image_regex);
+
+		expect('<a href="https://developer.mozilla.org"><img   src="/shared-assets/images/examples/favicon144.png"  alt="Visit the MDN site" /></a>').toMatch(Overlay.html_full_image_regex);
+
+		expect('<img src="/shared-assets/images/examples/favicon72.png" alt="MDN" srcset="/shared-assets/images/examples/favicon144.png 2x" />').toMatch(Overlay.html_full_image_regex);
+	});
+
+	test('invalid html matches', () => {
+		expect('<imgsrc=":/8be52e7f659b4cd29f1fe962e9e42b1d" alt="" width="547" height="420" class="jop-noMdConv">').not.toMatch(Overlay.html_full_image_regex);
+
+		expect('<img >').not.toMatch(Overlay.html_full_image_regex);
+
+		expect('<img    class="fit-picture" alt="Grapefruit slice atop a pile of other slices" />').not.toMatch(Overlay.html_full_image_regex);
+
+		expect('<img alt="A Penguin on a beach." src="penguin.jpg" /').not.toMatch(Overlay.html_full_image_regex);
+
+		expect('<img alt="MDN" srcset="/shared-assets/images/examples/favicon144.png 2x" />').not.toMatch(Overlay.html_full_image_regex);
+	});
+});
