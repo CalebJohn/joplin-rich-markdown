@@ -10,9 +10,6 @@ module.exports = {
 	default: function(context) { 
 		return {
 			plugin: function(CodeMirror) {
-				if (CodeMirror.cm6) {
-					CodeMirror.addExtension(listIndent());
-				}
 				async function path_from_id(id: string) {
 					return await context.postMessage({name:'getResourcePath', id: id});
 				}
@@ -63,6 +60,10 @@ module.exports = {
 					IndentHandlers.calculateSpaceWidth(this);
 
 					this.updateRichMarkdownSettings(settings);
+
+					if (this.cm6 && this.state.richMarkdown.settings.alignIndent) {
+						this.addExtension(listIndent());
+					}
 				});
 
 				CodeMirror.defineExtension('updateRichMarkdownSettings', function(newSettings: RichMarkdownSettings) {
