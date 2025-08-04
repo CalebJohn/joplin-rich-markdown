@@ -21,7 +21,6 @@ export interface RichMarkdownSettings {
 	extraFancy: string;
 	cssPath: string;
 	regexOverlays: string;
-	legacyEditor: string;
 }
 
 export async function getAllSettings(): Promise<RichMarkdownSettings> {
@@ -45,7 +44,6 @@ export async function getAllSettings(): Promise<RichMarkdownSettings> {
 		extraFancy: await joplin.settings.value('extraFancy'),
 		cssPath: await joplin.plugins.installationDir(),
 		regexOverlays: await joplin.settings.value('regexOverlays'),
-		legacyEditor: await joplin.settings.globalValue('editor.legacyMarkdown')
 	}
 }
 

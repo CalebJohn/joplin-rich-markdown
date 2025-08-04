@@ -181,7 +181,6 @@ async function check_lines(cm: any, from: number, to: number, context: any) {
 	if (!cm.state.richMarkdown) return;
 
 	const path_from_id = cm.state.richMarkdown.path_from_id;
-	const isLegacy = cm.state.richMarkdown.settings.legacyEditor;
 	let needsRefresh = false;
 
 	for (let i = from; i <= to; i++) {
@@ -197,18 +196,18 @@ async function check_lines(cm: any, from: number, to: number, context: any) {
 
 		if (!line) { continue; }
 
-		if (isLegacy) {
-			const state = cm.getStateAfter(i, true);
-
-			// Don't render inline images inside of code blocks (not for cm5/legacy editor only)
-			if (state?.outer && (state?.outer?.code || (state?.outer?.thisLine?.fencedCodeEnd))) {
-				continue;
-			}
-		} else {
+		if (cm.cm6) {
 			// cm6 uses 1 based indexing for line numbers, but cm5 uses 0 based
 			// the line object we have here is emulated cm5, so it uses 0 based
 			// but the checking function is cm6, so we need to adjust
 			if (isLineInCodeBlock(cm.editor, line.line + 1)) {
+				continue;
+			}
+		} else {
+			const state = cm.getStateAfter(i, true);
+
+			// Don't render inline images inside of code blocks (not for cm5/legacy editor only)
+			if (state?.outer && (state?.outer?.code || (state?.outer?.thisLine?.fencedCodeEnd))) {
 				continue;
 			}
 		}
