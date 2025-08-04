@@ -4,11 +4,15 @@ import * as Overlay from './overlay';
 import * as IndentHandlers from './indent';
 import * as Stylesheets from './stylesheets';
 import { RichMarkdownSettings } from './settings';
+import { listIndent } from './cm6ListIndent';
 
 module.exports = {
 	default: function(context) { 
 		return {
 			plugin: function(CodeMirror) {
+				if (CodeMirror.cm6) {
+					CodeMirror.addExtension(listIndent());
+				}
 				async function path_from_id(id: string) {
 					return await context.postMessage({name:'getResourcePath', id: id});
 				}
