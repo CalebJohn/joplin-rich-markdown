@@ -8,7 +8,7 @@ const wrapIndent = (indent, hasTab) => Decoration.line({
 	attributes: { style: `text-indent: -${indent + (hasTab ? 1 : 0)}ch; padding-left: ${indent}ch;` }
 });
 
-const listMarkerRegex = /^(\s*)([-*+](?:\s\[[Xx ]\])?|\d+[.)]|) /;
+const listMarkerRegex = /^(\s*)([-*+>](?:\s\[[Xx ]\])?|\d+[.)]|) /;
 
 function calculateIndent(indentStr, tabSize) {
 	let width = 0;
@@ -47,7 +47,7 @@ function createListIndentPlugin() {
 			
 			tree.iterate({
 				enter: (node) => {
-					if (node.name === "ListItem") {
+					if (node.name === "ListItem" || node.name == "Blockquote") {
 						const line = view.state.doc.lineAt(node.from);
 						const lineText = line.text;
 						const match = listMarkerRegex.exec(lineText);
