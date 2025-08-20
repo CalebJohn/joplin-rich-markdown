@@ -85,30 +85,21 @@ export interface TextItem {
 export function getItemsAt(cm:any, coord:any):TextItem[] {
 	if (!cm.state.richMarkdown) return null;
 
-	const settings = cm.state.richMarkdown.settings;
 	let items: TextItem[] = [];
 
-	if (settings.links) {
-		const url = getLinkAt(cm, coord);
-		if (url) {
-			items.push({ type: TextItemType.Link, url, coord });
-		}
+	const url = getLinkAt(cm, coord);
+	if (url) {
+		items.push({ type: TextItemType.Link, url, coord });
 	}
 
-	if (settings.checkbox) {
-		const checkboxInfo = getCheckboxInfo(cm, coord);
-		if (checkboxInfo) {
-			items.push({ type: TextItemType.Checkbox, coord });
-		}
+	const checkboxInfo = getCheckboxInfo(cm, coord);
+	if (checkboxInfo) {
+		items.push({ type: TextItemType.Checkbox, coord });
 	}
 
-	// no setting yet for html image behaviours, I'm not sure if this is going to mess things
-	// up, so reserving it as a future option
-	if (true) {
-		const url = getRegexAt(cm, coord, Overlay.html_full_image_regex, 2);
-		if (url) {
-			items.push({ type: TextItemType.Image, url, coord });
-		}
+	const imageUrl = getRegexAt(cm, coord, Overlay.html_full_image_regex, 2);
+	if (imageUrl) {
+		items.push({ type: TextItemType.Image, url: imageUrl, coord });
 	}
 
 	return items;
