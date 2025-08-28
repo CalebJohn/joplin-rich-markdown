@@ -1,14 +1,5 @@
-import { RangeSetBuilder } from "@codemirror/state"
-import { Decoration, DecorationSet, EditorView, ViewPlugin, PluginValue } from "@codemirror/view"
-import { getIndentUnit, syntaxTree } from "@codemirror/language"
-
-const wrapIndent = (indent, hasTab) => Decoration.line({
-	// For some off reason, chrome needs the text-indent to be slightly larger than the tab
-	// stop to get actual indentation happening, so we fudge it with a 1.
-	attributes: { style: `text-indent: -${indent + (hasTab ? 1 : 0)}ch; padding-left: ${indent}ch;` }
-});
-
-const listMarkerRegex = /^(\s*)([-*+>](?:\s\[[Xx ]\])?|\d+[.)]|) /;
+import type { Decoration, DecorationSet, PluginValue } from '@codemirror/view';
+import { require_codemirror_view, require_codemirror_state, require_codemirror_language } from "./cm6Requires";
 
 function calculateIndent(indentStr, tabSize) {
 	let width = 0;
@@ -26,6 +17,18 @@ function calculateIndent(indentStr, tabSize) {
 }
 
 function createListIndentPlugin() {
+	const { RangeSetBuilder } = require_codemirror_state();
+	const { Decoration, ViewPlugin } = require_codemirror_view();
+	const { getIndentUnit, syntaxTree } = require_codemirror_language();
+
+	const wrapIndent = (indent, hasTab) => Decoration.line({
+		// For some off reason, chrome needs the text-indent to be slightly larger than the tab
+		// stop to get actual indentation happening, so we fudge it with a 1.
+		attributes: { style: `text-indent: -${indent + (hasTab ? 1 : 0)}ch; padding-left: ${indent}ch;` }
+	});
+
+	const listMarkerRegex = /^(\s*)([-*+>](?:\s\[[Xx ]\])?|\d+[.)]|) /;
+
 	return ViewPlugin.fromClass(class implements PluginValue {
 		decorations!: DecorationSet;
 
@@ -79,7 +82,10 @@ function createListIndentPlugin() {
 	})
 }
 
-export const listIndent = () => [
-	EditorView.lineWrapping,
-	createListIndentPlugin()
-]
+export const listIndent = () => {
+	const { EditorView } = require_codemirror_view();
+	return [
+		EditorView.lineWrapping,
+		createListIndentPlugin()
+	];
+}

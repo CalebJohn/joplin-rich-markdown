@@ -1,7 +1,7 @@
 import * as ClickHandlers from './clickHandlers';
 import * as Overlay from './overlay';
 
-import { syntaxTree } from "@codemirror/language"
+import { require_codemirror_language } from "./cm6Requires";
 
 export const image_line_regex = /^\s*!\[([^\]]*)\]\((<[^\)]+>|[^)\s]+)[^)]*\)({width=(\d+(px|%)?)})?\s*$/;
 export const image_line_link_regex = /^\[(!\[.*)\]\((.*)\)$/;
@@ -34,7 +34,7 @@ export function afterSourceChanges(cm: any) {
 		update_hover_widgets(cm);
 }
 
-function isLineInCodeBlock(editor, lineNumber) {
+function isLineInCodeBlock(editor, syntaxTree, lineNumber) {
 	const doc = editor.state.doc
 	const line = doc.line(lineNumber)
 	const tree = syntaxTree(editor.state)
@@ -197,10 +197,14 @@ async function check_lines(cm: any, from: number, to: number, context: any) {
 		if (!line) { continue; }
 
 		if (cm.cm6) {
+			if (!cm.state.richMarkdown.language) {
+				cm.state.richMarkdown.language = require_codemirror_language();
+			}
+			const syntaxTree = cm.state.richMarkdown.language.syntaxTree;
 			// cm6 uses 1 based indexing for line numbers, but cm5 uses 0 based
 			// the line object we have here is emulated cm5, so it uses 0 based
 			// but the checking function is cm6, so we need to adjust
-			if (isLineInCodeBlock(cm.editor, line.line + 1)) {
+			if (isLineInCodeBlock(cm.editor, syntaxTree, line.line + 1)) {
 				continue;
 			}
 		} else {
