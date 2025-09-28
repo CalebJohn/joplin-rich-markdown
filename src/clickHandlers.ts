@@ -124,10 +124,15 @@ function getLinkAt(cm: any, coord: any) {
 		if (!reference_match) return;
 
 		const reference = reference_match[1] || reference_match[2];
+		const trimmedReference = reference.trim();
 
-		if (reference.trim() === '' || reference.toLowerCase() === 'x') return; // This is a checkbox
+		if (trimmedReference === '' || trimmedReference.toLowerCase() === 'x') return; // This is a checkbox
 
-		const link_definition_regex = new RegExp(`\\[${reference}\\]:\\s([^\\n]+)`, 'g');
+		// Skip Joplin directives or wiki style links such as [[toc]] that surface nested brackets
+		if (trimmedReference.includes('[') || trimmedReference.includes(']')) return;
+
+		const escapedReference = trimmedReference.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
+		const link_definition_regex = new RegExp(`\\[${escapedReference}\\]:\\s([^\\n]+)`, 'g');
 
 		for (let i = 0; i < cm.lineCount(); i++) {
 			// a link reference definition can only be preceded by up to 3
@@ -143,7 +148,7 @@ function getLinkAt(cm: any, coord: any) {
 
 		// No match found, just exit
 		if (url === '') {
-			alert(`No link defintion for [${reference}]. Press Esc to dismiss.`);
+			alert(`No link defintion for [${trimmedReference}]. Press Esc to dismiss.`);
 			return;
 		}
 	}
@@ -244,4 +249,3 @@ export function toggleCheckbox(cm: any, coord: any, replacement: string) {
 
 	return true;
 }
-
