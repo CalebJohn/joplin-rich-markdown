@@ -42,7 +42,11 @@ joplin.plugins.register({
 				if (!url.startsWith(':/') && !url.match(/^(?:[a-zA-Z0-9\+\.\-])+:/)) {
 					url = 'http://' + url;
 				}
-				await joplin.commands.execute('openItem', url);
+        if (url.startsWith('excalidraw://')) {
+          await joplin.commands.execute('app.excalidraw.openItem', url);
+        } else {
+          await joplin.commands.execute('openItem', url);
+        }
 			},
 		});
 
