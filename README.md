@@ -47,7 +47,7 @@ This includes checkboxes and block quotes.
 This is enabled by default.
 
 ## Extra CSS
-Some additional CSS classes have been added to further enable customization through [userchrome.css](https://joplinapp.org/help/#custom-css). Available classes are detailed below.
+Some additional CSS classes have been added to further enable customization through [userchrome.css](https://joplinapp.org/help/apps/custom_css). Available classes are detailed below.
 
 `.cm-header.cm-rm-header-token`: The grouping of hashtags (#) at the start of a header
 
