@@ -22,9 +22,7 @@ function createListIndentPlugin() {
 	const { getIndentUnit, syntaxTree } = require_codemirror_language();
 
 	const wrapIndent = (indent, hasTab) => Decoration.line({
-		// For some off reason, chrome needs the text-indent to be slightly larger than the tab
-		// stop to get actual indentation happening, so we fudge it with a 1.
-		attributes: { style: `text-indent: -${indent + (hasTab ? 1 : 0)}ch; padding-left: ${indent}ch;` }
+		attributes: { style: `text-indent: -${indent}ch; padding-left: ${indent}ch;` }
 	});
 
 	const listMarkerRegex = /^(\s*)([-*+>](?:\s\[[Xx ]\])?|\d+[.)]|) /;
