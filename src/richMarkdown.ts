@@ -265,6 +265,7 @@ module.exports = {
 										}
 										/* Needed for the renderLine indent hack to work */
 										.CodeMirror pre > * { text-indent: 0px; }
+										.cm-rm-list-token .cm-ext-checkbox-toggle .content { text-indent: 0px; }
 							`
 					}
 				];
