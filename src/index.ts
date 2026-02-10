@@ -106,88 +106,130 @@ joplin.plugins.register({
 			},
 		});
 
+		// Helper to build menu items for a resource (image or other attachment)
+		const buildResourceMenuItems = async (resourceId: string, openUrl: string): Promise<MenuItem[]> => {
+			const items: MenuItem[] = [];
+			const resource = await joplin.data.get(['resources', resourceId], { fields: ['mime'] });
+
+			items.push({
+				label: 'Open link',
+				commandName: 'app.richMarkdown.openItem',
+				commandArgs: [openUrl],
+			});
+
+			items.push({
+				label: 'Reveal file in folder',
+				commandName: 'revealResourceFile',
+				commandArgs: [resourceId],
+			});
+
+			if (isSupportedOcrMimeType(resource.mime)) {
+				items.push({
+					label: 'View OCR text',
+					commandName: 'editor.richMarkdown.viewOcrText',
+					commandArgs: [resourceId],
+				});
+			}
+
+			if (isSupportedImageMimeType(resource.mime)) {
+				items.push({
+					label: 'Copy image',
+					commandName: 'editor.richMarkdown.copyImage',
+					commandArgs: [resourceId],
+				});
+			}
+
+			const resourcePath = await joplin.data.resourcePath(resourceId);
+			items.push({
+				label: 'Copy path to clipboard',
+				commandName: 'editor.richMarkdown.copyPathToClipboard',
+				commandArgs: [resourcePath],
+			});
+
+			return items;
+		};
+
+		// Helper to build menu items for a non-resource link
+		const buildLinkMenuItems = (url: string): MenuItem[] => {
+			return [
+				{
+					label: 'Open link',
+					commandName: 'app.richMarkdown.openItem',
+					commandArgs: [url],
+				},
+				{
+					label: 'Copy link to clipboard',
+					commandName: 'editor.richMarkdown.copyPathToClipboard',
+					commandArgs: [url],
+				},
+			];
+		};
+
 		await joplin.workspace.filterEditorContextMenu(async (object: any) => {
+			// Use context passed by Joplin if available (preferred method).
+			// This correctly identifies what was right-clicked even when the cursor
+			// is elsewhere (e.g., after switching from markdown editor to viewer).
+			const context = object.context || {};
+			const contextResourceId = context.resourceId;
+			const contextItemType = context.itemType;
+
+			// Fall back to cursor-based detection for backward compatibility
+			// and for items not covered by context (e.g., checkboxes)
 			const textItems: TextItem[] = await joplin.commands.execute('editor.execCommand', {
 				name: 'getItemsUnderCursor',
 			});
 			const selection = await joplin.commands.execute('selectedText');
 
-			if (!textItems.length) return object;
-
 			const newItems: MenuItem[] = [];
 
-			for (let textItem of textItems) {
-				if (textItem.type === TextItemType.Link || textItem.type === TextItemType.Image) {
-					newItems.push({
-						label: 'Open link',
-						commandName: 'app.richMarkdown.openItem',
-						commandArgs: [textItem.url],
-					});
+			// If context indicates an image/resource was right-clicked, use that
+			if (contextResourceId && (contextItemType === 'image' || contextItemType === 'resource')) {
+				try {
+					const resourceItems = await buildResourceMenuItems(contextResourceId, `:/${contextResourceId}`);
+					newItems.push(...resourceItems);
+				} catch (error) {
+					console.warn('Rich Markdown: Failed to get resource info from context', error);
+				}
+			} else if (textItems.length) {
+				// Fall back to cursor-based detection
+				for (const textItem of textItems) {
+					if (textItem.type === TextItemType.Link || textItem.type === TextItemType.Image) {
+						const info = parseResourceUrl(textItem.url);
+						const itemId = info ? info.itemId : null;
+						const itemType = itemId ? await joplin.data.itemType(itemId) : null;
 
-					const info = parseResourceUrl(textItem.url);
-					const itemId = info ? info.itemId : null;
-					const itemType = itemId ? await joplin.data.itemType(itemId) : null;
-					let urlToCopy = textItem.url;
-					let urlType = 'link';
-
-					if (itemType === ModelType.Resource) {
-						const resource = await joplin.data.get(['resources', itemId], { fields: ['mime'] });
-						
-						newItems.push({
-							label: 'Reveal file in folder',
-							commandName: 'revealResourceFile',
-							commandArgs: [itemId],
-						});
-
-						if (isSupportedOcrMimeType(resource.mime)) {
+						if (itemType === ModelType.Resource) {
+							const resourceItems = await buildResourceMenuItems(itemId, textItem.url);
+							newItems.push(...resourceItems);
+						} else {
+							const linkItems = buildLinkMenuItems(textItem.url);
+							newItems.push(...linkItems);
+						}
+					} else if (textItem.type === TextItemType.Checkbox) {
+						const newlineRegex = /[\r\n]/;
+						if (newlineRegex.test(selection)) {
 							newItems.push({
-								label: 'View OCR text',
-								commandName: 'editor.richMarkdown.viewOcrText',
-								commandArgs: [itemId],
+								label: 'Toggle all',
+								commandName: 'editor.richMarkdown.toggleCheckbox',
+								commandArgs: [textItem.coord],
+							});
+							newItems.push({
+								label: 'Uncheck all',
+								commandName: 'editor.richMarkdown.uncheckCheckbox',
+								commandArgs: [textItem.coord],
+							});
+							newItems.push({
+								label: 'Check all',
+								commandName: 'editor.richMarkdown.checkCheckbox',
+								commandArgs: [textItem.coord],
+							});
+						} else {
+							newItems.push({
+								label: 'Toggle checkbox',
+								commandName: 'editor.richMarkdown.toggleCheckbox',
+								commandArgs: [textItem.coord],
 							});
 						}
-
-						if (isSupportedImageMimeType(resource.mime)) {
-							newItems.push({
-								label: 'Copy image',
-								commandName: 'editor.richMarkdown.copyImage',
-								commandArgs: [itemId],
-							});
-						}
-
-						urlToCopy = await joplin.data.resourcePath(itemId);
-						urlType = 'path';
-					}
-
-					newItems.push({
-						label: `Copy ${urlType} to clipboard`,
-						commandName: 'editor.richMarkdown.copyPathToClipboard',
-						commandArgs: [urlToCopy],
-					});
-				} else if (textItem.type === TextItemType.Checkbox) {
-					const newlineRegex = /[\r\n]/;
-					if (newlineRegex.test(selection)) {
-						newItems.push({
-							label: 'Toggle all',
-							commandName: 'editor.richMarkdown.toggleCheckbox',
-							commandArgs: [textItem.coord],
-						});
-						newItems.push({
-							label: 'Uncheck all',
-							commandName: 'editor.richMarkdown.uncheckCheckbox',
-							commandArgs: [textItem.coord],
-						});
-						newItems.push({
-							label: 'Check all',
-							commandName: 'editor.richMarkdown.checkCheckbox',
-							commandArgs: [textItem.coord],
-						});
-					} else {
-						newItems.push({
-							label: 'Toggle checkbox',
-							commandName: 'editor.richMarkdown.toggleCheckbox',
-							commandArgs: [textItem.coord],
-						});
 					}
 				}
 			}
