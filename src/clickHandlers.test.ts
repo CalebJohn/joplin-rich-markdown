@@ -73,3 +73,18 @@ test("reference link regexes are working okay", () => {
 	match = ClickHandlers.getMatchAt(test_text, Overlay.link_label_regex, 290);
 	expect(match).not.toBeNull();
 });
+
+test("getMatchAt handles links with checkbox tokens in labels", () => {
+	const internalLinkText = `
+[Target note > [ ] Open task](:/2f1f6f33f6a74f73b6b8f66ca9b7a111#target-note-open-task)
+[Target note > [x] Done task](:/2f1f6f33f6a74f73b6b8f66ca9b7a111#target-note-done-task)
+`;
+
+	let match = ClickHandlers.getMatchAt(internalLinkText, Overlay.link_regex, 28);
+	expect(match[0]).toBe("[Target note > [ ] Open task](:/2f1f6f33f6a74f73b6b8f66ca9b7a111#target-note-open-task)");
+	expect(match[1]).toBe(":/2f1f6f33f6a74f73b6b8f66ca9b7a111#target-note-open-task");
+
+	match = ClickHandlers.getMatchAt(internalLinkText, Overlay.link_regex, 130);
+	expect(match[0]).toBe("[Target note > [x] Done task](:/2f1f6f33f6a74f73b6b8f66ca9b7a111#target-note-done-task)");
+	expect(match[1]).toBe(":/2f1f6f33f6a74f73b6b8f66ca9b7a111#target-note-done-task");
+});
