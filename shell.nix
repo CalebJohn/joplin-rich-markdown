@@ -5,6 +5,6 @@ pkgs.mkShell rec {
   NODE_OPTIONS="--openssl-legacy-provider";
 
   buildInputs = with pkgs; [
-    nodejs nodePackages.webpack nodePackages.webpack-cli
+    nodejs nodePackages.webpack-cli
   ];
 }
