@@ -57,7 +57,11 @@ module.exports = {
 					}
 
 					Overlay.add(this);
-					IndentHandlers.calculateSpaceWidth(this);
+					// An editor that is mounted while its pane is hidden (ex. the note is shown
+					// in the viewer or the rich text editor) has no layout to measure the
+					// character widths with, nor a syntax tree to render the images against
+					// (both are done again when the editor is first rendered)
+					this.state.richMarkdown.needsRender = !IndentHandlers.calculateSpaceWidth(this);
 
 					this.updateRichMarkdownSettings(settings);
 
@@ -132,6 +136,14 @@ module.exports = {
 					ImageHandlers.onSourceChanged(cm, from, to, context);
 				}
 				function on_update(cm: any) {
+					const richMarkdown = cm.state.richMarkdown;
+					// The editor was mounted while hidden, the images are rendered again now
+					// that there is a layout to measure and a syntax tree to render against
+					if (richMarkdown?.needsRender && IndentHandlers.calculateSpaceWidth(cm)) {
+						richMarkdown.needsRender = false;
+						ImageHandlers.clearAllWidgets(cm);
+						ImageHandlers.onSourceChanged(cm, cm.firstLine(), cm.lastLine(), context);
+					}
 					ImageHandlers.afterSourceChanges(cm);
 				}
 

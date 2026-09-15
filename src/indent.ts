@@ -12,21 +12,29 @@ let monoSpaceWidth = 0;
 let blockCharWidth = 0;
 
 // Must be called when the editor is mounted
+// Returns whether the widths could be measured, an editor that is mounted while
+// hidden (ex. its pane is showing the viewer) has no layout to measure.
 export function calculateSpaceWidth(cm: any) {
 	spaceWidth = charWidth(cm, ' ', '');
 	monoSpaceWidth = charWidth(cm, ' ', 'cm-rm-monospace');
 	blockCharWidth = charWidth(cm, '>', '');
+	return spaceWidth > 0;
 }
 
 // Adapted from codemirror/lib/codemirror.js
 function charWidth(cm: any, chr: string, cls: string) {
+	const wrapper = cm.getWrapperElement();
+	const measure = wrapper && wrapper.getElementsByClassName('CodeMirror-measure')[0];
+
+	// There's nothing to measure against until the editor has been created
+	if (!measure) return 0;
+
 	let e = document.createElement('span');
 	if (cls)
 		e.classList.add(cls);
 	e.style.whiteSpace = "pre-wrap";
 	e.appendChild(document.createTextNode(chr.repeat(10)))
 
-	const measure = cm.getWrapperElement().getElementsByClassName('CodeMirror-measure')[0];
 	if (measure.firstChild)
 		measure.removeChild(measure.firstChild);
 
@@ -35,8 +43,12 @@ function charWidth(cm: any, chr: string, cls: string) {
   const rect = e.getBoundingClientRect()
 	const width = (rect.right - rect.left) / 10;
 
-  return width || cm.defaultCharWidth();
+	if (width) return width;
 
+	// A hidden editor has no layout, so the width measured above is always 0.
+	// CodeMirror 5 has a fallback for this case, but the CodeMirror 6
+	// compatibility layer in Joplin doesn't implement it.
+	return typeof cm.defaultCharWidth === 'function' ? cm.defaultCharWidth() : 0;
 }
 
 // Adapted from
