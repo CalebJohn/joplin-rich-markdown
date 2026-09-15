@@ -106,6 +106,16 @@ div.CodeMirror .cm-rm-header-token.cm-header-6:not(.cm-whitespace-a, .cm-whitesp
 div.cm-editor .cm-header.cm-h6 > .cm-rm-header-token {
 	margin-left: -7ex;
 }
+
+/* Joplin keeps hidden markup in the DOM when rendering markup in the editor,
+ * as an invisible 1px wide token (see makeHideReplaceExtension). The hanging
+ * indent above is meant to pull a *visible* marker into the margin, so it has
+ * to be cancelled while the token is hidden, otherwise the width of the
+ * (invisible) marker is subtracted from the left edge of the heading text. */
+div.cm-editor .cm-line.cm-header > .cm-rm-header-token:has(.cm-hidden) {
+	margin-left: 0;
+	margin-right: 0;
+}
 /* END Headers */
 
 /* Checkbox */
